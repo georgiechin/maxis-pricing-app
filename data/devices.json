@@ -1,0 +1,95 @@
+[
+  {
+    "brand": "Apple",
+    "model": "iPhone 16e",
+    "aliases": ["ip16e", "iphone", "iphone16e", "16e"],
+    "variants": {
+      "default": {
+        "MP99": { "upfront": 2500, "dap": 960, "monthly": 56 }
+      },
+      "128": {
+        "MP99": { "upfront": 2500, "dap": 960, "monthly": 56 }
+      },
+      "256": {
+        "MP139": { "upfront": 2883, "dap": 1080, "monthly": 55 }
+      }
+    }
+  },
+
+  {
+    "brand": "Apple",
+    "model": "iPhone 15",
+    "aliases": ["ip15", "iphone15", "15"],
+    "variants": {
+      "default": {
+        "MP99": { "upfront": 2200, "dap": 900, "monthly": 50 }
+      }
+    }
+  },
+
+  {
+    "brand": "Honor",
+    "model": "Honor 600 Lite",
+    "aliases": ["honor", "600lite", "honor600"],
+    "variants": {
+      "default": {
+        "MP139": { "upfront": 460, "dap": 460, "monthly": 0 }
+      }
+    }
+  },
+
+  {
+    "brand": "Honor",
+    "model": "Honor 400",
+    "aliases": ["honor400", "400"],
+    "variants": {
+      "default": {
+        "MP139": { "upfront": 600, "dap": 600, "monthly": 0 }
+      }
+    }
+  },
+
+  {
+    "brand": "Samsung",
+    "model": "Samsung A15",
+    "aliases": ["a15", "samsung a15"],
+    "variants": {
+      "default": {
+        "MP99": { "upfront": 300, "dap": 300, "monthly": 0 }
+      }
+    }
+  },
+
+  {
+    "brand": "Samsung",
+    "model": "Samsung A25",
+    "aliases": ["a25", "samsung a25"],
+    "variants": {
+      "default": {
+        "MP99": { "upfront": 400, "dap": 400, "monthly": 0 }
+      }
+    }
+  },
+
+  {
+    "brand": "Huawei",
+    "model": "Huawei Pura 80 Pro",
+    "aliases": ["pura80", "huawei pura"],
+    "variants": {
+      "default": {
+        "MP139": { "upfront": 1200, "dap": 1200, "monthly": 20 }
+      }
+    }
+  },
+
+  {
+    "brand": "Google",
+    "model": "Pixel 9a",
+    "aliases": ["pixel9a", "google pixel"],
+    "variants": {
+      "default": {
+        "MP139": { "upfront": 800, "dap": 800, "monthly": 10 }
+      }
+    }
+  }
+]

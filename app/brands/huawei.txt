@@ -1,0 +1,169 @@
+{
+brand: "Huawei",
+models: [
+{
+model: "Huawei Pura 80 Pro",
+aliases: ["huawei", "pura80pro"],
+storages: [
+{
+storage: "Default",
+rrp: 4599,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 2899, dap: 240, totalUpfront: 3139 },
+MP139: { devicePrice: 2699, dap: 440, totalUpfront: 3139 },
+MP169: { devicePrice: 2499, dap: 600, totalUpfront: 3099 },
+MP199: { devicePrice: 2199, dap: 900, totalUpfront: 3099 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: 145, dapLabel: "Check ECC" },
+MP139: { monthly: 145, dapLabel: "Check ECC" },
+MP169: { monthly: 120, dapLabel: "Check ECC" },
+MP199: { monthly: 100, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: 100, dapLabel: "Check ECC" },
+MP139: { monthly: 90, dapLabel: "Check ECC" },
+MP169: { monthly: 80, dapLabel: "Check ECC" },
+MP199: { monthly: 60, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Huawei Mate 80 Pro",
+aliases: ["huawei", "mate80pro"],
+storages: [
+{
+storage: "Default",
+rrp: 3999,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 2699, dap: 120, totalUpfront: 2819 },
+MP139: { devicePrice: 2499, dap: 320, totalUpfront: 2819 },
+MP169: { devicePrice: 2199, dap: 620, totalUpfront: 2819 },
+MP199: { devicePrice: 1999, dap: 820, totalUpfront: 2819 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: 130, dapLabel: "Check ECC" },
+MP139: { monthly: 130, dapLabel: "Check ECC" },
+MP169: { monthly: 110, dapLabel: "Check ECC" },
+MP199: { monthly: 90, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: 90, dapLabel: "Check ECC" },
+MP139: { monthly: 80, dapLabel: "Check ECC" },
+MP169: { monthly: 70, dapLabel: "Check ECC" },
+MP199: { monthly: 55, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Huawei Mate X7",
+aliases: ["huawei", "matex7"],
+storages: [
+{
+storage: "Default",
+rrp: 8688,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 6399, dap: 200, totalUpfront: 6599 },
+MP139: { devicePrice: 6199, dap: 400, totalUpfront: 6599 },
+MP169: { devicePrice: 5999, dap: 600, totalUpfront: 6599 },
+MP199: { devicePrice: 5699, dap: 900, totalUpfront: 6599 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: 305, dapLabel: "Check ECC" },
+MP139: { monthly: 295, dapLabel: "Check ECC" },
+MP169: { monthly: 280, dapLabel: "Check ECC" },
+MP199: { monthly: 260, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: 210, dapLabel: "Check ECC" },
+MP139: { monthly: 200, dapLabel: "Check ECC" },
+MP169: { monthly: 190, dapLabel: "Check ECC" },
+MP199: { monthly: 170, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Huawei Mate XT",
+aliases: ["huawei", "matext"],
+storages: [
+{
+storage: "Default",
+rrp: 14999,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 11499, dap: 180, totalUpfront: 11679 },
+MP139: { devicePrice: 11299, dap: 360, totalUpfront: 11659 },
+MP169: { devicePrice: 10999, dap: 660, totalUpfront: 11659 },
+MP199: { devicePrice: 10699, dap: 960, totalUpfront: 11659 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: 569, dapLabel: "Check ECC" },
+MP139: { monthly: 569, dapLabel: "Check ECC" },
+MP169: { monthly: 549, dapLabel: "Check ECC" },
+MP199: { monthly: 529, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: 409, dapLabel: "Check ECC" },
+MP139: { monthly: 399, dapLabel: "Check ECC" },
+MP169: { monthly: 389, dapLabel: "Check ECC" },
+MP199: { monthly: 369, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+}
+]
+}

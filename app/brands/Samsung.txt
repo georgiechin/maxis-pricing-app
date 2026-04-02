@@ -1,0 +1,596 @@
+{
+brand: "Samsung",
+models: [
+{
+model: "Galaxy A26 5G",
+aliases: ["samsung", "a26"],
+storages: [
+{
+storage: "Default",
+rrp: 1399,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: 299, dap: 60, totalUpfront: 359 },
+MP89: { devicePrice: 299, dap: 60, totalUpfront: 359 },
+MP99: { devicePrice: 0, dap: 360, totalUpfront: 360 },
+MP109: { devicePrice: 0, dap: 360, totalUpfront: 360 },
+MP139: { devicePrice: 0, dap: 360, totalUpfront: 360 },
+MP169: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP199: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: "NA", dapLabel: "Check ECC" },
+MP139: { monthly: "NA", dapLabel: "Check ECC" },
+MP169: { monthly: "NA", dapLabel: "Check ECC" },
+MP199: { monthly: "NA", dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: "NA", dapLabel: "Check ECC" },
+MP139: { monthly: "NA", dapLabel: "Check ECC" },
+MP169: { monthly: "NA", dapLabel: "Check ECC" },
+MP199: { monthly: "NA", dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Galaxy A56 5G",
+aliases: ["samsung", "a56"],
+storages: [
+{
+storage: "Default",
+rrp: 2199,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 599, dap: 320, totalUpfront: 919 },
+MP109: { devicePrice: 599, dap: 320, totalUpfront: 919 },
+MP139: { devicePrice: 99, dap: 800, totalUpfront: 899 },
+MP169: { devicePrice: 0, dap: 900, totalUpfront: 900 },
+MP199: { devicePrice: 0, dap: 900, totalUpfront: 900 }
+},
+zero24: {
+MP69: { monthly: 70, dapLabel: "Check ECC" },
+MP89: { monthly: 70, dapLabel: "Check ECC" },
+MP99: { monthly: 60, dapLabel: "Check ECC" },
+MP109: { monthly: 60, dapLabel: "Check ECC" },
+MP139: { monthly: 50, dapLabel: "Check ECC" },
+MP169: { monthly: 40, dapLabel: "Check ECC" },
+MP199: { monthly: 25, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: 45, dapLabel: "Check ECC" },
+MP89: { monthly: 45, dapLabel: "Check ECC" },
+MP99: { monthly: 40, dapLabel: "Check ECC" },
+MP109: { monthly: 40, dapLabel: "Check ECC" },
+MP139: { monthly: 35, dapLabel: "Check ECC" },
+MP169: { monthly: 25, dapLabel: "Check ECC" },
+MP199: { monthly: 15, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Galaxy S25 FE 5G",
+aliases: ["samsung", "s25fe"],
+storages: [
+{
+storage: "Default",
+rrp: 3099,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 1199, dap: 240, totalUpfront: 1439 },
+MP109: { devicePrice: 1199, dap: 240, totalUpfront: 1439 },
+MP139: { devicePrice: 699, dap: 740, totalUpfront: 1439 },
+MP169: { devicePrice: 199, dap: 1240, totalUpfront: 1439 },
+MP199: { devicePrice: 0, dap: 1440, totalUpfront: 1440 }
+},
+zero24: {
+MP69: { monthly: 90, dapLabel: "Check ECC" },
+MP89: { monthly: 90, dapLabel: "Check ECC" },
+MP99: { monthly: 80, dapLabel: "Check ECC" },
+MP109: { monthly: 80, dapLabel: "Check ECC" },
+MP139: { monthly: 70, dapLabel: "Check ECC" },
+MP169: { monthly: 55, dapLabel: "Check ECC" },
+MP199: { monthly: 40, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: 65, dapLabel: "Check ECC" },
+MP89: { monthly: 65, dapLabel: "Check ECC" },
+MP99: { monthly: 55, dapLabel: "Check ECC" },
+MP109: { monthly: 55, dapLabel: "Check ECC" },
+MP139: { monthly: 45, dapLabel: "Check ECC" },
+MP169: { monthly: 35, dapLabel: "Check ECC" },
+MP199: { monthly: 20, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Galaxy S26",
+aliases: ["samsung", "s26"],
+storages: [
+{
+storage: "512GB",
+rrp: 5199,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 3699, dap: 0, totalUpfront: 3699 },
+MP139: { devicePrice: 3499, dap: 100, totalUpfront: 3599 },
+MP169: { devicePrice: 3199, dap: 360, totalUpfront: 3559 },
+MP199: { devicePrice: 2999, dap: 560, totalUpfront: 3559 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 175, dapLabel: "Check ECC" },
+MP109: { monthly: 175, dapLabel: "Check ECC" },
+MP139: { monthly: 165, dapLabel: "Check ECC" },
+MP169: { monthly: 150, dapLabel: "Check ECC" },
+MP199: { monthly: 130, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 115, dapLabel: "Check ECC" },
+MP109: { monthly: 115, dapLabel: "Check ECC" },
+MP139: { monthly: 105, dapLabel: "Check ECC" },
+MP169: { monthly: 95, dapLabel: "Check ECC" },
+MP199: { monthly: 80, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Galaxy S26+",
+aliases: ["samsung", "s26plus"],
+storages: [
+{
+storage: "512GB",
+rrp: 6199,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 4599, dap: 0, totalUpfront: 4599 },
+MP139: { devicePrice: 4399, dap: 100, totalUpfront: 4499 },
+MP169: { devicePrice: 4199, dap: 300, totalUpfront: 4499 },
+MP199: { devicePrice: 3899, dap: 600, totalUpfront: 4499 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 215, dapLabel: "Check ECC" },
+MP109: { monthly: 215, dapLabel: "Check ECC" },
+MP139: { monthly: 205, dapLabel: "Check ECC" },
+MP169: { monthly: 190, dapLabel: "Check ECC" },
+MP199: { monthly: 170, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 145, dapLabel: "Check ECC" },
+MP109: { monthly: 145, dapLabel: "Check ECC" },
+MP139: { monthly: 135, dapLabel: "Check ECC" },
+MP169: { monthly: 125, dapLabel: "Check ECC" },
+MP199: { monthly: 105, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Galaxy S26 Ultra",
+aliases: ["samsung", "s26ultra"],
+storages: [
+{
+storage: "512GB",
+rrp: 6799,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 5199, dap: 0, totalUpfront: 5199 },
+MP139: { devicePrice: 4999, dap: 0, totalUpfront: 4999 },
+MP169: { devicePrice: 4699, dap: 300, totalUpfront: 4999 },
+MP199: { devicePrice: 4399, dap: 600, totalUpfront: 4999 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 240, dapLabel: "Check ECC" },
+MP109: { monthly: 240, dapLabel: "Check ECC" },
+MP139: { monthly: 230, dapLabel: "Check ECC" },
+MP169: { monthly: 220, dapLabel: "Check ECC" },
+MP199: { monthly: 200, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 165, dapLabel: "Check ECC" },
+MP109: { monthly: 165, dapLabel: "Check ECC" },
+MP139: { monthly: 155, dapLabel: "Check ECC" },
+MP169: { monthly: 145, dapLabel: "Check ECC" },
+MP199: { monthly: 125, dapLabel: "Check ECC" }
+}
+}
+}
+},
+{
+storage: "1TB",
+rrp: 7999,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 6299, dap: 0, totalUpfront: 6299 },
+MP139: { devicePrice: 6099, dap: 0, totalUpfront: 6099 },
+MP169: { devicePrice: 5799, dap: 300, totalUpfront: 6099 },
+MP199: { devicePrice: 5499, dap: 600, totalUpfront: 6099 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 290, dapLabel: "Check ECC" },
+MP109: { monthly: 290, dapLabel: "Check ECC" },
+MP139: { monthly: 280, dapLabel: "Check ECC" },
+MP169: { monthly: 270, dapLabel: "Check ECC" },
+MP199: { monthly: 250, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 199, dapLabel: "Check ECC" },
+MP109: { monthly: 199, dapLabel: "Check ECC" },
+MP139: { monthly: 189, dapLabel: "Check ECC" },
+MP169: { monthly: 179, dapLabel: "Check ECC" },
+MP199: { monthly: 159, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Galaxy Tab S10 Lite 5G",
+aliases: ["samsung", "tabs10lite"],
+storages: [
+{
+storage: "Default",
+rrp: 1799,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 699, dap: 360, totalUpfront: 1059 },
+MP109: { devicePrice: 699, dap: 360, totalUpfront: 1059 },
+MP139: { devicePrice: 399, dap: 660, totalUpfront: 1059 },
+MP169: { devicePrice: 0, dap: 1040, totalUpfront: 1040 },
+MP199: { devicePrice: 0, dap: 1040, totalUpfront: 1040 }
+},
+zero24: {
+MP69: { monthly: 70, dapLabel: "Check ECC" },
+MP89: { monthly: 70, dapLabel: "Check ECC" },
+MP99: { monthly: 65, dapLabel: "Check ECC" },
+MP109: { monthly: 65, dapLabel: "Check ECC" },
+MP139: { monthly: 60, dapLabel: "Check ECC" },
+MP169: { monthly: 50, dapLabel: "Check ECC" },
+MP199: { monthly: 30, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: 45, dapLabel: "Check ECC" },
+MP89: { monthly: 45, dapLabel: "Check ECC" },
+MP99: { monthly: 40, dapLabel: "Check ECC" },
+MP109: { monthly: 40, dapLabel: "Check ECC" },
+MP139: { monthly: 35, dapLabel: "Check ECC" },
+MP169: { monthly: 30, dapLabel: "Check ECC" },
+MP199: { monthly: 15, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Galaxy Tab S11 5G",
+aliases: ["samsung", "tabs11"],
+storages: [
+{
+storage: "Default",
+rrp: 4399,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 3299, dap: 0, totalUpfront: 3299 },
+MP139: { devicePrice: 3099, dap: 180, totalUpfront: 3279 },
+MP169: { devicePrice: 2799, dap: 480, totalUpfront: 3279 },
+MP199: { devicePrice: 2599, dap: 680, totalUpfront: 3279 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: "NA", dapLabel: "Check ECC" },
+MP139: { monthly: "NA", dapLabel: "Check ECC" },
+MP169: { monthly: "NA", dapLabel: "Check ECC" },
+MP199: { monthly: "NA", dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 105, dapLabel: "Check ECC" },
+MP109: { monthly: 105, dapLabel: "Check ECC" },
+MP139: { monthly: 100, dapLabel: "Check ECC" },
+MP169: { monthly: 90, dapLabel: "Check ECC" },
+MP199: { monthly: 70, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Galaxy Tab S11 Ultra 5G",
+aliases: ["samsung", "tabs11ultra"],
+storages: [
+{
+storage: "Default",
+rrp: 6499,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 5099, dap: 0, totalUpfront: 5099 },
+MP139: { devicePrice: 4899, dap: 120, totalUpfront: 5019 },
+MP169: { devicePrice: 4599, dap: 420, totalUpfront: 5019 },
+MP199: { devicePrice: 4299, dap: 720, totalUpfront: 5019 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: "NA", dapLabel: "Check ECC" },
+MP139: { monthly: "NA", dapLabel: "Check ECC" },
+MP169: { monthly: "NA", dapLabel: "Check ECC" },
+MP199: { monthly: "NA", dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 160, dapLabel: "Check ECC" },
+MP109: { monthly: 160, dapLabel: "Check ECC" },
+MP139: { monthly: 155, dapLabel: "Check ECC" },
+MP169: { monthly: 145, dapLabel: "Check ECC" },
+MP199: { monthly: 125, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Galaxy Flip7",
+aliases: ["samsung", "flip7"],
+storages: [
+{
+storage: "256GB",
+rrp: 4999,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 3099, dap: 0, totalUpfront: 3099 },
+MP139: { devicePrice: 2899, dap: 120, totalUpfront: 3019 },
+MP169: { devicePrice: 2599, dap: 420, totalUpfront: 3019 },
+MP199: { devicePrice: 2299, dap: 720, totalUpfront: 3019 }
+},
+zero24: {
+MP69: { monthly: 165, dapLabel: "Check ECC" },
+MP89: { monthly: 165, dapLabel: "Check ECC" },
+MP99: { monthly: 155, dapLabel: "Check ECC" },
+MP109: { monthly: 155, dapLabel: "Check ECC" },
+MP139: { monthly: 140, dapLabel: "Check ECC" },
+MP169: { monthly: 125, dapLabel: "Check ECC" },
+MP199: { monthly: 110, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: 110, dapLabel: "Check ECC" },
+MP89: { monthly: 110, dapLabel: "Check ECC" },
+MP99: { monthly: 100, dapLabel: "Check ECC" },
+MP109: { monthly: 100, dapLabel: "Check ECC" },
+MP139: { monthly: 90, dapLabel: "Check ECC" },
+MP169: { monthly: 80, dapLabel: "Check ECC" },
+MP199: { monthly: 60, dapLabel: "Check ECC" }
+}
+}
+}
+},
+{
+storage: "512GB",
+rrp: 5599,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 3699, dap: 0, totalUpfront: 3699 },
+MP139: { devicePrice: 3399, dap: 120, totalUpfront: 3519 },
+MP169: { devicePrice: 3199, dap: 420, totalUpfront: 3619 },
+MP199: { devicePrice: 2899, dap: 720, totalUpfront: 3619 }
+},
+zero24: {
+MP69: { monthly: 190, dapLabel: "Check ECC" },
+MP89: { monthly: 190, dapLabel: "Check ECC" },
+MP99: { monthly: 180, dapLabel: "Check ECC" },
+MP109: { monthly: 180, dapLabel: "Check ECC" },
+MP139: { monthly: 170, dapLabel: "Check ECC" },
+MP169: { monthly: 155, dapLabel: "Check ECC" },
+MP199: { monthly: 135, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: 130, dapLabel: "Check ECC" },
+MP89: { monthly: 130, dapLabel: "Check ECC" },
+MP99: { monthly: 120, dapLabel: "Check ECC" },
+MP109: { monthly: 120, dapLabel: "Check ECC" },
+MP139: { monthly: 110, dapLabel: "Check ECC" },
+MP169: { monthly: 100, dapLabel: "Check ECC" },
+MP199: { monthly: 85, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Galaxy Fold7",
+aliases: ["samsung", "fold7"],
+storages: [
+{
+storage: "256GB",
+rrp: 7799,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 5499, dap: 0, totalUpfront: 5499 },
+MP139: { devicePrice: 5299, dap: 120, totalUpfront: 5419 },
+MP169: { devicePrice: 5099, dap: 320, totalUpfront: 5419 },
+MP199: { devicePrice: 4799, dap: 620, totalUpfront: 5419 }
+},
+zero24: {
+MP69: { monthly: 275, dapLabel: "Check ECC" },
+MP89: { monthly: 275, dapLabel: "Check ECC" },
+MP99: { monthly: 265, dapLabel: "Check ECC" },
+MP109: { monthly: 265, dapLabel: "Check ECC" },
+MP139: { monthly: 255, dapLabel: "Check ECC" },
+MP169: { monthly: 245, dapLabel: "Check ECC" },
+MP199: { monthly: 225, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: 190, dapLabel: "Check ECC" },
+MP89: { monthly: 190, dapLabel: "Check ECC" },
+MP99: { monthly: 180, dapLabel: "Check ECC" },
+MP109: { monthly: 180, dapLabel: "Check ECC" },
+MP139: { monthly: 170, dapLabel: "Check ECC" },
+MP169: { monthly: 160, dapLabel: "Check ECC" },
+MP199: { monthly: 145, dapLabel: "Check ECC" }
+}
+}
+}
+},
+{
+storage: "512GB",
+rrp: 8399,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 6099, dap: 0, totalUpfront: 6099 },
+MP139: { devicePrice: 5899, dap: 120, totalUpfront: 6019 },
+MP169: { devicePrice: 5599, dap: 420, totalUpfront: 6019 },
+MP199: { devicePrice: 5299, dap: 720, totalUpfront: 6019 }
+},
+zero24: {
+MP69: { monthly: 300, dapLabel: "Check ECC" },
+MP89: { monthly: 300, dapLabel: "Check ECC" },
+MP99: { monthly: 290, dapLabel: "Check ECC" },
+MP109: { monthly: 290, dapLabel: "Check ECC" },
+MP139: { monthly: 280, dapLabel: "Check ECC" },
+MP169: { monthly: 270, dapLabel: "Check ECC" },
+MP199: { monthly: 250, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: 205, dapLabel: "Check ECC" },
+MP89: { monthly: 205, dapLabel: "Check ECC" },
+MP99: { monthly: 195, dapLabel: "Check ECC" },
+MP109: { monthly: 195, dapLabel: "Check ECC" },
+MP139: { monthly: 185, dapLabel: "Check ECC" },
+MP169: { monthly: 175, dapLabel: "Check ECC" },
+MP199: { monthly: 155, dapLabel: "Check ECC" }
+}
+}
+}
+},
+{
+storage: "1TB",
+rrp: 9899,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 7499, dap: 0, totalUpfront: 7499 },
+MP139: { devicePrice: 7299, dap: 120, totalUpfront: 7419 },
+MP169: { devicePrice: 6999, dap: 420, totalUpfront: 7419 },
+MP199: { devicePrice: 6699, dap: 720, totalUpfront: 7419 }
+},
+zero24: {
+MP69: { monthly: 365, dapLabel: "Check ECC" },
+MP89: { monthly: 365, dapLabel: "Check ECC" },
+MP99: { monthly: 355, dapLabel: "Check ECC" },
+MP109: { monthly: 355, dapLabel: "Check ECC" },
+MP139: { monthly: 345, dapLabel: "Check ECC" },
+MP169: { monthly: 335, dapLabel: "Check ECC" },
+MP199: { monthly: 310, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: 250, dapLabel: "Check ECC" },
+MP89: { monthly: 250, dapLabel: "Check ECC" },
+MP99: { monthly: 240, dapLabel: "Check ECC" },
+MP109: { monthly: 240, dapLabel: "Check ECC" },
+MP139: { monthly: 230, dapLabel: "Check ECC" },
+MP169: { monthly: 220, dapLabel: "Check ECC" },
+MP199: { monthly: 205, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+}
+]
+}

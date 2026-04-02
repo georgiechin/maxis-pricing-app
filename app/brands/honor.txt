@@ -1,0 +1,415 @@
+{
+brand: "Honor",
+models: [
+{
+model: "Honor 400 Smart 5G",
+aliases: ["honor", "honor400smart"],
+storages: [
+{
+storage: "Default",
+rrp: 1099,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: 0, dap: 160, totalUpfront: 160 },
+MP89: { devicePrice: 0, dap: 160, totalUpfront: 160 },
+MP99: { devicePrice: 0, dap: 160, totalUpfront: 160 },
+MP109: { devicePrice: 0, dap: 160, totalUpfront: 160 },
+MP139: { devicePrice: 0, dap: 160, totalUpfront: 160 },
+MP169: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP199: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: "NA", dapLabel: "Check ECC" },
+MP139: { monthly: "NA", dapLabel: "Check ECC" },
+MP169: { monthly: "NA", dapLabel: "Check ECC" },
+MP199: { monthly: "NA", dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: "NA", dapLabel: "Check ECC" },
+MP139: { monthly: "NA", dapLabel: "Check ECC" },
+MP169: { monthly: "NA", dapLabel: "Check ECC" },
+MP199: { monthly: "NA", dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Honor 400 Lite 5G",
+aliases: ["honor", "honor400lite"],
+storages: [
+{
+storage: "Default",
+rrp: 1299,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: 269, dap: 240, totalUpfront: 509 },
+MP89: { devicePrice: 269, dap: 240, totalUpfront: 509 },
+MP99: { devicePrice: 0, dap: 500, totalUpfront: 500 },
+MP109: { devicePrice: 0, dap: 500, totalUpfront: 500 },
+MP139: { devicePrice: 0, dap: 500, totalUpfront: 500 },
+MP169: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP199: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: "NA", dapLabel: "Check ECC" },
+MP139: { monthly: "NA", dapLabel: "Check ECC" },
+MP169: { monthly: "NA", dapLabel: "Check ECC" },
+MP199: { monthly: "NA", dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: "NA", dapLabel: "Check ECC" },
+MP139: { monthly: "NA", dapLabel: "Check ECC" },
+MP169: { monthly: "NA", dapLabel: "Check ECC" },
+MP199: { monthly: "NA", dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Honor 600 Lite 5G",
+aliases: ["honor", "honor600lite"],
+storages: [
+{
+storage: "256GB",
+rrp: 1399,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: 399, dap: 60, totalUpfront: 459 },
+MP89: { devicePrice: 399, dap: 60, totalUpfront: 459 },
+MP99: { devicePrice: 99, dap: 360, totalUpfront: 459 },
+MP109: { devicePrice: 99, dap: 360, totalUpfront: 459 },
+MP139: { devicePrice: 0, dap: 460, totalUpfront: 460 },
+MP169: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP199: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: "NA", dapLabel: "Check ECC" },
+MP139: { monthly: "NA", dapLabel: "Check ECC" },
+MP169: { monthly: "NA", dapLabel: "Check ECC" },
+MP199: { monthly: "NA", dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: "NA", dapLabel: "Check ECC" },
+MP139: { monthly: "NA", dapLabel: "Check ECC" },
+MP169: { monthly: "NA", dapLabel: "Check ECC" },
+MP199: { monthly: "NA", dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Honor 400 5G",
+aliases: ["honor", "honor400"],
+storages: [
+{
+storage: "512GB",
+rrp: 1799,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 799, dap: 480, totalUpfront: 1279 },
+MP109: { devicePrice: 799, dap: 480, totalUpfront: 1279 },
+MP139: { devicePrice: 299, dap: 960, totalUpfront: 1259 },
+MP169: { devicePrice: 0, dap: 1250, totalUpfront: 1250 },
+MP199: { devicePrice: 0, dap: 1250, totalUpfront: 1250 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 70, dapLabel: "Check ECC" },
+MP109: { monthly: 70, dapLabel: "Check ECC" },
+MP139: { monthly: 60, dapLabel: "Check ECC" },
+MP169: { monthly: 45, dapLabel: "Check ECC" },
+MP199: { monthly: 30, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 45, dapLabel: "Check ECC" },
+MP109: { monthly: 45, dapLabel: "Check ECC" },
+MP139: { monthly: 35, dapLabel: "Check ECC" },
+MP169: { monthly: 30, dapLabel: "Check ECC" },
+MP199: { monthly: 20, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Honor 400 Pro 5G",
+aliases: ["honor", "honor400pro"],
+storages: [
+{
+storage: "512GB",
+rrp: 2399,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 1199, dap: 420, totalUpfront: 1619 },
+MP109: { devicePrice: 1199, dap: 420, totalUpfront: 1619 },
+MP139: { devicePrice: 699, dap: 900, totalUpfront: 1599 },
+MP169: { devicePrice: 199, dap: 1400, totalUpfront: 1599 },
+MP199: { devicePrice: 0, dap: 1600, totalUpfront: 1600 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 90, dapLabel: "Check ECC" },
+MP109: { monthly: 90, dapLabel: "Check ECC" },
+MP139: { monthly: 80, dapLabel: "Check ECC" },
+MP169: { monthly: 70, dapLabel: "Check ECC" },
+MP199: { monthly: 50, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 60, dapLabel: "Check ECC" },
+MP109: { monthly: 60, dapLabel: "Check ECC" },
+MP139: { monthly: 55, dapLabel: "Check ECC" },
+MP169: { monthly: 45, dapLabel: "Check ECC" },
+MP199: { monthly: 30, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Honor Magic V5 5G",
+aliases: ["honor", "magicv5"],
+storages: [
+{
+storage: "Default",
+rrp: 5999,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 4899, dap: 160, totalUpfront: 5059 },
+MP139: { devicePrice: 4699, dap: 360, totalUpfront: 5059 },
+MP169: { devicePrice: 4499, dap: 540, totalUpfront: 5039 },
+MP199: { devicePrice: 4199, dap: 840, totalUpfront: 5039 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 240, dapLabel: "Check ECC" },
+MP109: { monthly: 240, dapLabel: "Check ECC" },
+MP139: { monthly: 225, dapLabel: "Check ECC" },
+MP169: { monthly: 210, dapLabel: "Check ECC" },
+MP199: { monthly: 195, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 160, dapLabel: "Check ECC" },
+MP109: { monthly: 160, dapLabel: "Check ECC" },
+MP139: { monthly: 150, dapLabel: "Check ECC" },
+MP169: { monthly: 140, dapLabel: "Check ECC" },
+MP199: { monthly: 120, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Honor Magic7 Pro 5G",
+aliases: ["honor", "magic7pro"],
+storages: [
+{
+storage: "Default",
+rrp: 5199,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 2899, dap: 640, totalUpfront: 3539 },
+MP139: { devicePrice: 2699, dap: 840, totalUpfront: 3539 },
+MP169: { devicePrice: 2499, dap: 1040, totalUpfront: 3539 },
+MP199: { devicePrice: 2199, dap: 1340, totalUpfront: 3539 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: "NA", dapLabel: "Check ECC" },
+MP139: { monthly: "NA", dapLabel: "Check ECC" },
+MP169: { monthly: "NA", dapLabel: "Check ECC" },
+MP199: { monthly: "NA", dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: "NA", dapLabel: "Check ECC" },
+MP139: { monthly: "NA", dapLabel: "Check ECC" },
+MP169: { monthly: "NA", dapLabel: "Check ECC" },
+MP199: { monthly: "NA", dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Honor Magic8 Pro 5G",
+aliases: ["honor", "magic8pro"],
+storages: [
+{
+storage: "Default",
+rrp: 5199,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 3399, dap: 160, totalUpfront: 3559 },
+MP139: { devicePrice: 3199, dap: 360, totalUpfront: 3559 },
+MP169: { devicePrice: 2899, dap: 660, totalUpfront: 3559 },
+MP199: { devicePrice: 2599, dap: 960, totalUpfront: 3559 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 160, dapLabel: "Check ECC" },
+MP109: { monthly: 160, dapLabel: "Check ECC" },
+MP139: { monthly: 150, dapLabel: "Check ECC" },
+MP169: { monthly: 140, dapLabel: "Check ECC" },
+MP199: { monthly: 125, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 110, dapLabel: "Check ECC" },
+MP109: { monthly: 110, dapLabel: "Check ECC" },
+MP139: { monthly: 100, dapLabel: "Check ECC" },
+MP169: { monthly: 90, dapLabel: "Check ECC" },
+MP199: { monthly: 75, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Honor X9d 5G",
+aliases: ["honor", "x9d"],
+storages: [
+{
+storage: "512GB",
+rrp: 1699,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 199, dap: 360, totalUpfront: 559 },
+MP109: { devicePrice: 199, dap: 360, totalUpfront: 559 },
+MP139: { devicePrice: 0, dap: 520, totalUpfront: 520 },
+MP169: { devicePrice: 0, dap: 520, totalUpfront: 520 },
+MP199: { devicePrice: 0, dap: 520, totalUpfront: 520 }
+},
+zero24: {
+MP69: { monthly: 60, dapLabel: "Check ECC" },
+MP89: { monthly: 60, dapLabel: "Check ECC" },
+MP99: { monthly: 50, dapLabel: "Check ECC" },
+MP109: { monthly: 50, dapLabel: "Check ECC" },
+MP139: { monthly: 40, dapLabel: "Check ECC" },
+MP169: { monthly: 30, dapLabel: "Check ECC" },
+MP199: { monthly: 10, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: 40, dapLabel: "Check ECC" },
+MP89: { monthly: 40, dapLabel: "Check ECC" },
+MP99: { monthly: 35, dapLabel: "Check ECC" },
+MP109: { monthly: 35, dapLabel: "Check ECC" },
+MP139: { monthly: 25, dapLabel: "Check ECC" },
+MP169: { monthly: 20, dapLabel: "Check ECC" },
+MP199: { monthly: 5, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Honor Pad 10 5G",
+aliases: ["honor", "pad10"],
+storages: [
+{
+storage: "Default",
+rrp: 1799,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 699, dap: 540, totalUpfront: 1239 },
+MP109: { devicePrice: 699, dap: 540, totalUpfront: 1239 },
+MP139: { devicePrice: 399, dap: 840, totalUpfront: 1239 },
+MP169: { devicePrice: 0, dap: 1200, totalUpfront: 1200 },
+MP199: { devicePrice: 0, dap: 1200, totalUpfront: 1200 }
+},
+zero24: {
+MP69: { monthly: 70, dapLabel: "Check ECC" },
+MP89: { monthly: 70, dapLabel: "Check ECC" },
+MP99: { monthly: 65, dapLabel: "Check ECC" },
+MP109: { monthly: 65, dapLabel: "Check ECC" },
+MP139: { monthly: 60, dapLabel: "Check ECC" },
+MP169: { monthly: 50, dapLabel: "Check ECC" },
+MP199: { monthly: 30, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: 45, dapLabel: "Check ECC" },
+MP89: { monthly: 45, dapLabel: "Check ECC" },
+MP99: { monthly: 40, dapLabel: "Check ECC" },
+MP109: { monthly: 40, dapLabel: "Check ECC" },
+MP139: { monthly: 35, dapLabel: "Check ECC" },
+MP169: { monthly: 30, dapLabel: "Check ECC" },
+MP199: { monthly: 15, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+}
+]
+}

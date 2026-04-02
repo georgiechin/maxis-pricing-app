@@ -1,0 +1,1034 @@
+{
+brand: "Apple",
+models: [
+{
+model: "iPhone 15",
+aliases: ["iphone", "ip15"],
+storages: [
+{
+storage: "128GB",
+rrp: 2999,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: 2072, dap: 480, totalUpfront: 2552 },
+MP89: { devicePrice: 2024, dap: 480, totalUpfront: 2504 },
+MP99: { devicePrice: 1928, dap: 600, totalUpfront: 2528 },
+MP109: { devicePrice: 1880, dap: 600, totalUpfront: 2480 },
+MP139: { devicePrice: 1736, dap: 720, totalUpfront: 2456 },
+MP169: { devicePrice: 1592, dap: 840, totalUpfront: 2432 },
+MP199: { devicePrice: 1448, dap: 960, totalUpfront: 2408 }
+},
+zero24: {
+MP69: { monthly: 99, dapLabel: "Check ECC" },
+MP89: { monthly: 99, dapLabel: "Check ECC" },
+MP99: { monthly: 99, dapLabel: "Check ECC" },
+MP109: { monthly: 99, dapLabel: "Check ECC" },
+MP139: { monthly: 85, dapLabel: "Check ECC" },
+MP169: { monthly: 82, dapLabel: "Check ECC" },
+MP199: { monthly: 79, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: 66, dapLabel: "Check ECC" },
+MP89: { monthly: 66, dapLabel: "Check ECC" },
+MP99: { monthly: 66, dapLabel: "Check ECC" },
+MP109: { monthly: 66, dapLabel: "Check ECC" },
+MP139: { monthly: 52, dapLabel: "Check ECC" },
+MP169: { monthly: 49, dapLabel: "Check ECC" },
+MP199: { monthly: 46, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "iPhone 16e",
+aliases: ["iphone", "ip16e"],
+storages: [
+{
+storage: "128GB",
+rrp: 2999,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: 1684, dap: 840, totalUpfront: 2524 },
+MP89: { devicePrice: 1636, dap: 840, totalUpfront: 2476 },
+MP99: { devicePrice: 1540, dap: 960, totalUpfront: 2500 },
+MP109: { devicePrice: 1492, dap: 960, totalUpfront: 2452 },
+MP139: { devicePrice: 1348, dap: 1080, totalUpfront: 2428 },
+MP169: { devicePrice: 1204, dap: 1200, totalUpfront: 2404 },
+MP199: { devicePrice: 1060, dap: 1340, totalUpfront: 2400 }
+},
+zero24: {
+MP69: { monthly: 85, dapLabel: "Check ECC" },
+MP89: { monthly: 85, dapLabel: "Check ECC" },
+MP99: { monthly: 85, dapLabel: "Check ECC" },
+MP109: { monthly: 85, dapLabel: "Check ECC" },
+MP139: { monthly: 71, dapLabel: "Check ECC" },
+MP169: { monthly: 68, dapLabel: "Check ECC" },
+MP199: { monthly: 65, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: 56, dapLabel: "Check ECC" },
+MP89: { monthly: 56, dapLabel: "Check ECC" },
+MP99: { monthly: 56, dapLabel: "Check ECC" },
+MP109: { monthly: 56, dapLabel: "Check ECC" },
+MP139: { monthly: 42, dapLabel: "Check ECC" },
+MP169: { monthly: 39, dapLabel: "Check ECC" },
+MP199: { monthly: 36, dapLabel: "Check ECC" }
+}
+}
+}
+},
+{
+storage: "256GB",
+rrp: 3499,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: 2139, dap: 840, totalUpfront: 2979 },
+MP89: { devicePrice: 2091, dap: 840, totalUpfront: 2931 },
+MP99: { devicePrice: 1995, dap: 960, totalUpfront: 2955 },
+MP109: { devicePrice: 1947, dap: 960, totalUpfront: 2907 },
+MP139: { devicePrice: 1803, dap: 1080, totalUpfront: 2883 },
+MP169: { devicePrice: 1659, dap: 1200, totalUpfront: 2859 },
+MP199: { devicePrice: 1515, dap: 1340, totalUpfront: 2855 }
+},
+zero24: {
+MP69: { monthly: 104, dapLabel: "Check ECC" },
+MP89: { monthly: 104, dapLabel: "Check ECC" },
+MP99: { monthly: 104, dapLabel: "Check ECC" },
+MP109: { monthly: 104, dapLabel: "Check ECC" },
+MP139: { monthly: 90, dapLabel: "Check ECC" },
+MP169: { monthly: 87, dapLabel: "Check ECC" },
+MP199: { monthly: 84, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: 69, dapLabel: "Check ECC" },
+MP89: { monthly: 69, dapLabel: "Check ECC" },
+MP99: { monthly: 69, dapLabel: "Check ECC" },
+MP109: { monthly: 69, dapLabel: "Check ECC" },
+MP139: { monthly: 55, dapLabel: "Check ECC" },
+MP169: { monthly: 52, dapLabel: "Check ECC" },
+MP199: { monthly: 49, dapLabel: "Check ECC" }
+}
+}
+}
+},
+{
+storage: "512GB",
+rrp: 4499,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: 3048, dap: 840, totalUpfront: 3888 },
+MP89: { devicePrice: 3000, dap: 840, totalUpfront: 3840 },
+MP99: { devicePrice: 2904, dap: 960, totalUpfront: 3864 },
+MP109: { devicePrice: 2856, dap: 960, totalUpfront: 3816 },
+MP139: { devicePrice: 2712, dap: 1080, totalUpfront: 3792 },
+MP169: { devicePrice: 2568, dap: 1200, totalUpfront: 3768 },
+MP199: { devicePrice: 2424, dap: 1340, totalUpfront: 3764 }
+},
+zero24: {
+MP69: { monthly: 142, dapLabel: "Check ECC" },
+MP89: { monthly: 142, dapLabel: "Check ECC" },
+MP99: { monthly: 142, dapLabel: "Check ECC" },
+MP109: { monthly: 142, dapLabel: "Check ECC" },
+MP139: { monthly: 128, dapLabel: "Check ECC" },
+MP169: { monthly: 125, dapLabel: "Check ECC" },
+MP199: { monthly: 122, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: 94, dapLabel: "Check ECC" },
+MP89: { monthly: 94, dapLabel: "Check ECC" },
+MP99: { monthly: 94, dapLabel: "Check ECC" },
+MP109: { monthly: 94, dapLabel: "Check ECC" },
+MP139: { monthly: 80, dapLabel: "Check ECC" },
+MP169: { monthly: 77, dapLabel: "Check ECC" },
+MP199: { monthly: 74, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "iPhone 16",
+aliases: ["iphone", "ip16"],
+storages: [
+{
+storage: "128GB",
+rrp: 3499,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: 2509, dap: 480, totalUpfront: 2989 },
+MP89: { devicePrice: 2461, dap: 480, totalUpfront: 2941 },
+MP99: { devicePrice: 2365, dap: 600, totalUpfront: 2965 },
+MP109: { devicePrice: 2317, dap: 600, totalUpfront: 2917 },
+MP139: { devicePrice: 2173, dap: 720, totalUpfront: 2893 },
+MP169: { devicePrice: 2029, dap: 840, totalUpfront: 2869 },
+MP199: { devicePrice: 1885, dap: 960, totalUpfront: 2845 }
+},
+zero24: {
+MP69: { monthly: 117, dapLabel: "Check ECC" },
+MP89: { monthly: 117, dapLabel: "Check ECC" },
+MP99: { monthly: 117, dapLabel: "Check ECC" },
+MP109: { monthly: 117, dapLabel: "Check ECC" },
+MP139: { monthly: 103, dapLabel: "Check ECC" },
+MP169: { monthly: 100, dapLabel: "Check ECC" },
+MP199: { monthly: 97, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: 78, dapLabel: "Check ECC" },
+MP89: { monthly: 78, dapLabel: "Check ECC" },
+MP99: { monthly: 78, dapLabel: "Check ECC" },
+MP109: { monthly: 78, dapLabel: "Check ECC" },
+MP139: { monthly: 64, dapLabel: "Check ECC" },
+MP169: { monthly: 61, dapLabel: "Check ECC" },
+MP199: { monthly: 58, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "iPhone 16 Plus",
+aliases: ["iphone", "ip16plus"],
+storages: [
+{
+storage: "128GB",
+rrp: 4499,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: 3142, dap: 600, totalUpfront: 3742 },
+MP89: { devicePrice: 3094, dap: 600, totalUpfront: 3694 },
+MP99: { devicePrice: 2998, dap: 720, totalUpfront: 3718 },
+MP109: { devicePrice: 2950, dap: 720, totalUpfront: 3670 },
+MP139: { devicePrice: 2806, dap: 840, totalUpfront: 3646 },
+MP169: { devicePrice: 2662, dap: 960, totalUpfront: 3622 },
+MP199: { devicePrice: 2518, dap: 1080, totalUpfront: 3598 }
+},
+zero24: {
+MP69: { monthly: 144, dapLabel: "Check ECC" },
+MP89: { monthly: 144, dapLabel: "Check ECC" },
+MP99: { monthly: 144, dapLabel: "Check ECC" },
+MP109: { monthly: 144, dapLabel: "Check ECC" },
+MP139: { monthly: 130, dapLabel: "Check ECC" },
+MP169: { monthly: 127, dapLabel: "Check ECC" },
+MP199: { monthly: 124, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: 95, dapLabel: "Check ECC" },
+MP89: { monthly: 95, dapLabel: "Check ECC" },
+MP99: { monthly: 95, dapLabel: "Check ECC" },
+MP109: { monthly: 95, dapLabel: "Check ECC" },
+MP139: { monthly: 81, dapLabel: "Check ECC" },
+MP169: { monthly: 78, dapLabel: "Check ECC" },
+MP199: { monthly: 75, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "iPhone 17e",
+aliases: ["iphone", "ip17e"],
+storages: [
+{
+storage: "256GB",
+rrp: 2999,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 2202, dap: 240, totalUpfront: 2442 },
+MP139: { devicePrice: 2058, dap: 360, totalUpfront: 2418 },
+MP169: { devicePrice: 1914, dap: 480, totalUpfront: 2394 },
+MP199: { devicePrice: 1770, dap: 620, totalUpfront: 2390 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: 113, dapLabel: "Check ECC" },
+MP139: { monthly: 99, dapLabel: "Check ECC" },
+MP169: { monthly: 96, dapLabel: "Check ECC" },
+MP199: { monthly: 93, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: 75, dapLabel: "Check ECC" },
+MP139: { monthly: 61, dapLabel: "Check ECC" },
+MP169: { monthly: 58, dapLabel: "Check ECC" },
+MP199: { monthly: 55, dapLabel: "Check ECC" }
+}
+}
+}
+},
+{
+storage: "512GB",
+rrp: 3999,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 3111, dap: 240, totalUpfront: 3351 },
+MP139: { devicePrice: 2967, dap: 360, totalUpfront: 3327 },
+MP169: { devicePrice: 2823, dap: 480, totalUpfront: 3303 },
+MP199: { devicePrice: 2679, dap: 620, totalUpfront: 3299 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: 151, dapLabel: "Check ECC" },
+MP139: { monthly: 137, dapLabel: "Check ECC" },
+MP169: { monthly: 134, dapLabel: "Check ECC" },
+MP199: { monthly: 131, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: 100, dapLabel: "Check ECC" },
+MP139: { monthly: 87, dapLabel: "Check ECC" },
+MP169: { monthly: 84, dapLabel: "Check ECC" },
+MP199: { monthly: 81, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "iPhone 17",
+aliases: ["iphone", "ip17"],
+storages: [
+{
+storage: "256GB",
+rrp: 3999,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 3159, dap: 360, totalUpfront: 3519 },
+MP109: { devicePrice: 3111, dap: 360, totalUpfront: 3471 },
+MP139: { devicePrice: 2967, dap: 480, totalUpfront: 3447 },
+MP169: { devicePrice: 2823, dap: 600, totalUpfront: 3423 },
+MP199: { devicePrice: 2679, dap: 720, totalUpfront: 3399 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 151, dapLabel: "Check ECC" },
+MP109: { monthly: 151, dapLabel: "Check ECC" },
+MP139: { monthly: 137, dapLabel: "Check ECC" },
+MP169: { monthly: 134, dapLabel: "Check ECC" },
+MP199: { monthly: 131, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 100, dapLabel: "Check ECC" },
+MP109: { monthly: 100, dapLabel: "Check ECC" },
+MP139: { monthly: 87, dapLabel: "Check ECC" },
+MP169: { monthly: 84, dapLabel: "Check ECC" },
+MP199: { monthly: 81, dapLabel: "Check ECC" }
+}
+}
+}
+},
+{
+storage: "512GB",
+rrp: 4999,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 4069, dap: 360, totalUpfront: 4429 },
+MP109: { devicePrice: 4021, dap: 360, totalUpfront: 4381 },
+MP139: { devicePrice: 3877, dap: 480, totalUpfront: 4357 },
+MP169: { devicePrice: 3733, dap: 600, totalUpfront: 4333 },
+MP199: { devicePrice: 3589, dap: 720, totalUpfront: 4309 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 189, dapLabel: "Check ECC" },
+MP109: { monthly: 189, dapLabel: "Check ECC" },
+MP139: { monthly: 175, dapLabel: "Check ECC" },
+MP169: { monthly: 172, dapLabel: "Check ECC" },
+MP199: { monthly: 169, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 126, dapLabel: "Check ECC" },
+MP109: { monthly: 126, dapLabel: "Check ECC" },
+MP139: { monthly: 112, dapLabel: "Check ECC" },
+MP169: { monthly: 109, dapLabel: "Check ECC" },
+MP199: { monthly: 106, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "iPhone Air",
+aliases: ["iphone", "ipair"],
+storages: [
+{
+storage: "256GB",
+rrp: 4999,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 3159, dap: 960, totalUpfront: 4119 },
+MP109: { devicePrice: 3111, dap: 960, totalUpfront: 4071 },
+MP139: { devicePrice: 2967, dap: 1080, totalUpfront: 4047 },
+MP169: { devicePrice: 2823, dap: 1200, totalUpfront: 4023 },
+MP199: { devicePrice: 2679, dap: 1320, totalUpfront: 3999 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 151, dapLabel: "Check ECC" },
+MP109: { monthly: 151, dapLabel: "Check ECC" },
+MP139: { monthly: 137, dapLabel: "Check ECC" },
+MP169: { monthly: 134, dapLabel: "Check ECC" },
+MP199: { monthly: 131, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 100, dapLabel: "Check ECC" },
+MP109: { monthly: 100, dapLabel: "Check ECC" },
+MP139: { monthly: 86, dapLabel: "Check ECC" },
+MP169: { monthly: 83, dapLabel: "Check ECC" },
+MP199: { monthly: 80, dapLabel: "Check ECC" }
+}
+}
+}
+},
+{
+storage: "512GB",
+rrp: 5999,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 4068, dap: 960, totalUpfront: 5028 },
+MP109: { devicePrice: 4020, dap: 960, totalUpfront: 4980 },
+MP139: { devicePrice: 3876, dap: 1080, totalUpfront: 4956 },
+MP169: { devicePrice: 3732, dap: 1200, totalUpfront: 4932 },
+MP199: { devicePrice: 3588, dap: 1320, totalUpfront: 4908 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 189, dapLabel: "Check ECC" },
+MP109: { monthly: 189, dapLabel: "Check ECC" },
+MP139: { monthly: 175, dapLabel: "Check ECC" },
+MP169: { monthly: 172, dapLabel: "Check ECC" },
+MP199: { monthly: 169, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 125, dapLabel: "Check ECC" },
+MP109: { monthly: 125, dapLabel: "Check ECC" },
+MP139: { monthly: 111, dapLabel: "Check ECC" },
+MP169: { monthly: 108, dapLabel: "Check ECC" },
+MP199: { monthly: 105, dapLabel: "Check ECC" }
+}
+}
+}
+},
+{
+storage: "1TB",
+rrp: 6999,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 4977, dap: 960, totalUpfront: 5937 },
+MP109: { devicePrice: 4929, dap: 960, totalUpfront: 5889 },
+MP139: { devicePrice: 4785, dap: 1080, totalUpfront: 5865 },
+MP169: { devicePrice: 4641, dap: 1200, totalUpfront: 5841 },
+MP199: { devicePrice: 4497, dap: 1320, totalUpfront: 5817 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 227, dapLabel: "Check ECC" },
+MP109: { monthly: 227, dapLabel: "Check ECC" },
+MP139: { monthly: 213, dapLabel: "Check ECC" },
+MP169: { monthly: 210, dapLabel: "Check ECC" },
+MP199: { monthly: 207, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 150, dapLabel: "Check ECC" },
+MP109: { monthly: 150, dapLabel: "Check ECC" },
+MP139: { monthly: 136, dapLabel: "Check ECC" },
+MP169: { monthly: 133, dapLabel: "Check ECC" },
+MP199: { monthly: 130, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "iPhone 17 Pro",
+aliases: ["iphone", "ip17pro"],
+storages: [
+{
+storage: "256GB",
+rrp: 5499,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 4523, dap: 360, totalUpfront: 4883 },
+MP109: { devicePrice: 4475, dap: 360, totalUpfront: 4835 },
+MP139: { devicePrice: 4331, dap: 480, totalUpfront: 4811 },
+MP169: { devicePrice: 4187, dap: 600, totalUpfront: 4787 },
+MP199: { devicePrice: 4043, dap: 720, totalUpfront: 4763 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 208, dapLabel: "Check ECC" },
+MP109: { monthly: 208, dapLabel: "Check ECC" },
+MP139: { monthly: 194, dapLabel: "Check ECC" },
+MP169: { monthly: 191, dapLabel: "Check ECC" },
+MP199: { monthly: 188, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 138, dapLabel: "Check ECC" },
+MP109: { monthly: 138, dapLabel: "Check ECC" },
+MP139: { monthly: 124, dapLabel: "Check ECC" },
+MP169: { monthly: 121, dapLabel: "Check ECC" },
+MP199: { monthly: 118, dapLabel: "Check ECC" }
+}
+}
+}
+},
+{
+storage: "512GB",
+rrp: 6499,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 5432, dap: 360, totalUpfront: 5792 },
+MP109: { devicePrice: 5384, dap: 360, totalUpfront: 5744 },
+MP139: { devicePrice: 5240, dap: 480, totalUpfront: 5720 },
+MP169: { devicePrice: 5096, dap: 600, totalUpfront: 5696 },
+MP199: { devicePrice: 4952, dap: 720, totalUpfront: 5672 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 246, dapLabel: "Check ECC" },
+MP109: { monthly: 246, dapLabel: "Check ECC" },
+MP139: { monthly: 232, dapLabel: "Check ECC" },
+MP169: { monthly: 229, dapLabel: "Check ECC" },
+MP199: { monthly: 226, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 164, dapLabel: "Check ECC" },
+MP109: { monthly: 164, dapLabel: "Check ECC" },
+MP139: { monthly: 150, dapLabel: "Check ECC" },
+MP169: { monthly: 147, dapLabel: "Check ECC" },
+MP199: { monthly: 144, dapLabel: "Check ECC" }
+}
+}
+}
+},
+{
+storage: "1TB",
+rrp: 7499,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 6341, dap: 360, totalUpfront: 6701 },
+MP109: { devicePrice: 6293, dap: 360, totalUpfront: 6653 },
+MP139: { devicePrice: 6149, dap: 480, totalUpfront: 6629 },
+MP169: { devicePrice: 6005, dap: 600, totalUpfront: 6605 },
+MP199: { devicePrice: 5861, dap: 720, totalUpfront: 6581 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 284, dapLabel: "Check ECC" },
+MP109: { monthly: 284, dapLabel: "Check ECC" },
+MP139: { monthly: 270, dapLabel: "Check ECC" },
+MP169: { monthly: 267, dapLabel: "Check ECC" },
+MP199: { monthly: 264, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 189, dapLabel: "Check ECC" },
+MP109: { monthly: 189, dapLabel: "Check ECC" },
+MP139: { monthly: 175, dapLabel: "Check ECC" },
+MP169: { monthly: 172, dapLabel: "Check ECC" },
+MP199: { monthly: 169, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "iPhone 17 Pro Max",
+aliases: ["iphone", "ip17promax"],
+storages: [
+{
+storage: "256GB",
+rrp: 5999,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 4978, dap: 360, totalUpfront: 5338 },
+MP109: { devicePrice: 4930, dap: 360, totalUpfront: 5290 },
+MP139: { devicePrice: 4786, dap: 480, totalUpfront: 5266 },
+MP169: { devicePrice: 4642, dap: 600, totalUpfront: 5242 },
+MP199: { devicePrice: 4498, dap: 720, totalUpfront: 5218 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 227, dapLabel: "Check ECC" },
+MP109: { monthly: 227, dapLabel: "Check ECC" },
+MP139: { monthly: 213, dapLabel: "Check ECC" },
+MP169: { monthly: 210, dapLabel: "Check ECC" },
+MP199: { monthly: 207, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 151, dapLabel: "Check ECC" },
+MP109: { monthly: 151, dapLabel: "Check ECC" },
+MP139: { monthly: 137, dapLabel: "Check ECC" },
+MP169: { monthly: 134, dapLabel: "Check ECC" },
+MP199: { monthly: 131, dapLabel: "Check ECC" }
+}
+}
+}
+},
+{
+storage: "512GB",
+rrp: 6999,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 5887, dap: 360, totalUpfront: 6247 },
+MP109: { devicePrice: 5839, dap: 360, totalUpfront: 6199 },
+MP139: { devicePrice: 5695, dap: 480, totalUpfront: 6175 },
+MP169: { devicePrice: 5551, dap: 600, totalUpfront: 6151 },
+MP199: { devicePrice: 5407, dap: 720, totalUpfront: 6127 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 265, dapLabel: "Check ECC" },
+MP109: { monthly: 265, dapLabel: "Check ECC" },
+MP139: { monthly: 251, dapLabel: "Check ECC" },
+MP169: { monthly: 248, dapLabel: "Check ECC" },
+MP199: { monthly: 245, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 176, dapLabel: "Check ECC" },
+MP109: { monthly: 176, dapLabel: "Check ECC" },
+MP139: { monthly: 162, dapLabel: "Check ECC" },
+MP169: { monthly: 159, dapLabel: "Check ECC" },
+MP199: { monthly: 156, dapLabel: "Check ECC" }
+}
+}
+}
+},
+{
+storage: "1TB",
+rrp: 7999,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 6796, dap: 360, totalUpfront: 7156 },
+MP109: { devicePrice: 6748, dap: 360, totalUpfront: 7108 },
+MP139: { devicePrice: 6604, dap: 480, totalUpfront: 7084 },
+MP169: { devicePrice: 6460, dap: 600, totalUpfront: 7060 },
+MP199: { devicePrice: 6316, dap: 720, totalUpfront: 7036 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 303, dapLabel: "Check ECC" },
+MP109: { monthly: 303, dapLabel: "Check ECC" },
+MP139: { monthly: 289, dapLabel: "Check ECC" },
+MP169: { monthly: 286, dapLabel: "Check ECC" },
+MP199: { monthly: 283, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 202, dapLabel: "Check ECC" },
+MP109: { monthly: 202, dapLabel: "Check ECC" },
+MP139: { monthly: 188, dapLabel: "Check ECC" },
+MP169: { monthly: 185, dapLabel: "Check ECC" },
+MP199: { monthly: 182, dapLabel: "Check ECC" }
+}
+}
+}
+},
+{
+storage: "2TB",
+rrp: 9999,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 8614, dap: 360, totalUpfront: 8974 },
+MP109: { devicePrice: 8566, dap: 360, totalUpfront: 8926 },
+MP139: { devicePrice: 8422, dap: 480, totalUpfront: 8902 },
+MP169: { devicePrice: 8278, dap: 600, totalUpfront: 8878 },
+MP199: { devicePrice: 8134, dap: 720, totalUpfront: 8854 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 378, dapLabel: "Check ECC" },
+MP109: { monthly: 378, dapLabel: "Check ECC" },
+MP139: { monthly: 364, dapLabel: "Check ECC" },
+MP169: { monthly: 361, dapLabel: "Check ECC" },
+MP199: { monthly: 358, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 252, dapLabel: "Check ECC" },
+MP109: { monthly: 252, dapLabel: "Check ECC" },
+MP139: { monthly: 238, dapLabel: "Check ECC" },
+MP169: { monthly: 235, dapLabel: "Check ECC" },
+MP199: { monthly: 232, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: '11" iPad (11th Gen)',
+aliases: ["ipad", "ipad11"],
+storages: [
+{
+storage: "256GB",
+rrp: 2699,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 1905, dap: 360, totalUpfront: 2265 },
+MP139: { devicePrice: 1761, dap: 480, totalUpfront: 2241 },
+MP169: { devicePrice: 1617, dap: 600, totalUpfront: 2217 },
+MP199: { devicePrice: 1473, dap: 720, totalUpfront: 2193 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 101, dapLabel: "Check ECC" },
+MP109: { monthly: 101, dapLabel: "Check ECC" },
+MP139: { monthly: 87, dapLabel: "Check ECC" },
+MP169: { monthly: 84, dapLabel: "Check ECC" },
+MP199: { monthly: 81, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 67, dapLabel: "Check ECC" },
+MP109: { monthly: 67, dapLabel: "Check ECC" },
+MP139: { monthly: 53, dapLabel: "Check ECC" },
+MP169: { monthly: 50, dapLabel: "Check ECC" },
+MP199: { monthly: 47, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: '11" iPad Air (5th Gen)',
+aliases: ["ipad", "ipadair11-5th"],
+storages: [
+{
+storage: "256GB",
+rrp: 3899,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 2985, dap: 240, totalUpfront: 3225 },
+MP139: { devicePrice: 2841, dap: 360, totalUpfront: 3201 },
+MP169: { devicePrice: 2697, dap: 480, totalUpfront: 3177 },
+MP199: { devicePrice: 2553, dap: 600, totalUpfront: 3153 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 146, dapLabel: "Check ECC" },
+MP109: { monthly: 146, dapLabel: "Check ECC" },
+MP139: { monthly: 132, dapLabel: "Check ECC" },
+MP169: { monthly: 129, dapLabel: "Check ECC" },
+MP199: { monthly: 126, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 97, dapLabel: "Check ECC" },
+MP109: { monthly: 97, dapLabel: "Check ECC" },
+MP139: { monthly: 83, dapLabel: "Check ECC" },
+MP169: { monthly: 80, dapLabel: "Check ECC" },
+MP199: { monthly: 77, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: '13" iPad Air (2nd Gen)',
+aliases: ["ipad", "ipadair13-2nd"],
+storages: [
+{
+storage: "256GB",
+rrp: 4799,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 3795, dap: 240, totalUpfront: 4035 },
+MP139: { devicePrice: 3651, dap: 360, totalUpfront: 4011 },
+MP169: { devicePrice: 3507, dap: 480, totalUpfront: 3987 },
+MP199: { devicePrice: 3363, dap: 600, totalUpfront: 3963 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 179, dapLabel: "Check ECC" },
+MP109: { monthly: 179, dapLabel: "Check ECC" },
+MP139: { monthly: 166, dapLabel: "Check ECC" },
+MP169: { monthly: 163, dapLabel: "Check ECC" },
+MP199: { monthly: 160, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 119, dapLabel: "Check ECC" },
+MP109: { monthly: 119, dapLabel: "Check ECC" },
+MP139: { monthly: 106, dapLabel: "Check ECC" },
+MP169: { monthly: 103, dapLabel: "Check ECC" },
+MP199: { monthly: 100, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: '11" iPad Pro (6th Gen)',
+aliases: ["ipad", "ipadpro11-6th"],
+storages: [
+{
+storage: "256GB",
+rrp: 5399,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 4335, dap: 360, totalUpfront: 4695 },
+MP139: { devicePrice: 4191, dap: 480, totalUpfront: 4671 },
+MP169: { devicePrice: 4047, dap: 600, totalUpfront: 4647 },
+MP199: { devicePrice: 3903, dap: 720, totalUpfront: 4623 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 202, dapLabel: "Check ECC" },
+MP109: { monthly: 202, dapLabel: "Check ECC" },
+MP139: { monthly: 188, dapLabel: "Check ECC" },
+MP169: { monthly: 185, dapLabel: "Check ECC" },
+MP199: { monthly: 182, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 134, dapLabel: "Check ECC" },
+MP109: { monthly: 134, dapLabel: "Check ECC" },
+MP139: { monthly: 121, dapLabel: "Check ECC" },
+MP169: { monthly: 118, dapLabel: "Check ECC" },
+MP199: { monthly: 115, dapLabel: "Check ECC" }
+}
+}
+}
+},
+{
+storage: "512GB",
+rrp: 6299,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 5145, dap: 360, totalUpfront: 5505 },
+MP139: { devicePrice: 5001, dap: 480, totalUpfront: 5481 },
+MP169: { devicePrice: 4857, dap: 600, totalUpfront: 5457 },
+MP199: { devicePrice: 4713, dap: 720, totalUpfront: 5433 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 236, dapLabel: "Check ECC" },
+MP109: { monthly: 236, dapLabel: "Check ECC" },
+MP139: { monthly: 222, dapLabel: "Check ECC" },
+MP169: { monthly: 219, dapLabel: "Check ECC" },
+MP199: { monthly: 216, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 157, dapLabel: "Check ECC" },
+MP109: { monthly: 157, dapLabel: "Check ECC" },
+MP139: { monthly: 143, dapLabel: "Check ECC" },
+MP169: { monthly: 140, dapLabel: "Check ECC" },
+MP199: { monthly: 137, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: '13" iPad Pro (8th Gen)',
+aliases: ["ipad", "ipadpro13-8th"],
+storages: [
+{
+storage: "256GB",
+rrp: 6699,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 5505, dap: 360, totalUpfront: 5865 },
+MP139: { devicePrice: 5361, dap: 480, totalUpfront: 5841 },
+MP169: { devicePrice: 5217, dap: 600, totalUpfront: 5817 },
+MP199: { devicePrice: 5073, dap: 720, totalUpfront: 5793 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 251, dapLabel: "Check ECC" },
+MP109: { monthly: 251, dapLabel: "Check ECC" },
+MP139: { monthly: 237, dapLabel: "Check ECC" },
+MP169: { monthly: 234, dapLabel: "Check ECC" },
+MP199: { monthly: 231, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 167, dapLabel: "Check ECC" },
+MP109: { monthly: 167, dapLabel: "Check ECC" },
+MP139: { monthly: 153, dapLabel: "Check ECC" },
+MP169: { monthly: 150, dapLabel: "Check ECC" },
+MP199: { monthly: 147, dapLabel: "Check ECC" }
+}
+}
+}
+},
+{
+storage: "512GB",
+rrp: 7599,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 6315, dap: 360, totalUpfront: 6675 },
+MP139: { devicePrice: 6171, dap: 480, totalUpfront: 6651 },
+MP169: { devicePrice: 6027, dap: 600, totalUpfront: 6627 },
+MP199: { devicePrice: 5883, dap: 720, totalUpfront: 6603 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 284, dapLabel: "Check ECC" },
+MP109: { monthly: 284, dapLabel: "Check ECC" },
+MP139: { monthly: 271, dapLabel: "Check ECC" },
+MP169: { monthly: 268, dapLabel: "Check ECC" },
+MP199: { monthly: 265, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 189, dapLabel: "Check ECC" },
+MP109: { monthly: 189, dapLabel: "Check ECC" },
+MP139: { monthly: 176, dapLabel: "Check ECC" },
+MP169: { monthly: 173, dapLabel: "Check ECC" },
+MP199: { monthly: 170, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+}
+]
+}

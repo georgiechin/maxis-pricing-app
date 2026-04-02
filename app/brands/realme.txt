@@ -1,0 +1,128 @@
+{
+brand: "Realme",
+models: [
+{
+model: "Realme 14 5G",
+aliases: ["realme", "14"],
+storages: [
+{
+storage: "Default",
+rrp: 1199,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: 0, dap: 0, totalUpfront: 0 },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP139: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP169: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP199: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" }
+},
+zero24: {
+MP69: { monthly: 49, dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "NA" },
+MP99: { monthly: 7, dapLabel: "Check ECC" },
+MP109: { monthly: "NA", dapLabel: "NA" },
+MP139: { monthly: "NA", dapLabel: "NA" },
+MP169: { monthly: "NA", dapLabel: "NA" },
+MP199: { monthly: "NA", dapLabel: "NA" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "NA" },
+MP89: { monthly: "NA", dapLabel: "NA" },
+MP99: { monthly: "NA", dapLabel: "NA" },
+MP109: { monthly: "NA", dapLabel: "NA" },
+MP139: { monthly: "NA", dapLabel: "NA" },
+MP169: { monthly: "NA", dapLabel: "NA" },
+MP199: { monthly: "NA", dapLabel: "NA" }
+}
+}
+}
+}
+]
+},
+{
+model: "Realme 15T 5G",
+aliases: ["realme", "15t"],
+storages: [
+{
+storage: "Default",
+rrp: 1299,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: 399, dap: 0, totalUpfront: 399 },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 0, dap: 400, totalUpfront: 400 },
+MP109: { devicePrice: 0, dap: 400, totalUpfront: 400 },
+MP139: { devicePrice: 0, dap: 400, totalUpfront: 400 },
+MP169: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP199: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" }
+},
+zero24: {
+MP69: { monthly: 54, dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "NA" },
+MP99: { monthly: 12, dapLabel: "Check ECC" },
+MP109: { monthly: "NA", dapLabel: "NA" },
+MP139: { monthly: "NA", dapLabel: "NA" },
+MP169: { monthly: "NA", dapLabel: "NA" },
+MP199: { monthly: "NA", dapLabel: "NA" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "NA" },
+MP89: { monthly: "NA", dapLabel: "NA" },
+MP99: { monthly: "NA", dapLabel: "NA" },
+MP109: { monthly: "NA", dapLabel: "NA" },
+MP139: { monthly: "NA", dapLabel: "NA" },
+MP169: { monthly: "NA", dapLabel: "NA" },
+MP199: { monthly: "NA", dapLabel: "NA" }
+}
+}
+}
+}
+]
+},
+{
+model: "Realme 15 Pro 5G",
+aliases: ["realme", "15pro"],
+storages: [
+{
+storage: "Default",
+rrp: 2099,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 299, dap: 680, totalUpfront: 979 },
+MP109: { devicePrice: 299, dap: 680, totalUpfront: 979 },
+MP139: { devicePrice: 0, dap: 960, totalUpfront: 960 },
+MP169: { devicePrice: 0, dap: 960, totalUpfront: 960 },
+MP199: { devicePrice: 0, dap: 960, totalUpfront: 960 }
+},
+zero24: {
+MP69: { monthly: 80, dapLabel: "Check ECC" },
+MP89: { monthly: 80, dapLabel: "Check ECC" },
+MP99: { monthly: 75, dapLabel: "Check ECC" },
+MP109: { monthly: 75, dapLabel: "Check ECC" },
+MP139: { monthly: 65, dapLabel: "Check ECC" },
+MP169: { monthly: 55, dapLabel: "Check ECC" },
+MP199: { monthly: 35, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: 55, dapLabel: "Check ECC" },
+MP89: { monthly: 55, dapLabel: "Check ECC" },
+MP99: { monthly: 50, dapLabel: "Check ECC" },
+MP109: { monthly: 50, dapLabel: "Check ECC" },
+MP139: { monthly: 45, dapLabel: "Check ECC" },
+MP169: { monthly: 35, dapLabel: "Check ECC" },
+MP199: { monthly: 20, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+}
+]
+}

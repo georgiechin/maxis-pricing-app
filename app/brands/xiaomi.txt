@@ -1,0 +1,251 @@
+{
+brand: "Xiaomi",
+models: [
+{
+model: "Redmi 15C 5G",
+aliases: ["xiaomi", "redmi15c"],
+storages: [
+{
+storage: "Default",
+rrp: 1099,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: 0, dap: 360, totalUpfront: 360 },
+MP89: { devicePrice: 0, dap: 360, totalUpfront: 360 },
+MP99: { devicePrice: 0, dap: 360, totalUpfront: 360 },
+MP109: { devicePrice: 0, dap: 360, totalUpfront: 360 },
+MP139: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP169: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP199: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" }
+},
+zero24: {
+MP69: { monthly: 45, dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "NA" },
+MP99: { monthly: "NA", dapLabel: "NA" },
+MP109: { monthly: "NA", dapLabel: "NA" },
+MP139: { monthly: "NA", dapLabel: "NA" },
+MP169: { monthly: "NA", dapLabel: "NA" },
+MP199: { monthly: "NA", dapLabel: "NA" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "NA" },
+MP89: { monthly: "NA", dapLabel: "NA" },
+MP99: { monthly: "NA", dapLabel: "NA" },
+MP109: { monthly: "NA", dapLabel: "NA" },
+MP139: { monthly: "NA", dapLabel: "NA" },
+MP169: { monthly: "NA", dapLabel: "NA" },
+MP199: { monthly: "NA", dapLabel: "NA" }
+}
+}
+}
+}
+]
+},
+{
+model: "Redmi Note 15 5G",
+aliases: ["xiaomi", "redminote15"],
+storages: [
+{
+storage: "Default",
+rrp: 1299,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: 299, dap: 200, totalUpfront: 499 },
+MP89: { devicePrice: 299, dap: 200, totalUpfront: 499 },
+MP99: { devicePrice: 0, dap: 480, totalUpfront: 480 },
+MP109: { devicePrice: 0, dap: 480, totalUpfront: 480 },
+MP139: { devicePrice: 0, dap: 480, totalUpfront: 480 },
+MP169: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP199: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" }
+},
+zero24: {
+MP69: { monthly: 54, dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "NA" },
+MP99: { monthly: "NA", dapLabel: "NA" },
+MP109: { monthly: "NA", dapLabel: "NA" },
+MP139: { monthly: "NA", dapLabel: "NA" },
+MP169: { monthly: "NA", dapLabel: "NA" },
+MP199: { monthly: "NA", dapLabel: "NA" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "NA" },
+MP89: { monthly: "NA", dapLabel: "NA" },
+MP99: { monthly: "NA", dapLabel: "NA" },
+MP109: { monthly: "NA", dapLabel: "NA" },
+MP139: { monthly: "NA", dapLabel: "NA" },
+MP169: { monthly: "NA", dapLabel: "NA" },
+MP199: { monthly: "NA", dapLabel: "NA" }
+}
+}
+}
+}
+]
+},
+{
+model: "Redmi Note 15 Pro 5G",
+aliases: ["xiaomi", "redminote15pro"],
+storages: [
+{
+storage: "Default",
+rrp: 1699,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 199, dap: 480, totalUpfront: 679 },
+MP109: { devicePrice: 199, dap: 480, totalUpfront: 679 },
+MP139: { devicePrice: 0, dap: 680, totalUpfront: 680 },
+MP169: { devicePrice: 0, dap: 680, totalUpfront: 680 },
+MP199: { devicePrice: 0, dap: 680, totalUpfront: 680 }
+},
+zero24: {
+MP69: { monthly: 70, dapLabel: "Check ECC" },
+MP89: { monthly: 60, dapLabel: "Check ECC" },
+MP99: { monthly: 50, dapLabel: "Check ECC" },
+MP109: { monthly: 50, dapLabel: "Check ECC" },
+MP139: { monthly: 40, dapLabel: "Check ECC" },
+MP169: { monthly: 30, dapLabel: "Check ECC" },
+MP199: { monthly: 10, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: 47, dapLabel: "Check ECC" },
+MP89: { monthly: 40, dapLabel: "Check ECC" },
+MP99: { monthly: 35, dapLabel: "Check ECC" },
+MP109: { monthly: 35, dapLabel: "Check ECC" },
+MP139: { monthly: 25, dapLabel: "Check ECC" },
+MP169: { monthly: 20, dapLabel: "Check ECC" },
+MP199: { monthly: 0, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Xiaomi 15T 5G",
+aliases: ["xiaomi", "15t"],
+storages: [
+{
+storage: "Default",
+rrp: 2199,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 799, dap: 480, totalUpfront: 1279 },
+MP109: { devicePrice: 799, dap: 480, totalUpfront: 1279 },
+MP139: { devicePrice: 299, dap: 980, totalUpfront: 1279 },
+MP169: { devicePrice: 0, dap: 1280, totalUpfront: 1280 },
+MP199: { devicePrice: 0, dap: 1280, totalUpfront: 1280 }
+},
+zero24: {
+MP69: { monthly: 91, dapLabel: "Check ECC" },
+MP89: { monthly: 80, dapLabel: "Check ECC" },
+MP99: { monthly: 75, dapLabel: "Check ECC" },
+MP109: { monthly: 75, dapLabel: "Check ECC" },
+MP139: { monthly: 65, dapLabel: "Check ECC" },
+MP169: { monthly: 55, dapLabel: "Check ECC" },
+MP199: { monthly: 35, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: 61, dapLabel: "Check ECC" },
+MP89: { monthly: 55, dapLabel: "Check ECC" },
+MP99: { monthly: 50, dapLabel: "Check ECC" },
+MP109: { monthly: 50, dapLabel: "Check ECC" },
+MP139: { monthly: 45, dapLabel: "Check ECC" },
+MP169: { monthly: 35, dapLabel: "Check ECC" },
+MP199: { monthly: 20, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Xiaomi 15T Pro 5G",
+aliases: ["xiaomi", "15tpro"],
+storages: [
+{
+storage: "Default",
+rrp: 2999,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 1599, dap: 420, totalUpfront: 2019 },
+MP109: { devicePrice: 1599, dap: 420, totalUpfront: 2019 },
+MP139: { devicePrice: 1099, dap: 920, totalUpfront: 2019 },
+MP169: { devicePrice: 599, dap: 1400, totalUpfront: 1999 },
+MP199: { devicePrice: 0, dap: 2000, totalUpfront: 2000 }
+},
+zero24: {
+MP69: { monthly: 124, dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "NA" },
+MP99: { monthly: 95, dapLabel: "Check ECC" },
+MP109: { monthly: 95, dapLabel: "Check ECC" },
+MP139: { monthly: 85, dapLabel: "Check ECC" },
+MP169: { monthly: 70, dapLabel: "Check ECC" },
+MP199: { monthly: 55, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: 83, dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "NA" },
+MP99: { monthly: 65, dapLabel: "Check ECC" },
+MP109: { monthly: 65, dapLabel: "Check ECC" },
+MP139: { monthly: 55, dapLabel: "Check ECC" },
+MP169: { monthly: 45, dapLabel: "Check ECC" },
+MP199: { monthly: 30, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Xiaomi 17 Ultra 5G",
+aliases: ["xiaomi", "17ultra"],
+storages: [
+{
+storage: "Default",
+rrp: 5499,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 4199, dap: 120, totalUpfront: 4319 },
+MP139: { devicePrice: 3999, dap: 320, totalUpfront: 4319 },
+MP169: { devicePrice: 3699, dap: 620, totalUpfront: 4319 },
+MP199: { devicePrice: 3499, dap: 820, totalUpfront: 4319 }
+},
+zero24: {
+MP69: { monthly: 229, dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "NA" },
+MP99: { monthly: 200, dapLabel: "Check ECC" },
+MP109: { monthly: 200, dapLabel: "Check ECC" },
+MP139: { monthly: 190, dapLabel: "Check ECC" },
+MP169: { monthly: 175, dapLabel: "Check ECC" },
+MP199: { monthly: 155, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: 152, dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "NA" },
+MP99: { monthly: 135, dapLabel: "Check ECC" },
+MP109: { monthly: 135, dapLabel: "Check ECC" },
+MP139: { monthly: 125, dapLabel: "Check ECC" },
+MP169: { monthly: 115, dapLabel: "Check ECC" },
+MP199: { monthly: 95, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+}
+]
+}

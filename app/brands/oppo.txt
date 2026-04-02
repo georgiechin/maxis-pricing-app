@@ -1,0 +1,292 @@
+{
+brand: "Oppo",
+models: [
+{
+model: "Oppo A6T 5G",
+aliases: ["oppo", "a6t"],
+storages: [
+{
+storage: "Default",
+rrp: 1099,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: 0, dap: 180, totalUpfront: 180 },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 0, dap: 180, totalUpfront: 180 },
+MP109: { devicePrice: 0, dap: 180, totalUpfront: 180 },
+MP139: { devicePrice: 0, dap: 180, totalUpfront: 180 },
+MP169: { devicePrice: 0, dap: 180, totalUpfront: 180 },
+MP199: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "NA" },
+MP89: { monthly: "NA", dapLabel: "NA" },
+MP99: { monthly: "NA", dapLabel: "NA" },
+MP109: { monthly: "NA", dapLabel: "NA" },
+MP139: { monthly: "NA", dapLabel: "NA" },
+MP169: { monthly: "NA", dapLabel: "NA" },
+MP199: { monthly: "NA", dapLabel: "NA" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "NA" },
+MP89: { monthly: "NA", dapLabel: "NA" },
+MP99: { monthly: "NA", dapLabel: "NA" },
+MP109: { monthly: "NA", dapLabel: "NA" },
+MP139: { monthly: "NA", dapLabel: "NA" },
+MP169: { monthly: "NA", dapLabel: "NA" },
+MP199: { monthly: "NA", dapLabel: "NA" }
+}
+}
+}
+}
+]
+},
+{
+model: "Oppo Reno 15F 5G",
+aliases: ["oppo", "reno15f"],
+storages: [
+{
+storage: "Default",
+rrp: 1599,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 0, dap: 720, totalUpfront: 720 },
+MP109: { devicePrice: 0, dap: 720, totalUpfront: 720 },
+MP139: { devicePrice: 0, dap: 720, totalUpfront: 720 },
+MP169: { devicePrice: 0, dap: 720, totalUpfront: 720 },
+MP199: { devicePrice: 0, dap: 720, totalUpfront: 720 }
+},
+zero24: {
+MP69: { monthly: 60, dapLabel: "Check ECC" },
+MP89: { monthly: 60, dapLabel: "Check ECC" },
+MP99: { monthly: 55, dapLabel: "Check ECC" },
+MP109: { monthly: 55, dapLabel: "Check ECC" },
+MP139: { monthly: 45, dapLabel: "Check ECC" },
+MP169: { monthly: 35, dapLabel: "Check ECC" },
+MP199: { monthly: 20, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: 40, dapLabel: "Check ECC" },
+MP89: { monthly: 40, dapLabel: "Check ECC" },
+MP99: { monthly: 35, dapLabel: "Check ECC" },
+MP109: { monthly: 35, dapLabel: "Check ECC" },
+MP139: { monthly: 30, dapLabel: "Check ECC" },
+MP169: { monthly: 20, dapLabel: "Check ECC" },
+MP199: { monthly: 10, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Oppo Reno 15 5G",
+aliases: ["oppo", "reno15"],
+storages: [
+{
+storage: "Default",
+rrp: 2399,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 699, dap: 720, totalUpfront: 1419 },
+MP109: { devicePrice: 699, dap: 720, totalUpfront: 1419 },
+MP139: { devicePrice: 0, dap: 1400, totalUpfront: 1400 },
+MP169: { devicePrice: 0, dap: 1400, totalUpfront: 1400 },
+MP199: { devicePrice: 0, dap: 1400, totalUpfront: 1400 }
+},
+zero24: {
+MP69: { monthly: 85, dapLabel: "Check ECC" },
+MP89: { monthly: 85, dapLabel: "Check ECC" },
+MP99: { monthly: 75, dapLabel: "Check ECC" },
+MP109: { monthly: 75, dapLabel: "Check ECC" },
+MP139: { monthly: 65, dapLabel: "Check ECC" },
+MP169: { monthly: 55, dapLabel: "Check ECC" },
+MP199: { monthly: 40, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: 55, dapLabel: "Check ECC" },
+MP89: { monthly: 55, dapLabel: "Check ECC" },
+MP99: { monthly: 50, dapLabel: "Check ECC" },
+MP109: { monthly: 50, dapLabel: "Check ECC" },
+MP139: { monthly: 45, dapLabel: "Check ECC" },
+MP169: { monthly: 35, dapLabel: "Check ECC" },
+MP199: { monthly: 25, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Oppo Reno 15 Pro 5G",
+aliases: ["oppo", "reno15pro"],
+storages: [
+{
+storage: "Default",
+rrp: 2999,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 1199, dap: 700, totalUpfront: 1899 },
+MP109: { devicePrice: 1199, dap: 700, totalUpfront: 1899 },
+MP139: { devicePrice: 499, dap: 1400, totalUpfront: 1899 },
+MP169: { devicePrice: 0, dap: 1900, totalUpfront: 1900 },
+MP199: { devicePrice: 0, dap: 1900, totalUpfront: 1900 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 90, dapLabel: "Check ECC" },
+MP109: { monthly: 90, dapLabel: "Check ECC" },
+MP139: { monthly: 80, dapLabel: "Check ECC" },
+MP169: { monthly: 70, dapLabel: "Check ECC" },
+MP199: { monthly: 55, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 60, dapLabel: "Check ECC" },
+MP109: { monthly: 60, dapLabel: "Check ECC" },
+MP139: { monthly: 55, dapLabel: "Check ECC" },
+MP169: { monthly: 45, dapLabel: "Check ECC" },
+MP199: { monthly: 35, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Oppo Find N6 5G",
+aliases: ["oppo", "findn6"],
+storages: [
+{
+storage: "Default",
+rrp: 8699,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP139: { devicePrice: 6999, dap: 0, totalUpfront: 6999 },
+MP169: { devicePrice: 6799, dap: 120, totalUpfront: 6919 },
+MP199: { devicePrice: 6499, dap: 420, totalUpfront: 6919 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: 330, dapLabel: "Check ECC" },
+MP139: { monthly: 330, dapLabel: "Check ECC" },
+MP169: { monthly: 320, dapLabel: "Check ECC" },
+MP199: { monthly: 310, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: 230, dapLabel: "Check ECC" },
+MP139: { monthly: 220, dapLabel: "Check ECC" },
+MP169: { monthly: 230, dapLabel: "Check ECC" },
+MP199: { monthly: 210, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Oppo Find X9 5G",
+aliases: ["oppo", "findx9"],
+storages: [
+{
+storage: "Default",
+rrp: 3699,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 1999, dap: 620, totalUpfront: 2619 },
+MP109: { devicePrice: 1999, dap: 620, totalUpfront: 2619 },
+MP139: { devicePrice: 1299, dap: 1320, totalUpfront: 2619 },
+MP169: { devicePrice: 599, dap: 2020, totalUpfront: 2619 },
+MP199: { devicePrice: 0, dap: 2620, totalUpfront: 2620 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 135, dapLabel: "Check ECC" },
+MP109: { monthly: 135, dapLabel: "Check ECC" },
+MP139: { monthly: 120, dapLabel: "Check ECC" },
+MP169: { monthly: 110, dapLabel: "Check ECC" },
+MP199: { monthly: 90, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 90, dapLabel: "Check ECC" },
+MP109: { monthly: 90, dapLabel: "Check ECC" },
+MP139: { monthly: 80, dapLabel: "Check ECC" },
+MP169: { monthly: 70, dapLabel: "Check ECC" },
+MP199: { monthly: 55, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Oppo Find X9 Pro 5G",
+aliases: ["oppo", "findx9pro"],
+storages: [
+{
+storage: "Default",
+rrp: 5099,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP139: { devicePrice: 3599, dap: 0, totalUpfront: 3599 },
+MP169: { devicePrice: 3399, dap: 180, totalUpfront: 3579 },
+MP199: { devicePrice: 3199, dap: 360, totalUpfront: 3559 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: 175, dapLabel: "Check ECC" },
+MP139: { monthly: 175, dapLabel: "Check ECC" },
+MP169: { monthly: 165, dapLabel: "Check ECC" },
+MP199: { monthly: 150, dapLabel: "Check ECC" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: "NA", dapLabel: "Check ECC" },
+MP109: { monthly: 120, dapLabel: "Check ECC" },
+MP139: { monthly: 120, dapLabel: "Check ECC" },
+MP169: { monthly: 110, dapLabel: "Check ECC" },
+MP199: { monthly: 100, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+}
+]
+}

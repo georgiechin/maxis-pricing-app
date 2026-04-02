@@ -1,0 +1,46 @@
+{
+brand: "Redmagic",
+models: [
+{
+model: "Redmagic 10 Pro 5G",
+aliases: ["redmagic", "10pro"],
+storages: [
+{
+storage: "Default",
+rrp: 3899,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 2799, dap: 120, totalUpfront: 2919 },
+MP139: { devicePrice: 2599, dap: 300, totalUpfront: 2899 },
+MP169: { devicePrice: 2299, dap: 600, totalUpfront: 2899 },
+MP199: { devicePrice: 1999, dap: 900, totalUpfront: 2899 }
+},
+zero24: {
+MP69: { monthly: "NA", dapLabel: "NA" },
+MP89: { monthly: "NA", dapLabel: "NA" },
+MP99: { monthly: "NA", dapLabel: "NA" },
+MP109: { monthly: "NA", dapLabel: "NA" },
+MP139: { monthly: "NA", dapLabel: "NA" },
+MP169: { monthly: "NA", dapLabel: "NA" },
+MP199: { monthly: "NA", dapLabel: "NA" }
+},
+zero36: {
+MP69: { monthly: "NA", dapLabel: "NA" },
+MP89: { monthly: "NA", dapLabel: "NA" },
+MP99: { monthly: "NA", dapLabel: "NA" },
+MP109: { monthly: "NA", dapLabel: "NA" },
+MP139: { monthly: "NA", dapLabel: "NA" },
+MP169: { monthly: "NA", dapLabel: "NA" },
+MP199: { monthly: "NA", dapLabel: "NA" }
+}
+}
+}
+}
+]
+}
+]
+}
