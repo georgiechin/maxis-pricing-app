@@ -38,16 +38,6 @@ function moneyPlain(value: number | string | null | undefined) {
   return `RM${Number(value).toLocaleString()}`;
 }
 
-function hasRealValue(value: unknown) {
-  return !(
-    value === null ||
-    value === undefined ||
-    value === "" ||
-    value === "NA" ||
-    value === "-"
-  );
-}
-
 export default function Page() {
   const [search, setSearch] = useState("");
   const [selectedBrand, setSelectedBrand] = useState<CatalogBrand["brand"]>(catalog[0].brand);
@@ -150,46 +140,6 @@ export default function Page() {
 
     return hits.sort((a, b) => b.score - a.score).slice(0, 8);
   }, [search]);
-
-  const availablePlans = useMemo(() => {
-    if (!currentTable) return mpOrder;
-
-    const plansWithValues = mpOrder.filter((mp) => {
-      const row = currentTable[mp];
-      if (!row) return false;
-
-      if (selectedTab === "upfront") {
-        const upfrontRow = row as {
-          devicePrice?: number | string;
-          dap?: number | string;
-          dapLabel?: string;
-          totalUpfront?: number | string;
-        };
-
-        return (
-          hasRealValue(upfrontRow.devicePrice) ||
-          hasRealValue(upfrontRow.dap) ||
-          hasRealValue(upfrontRow.dapLabel) ||
-          hasRealValue(upfrontRow.totalUpfront)
-        );
-      }
-
-      const zeroRow = row as {
-        monthly?: number | string;
-        dapLabel?: string;
-      };
-
-      return hasRealValue(zeroRow.monthly) || hasRealValue(zeroRow.dapLabel);
-    });
-
-    return plansWithValues.length > 0 ? plansWithValues : mpOrder;
-  }, [currentTable, selectedTab]);
-
-  useEffect(() => {
-    if (!availablePlans.includes(selectedPlan)) {
-      setSelectedPlan(availablePlans[0] || "MP99");
-    }
-  }, [availablePlans, selectedPlan]);
 
   const chooseBrand = (brand: CatalogBrand["brand"]) => {
     const nextBrand = catalog.find((b) => b.brand === brand) || catalog[0];
@@ -297,6 +247,9 @@ export default function Page() {
               <button
                 onClick={() => {
                   setSearch("");
+                  setSelectedBrand(catalog[0].brand);
+                  setSelectedModel(catalog[0].models[0]);
+                  setSelectedStorage(catalog[0].models[0].storages[0].storage);
                   setSelectedTab("upfront");
                   setSelectedPlan("MP99");
                 }}
@@ -327,17 +280,14 @@ export default function Page() {
             )}
           </header>
 
-          <section className="grid gap-4 p-3 pb-28 md:p-4 md:pb-6 xl:grid-cols-[280px_minmax(0,1fr)_360px]">
+          <section className="grid gap-4 p-3 pb-32 md:p-4 md:pb-6 xl:grid-cols-[280px_minmax(0,1fr)_360px]">
             <aside className="space-y-4">
               <section className="soft-panel p-3">
-                <div className="mb-3 flex items-center justify-between gap-2">
-                  <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
-                    Brands
-                  </div>
-                  <div className="text-[11px] text-slate-500 xl:hidden">Swipe</div>
+                <div className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                  Brands
                 </div>
 
-                <div className="brand-scroll flex gap-2 overflow-x-auto pb-2 pr-2 xl:grid xl:grid-cols-1 xl:overflow-visible">
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-1">
                   {catalog.map((brand) => {
                     const active = selectedBrand === brand.brand;
 
@@ -345,10 +295,10 @@ export default function Page() {
                       <button
                         key={brand.brand}
                         onClick={() => chooseBrand(brand.brand)}
-                        className={`min-w-[128px] shrink-0 rounded-2xl px-3 py-3 text-left text-sm transition xl:min-w-0 ${
+                        className={`rounded-2xl px-4 py-3 text-left text-sm transition ${
                           active
                             ? "bg-green-500 text-slate-950 shadow-lg shadow-green-500/20"
-                            : "glass-chip text-slate-200 hover:bg-white/8"
+                            : "border border-white/8 bg-white/4 text-slate-200 hover:bg-white/8"
                         }`}
                       >
                         <div className="truncate font-semibold">{brand.brand}</div>
@@ -397,11 +347,9 @@ export default function Page() {
             <section className="space-y-4">
               <div className="soft-panel p-4 md:p-5">
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                  <div className="min-w-0">
+                  <div>
                     <div className="text-sm text-slate-400">{selectedBrand}</div>
-                    <h2 className="mt-1 break-words text-2xl font-bold md:text-3xl">
-                      {selectedModel.model}
-                    </h2>
+                    <h2 className="mt-1 text-2xl font-bold md:text-3xl">{selectedModel.model}</h2>
                     <div className="mt-2 flex flex-wrap gap-2">
                       <MiniBadge label={`Storage: ${activeStorage.storage}`} />
                       <MiniBadge label={`RRP: ${formatMoney(activeStorage.rrp)}`} />
@@ -433,7 +381,7 @@ export default function Page() {
                   ))}
                 </div>
 
-                <div className="mt-4 rounded-2xl border border-white/8 bg-slate-950/45 p-3 text-sm text-slate-200">
+                <div className="mt-4 rounded-2xl border border-white/8 bg-slate-950/45 p-3 text-sm text-slate-300">
                   {activeStorage.notes || "Use ECEM pricing shown below."}
                 </div>
               </div>
@@ -468,7 +416,7 @@ export default function Page() {
                   </div>
 
                   <div className="grid gap-3 p-3 md:hidden">
-                    {availablePlans.map((mp) => {
+                    {mpOrder.map((mp) => {
                       const row = currentTable?.[mp];
                       const isSelected = selectedPlan === mp;
 
@@ -482,7 +430,7 @@ export default function Page() {
                               : "border-white/8 bg-white/3"
                           }`}
                         >
-                          <div className="mb-3 flex items-center justify-between gap-3">
+                          <div className="mb-3 flex items-center justify-between">
                             <div className="text-2xl font-bold text-white">{mp}</div>
                             {isSelected && (
                               <span className="rounded-full bg-green-500 px-2.5 py-1 text-xs font-bold text-slate-950">
@@ -492,8 +440,8 @@ export default function Page() {
                           </div>
 
                           {selectedTab === "upfront" ? (
-                            <div className="grid gap-2 text-sm">
-                              <MobileValue
+                            <div className="space-y-3">
+                              <MobileStackValue
                                 label="Device Price / Upfront"
                                 value={
                                   row
@@ -503,7 +451,7 @@ export default function Page() {
                                     : "NA"
                                 }
                               />
-                              <MobileValue
+                              <MobileStackValue
                                 label="DAP"
                                 value={
                                   row
@@ -513,7 +461,7 @@ export default function Page() {
                                     : "NA"
                                 }
                               />
-                              <MobileValue
+                              <MobileStackValue
                                 label="Total Upfront"
                                 value={
                                   row
@@ -525,8 +473,8 @@ export default function Page() {
                               />
                             </div>
                           ) : (
-                            <div className="grid gap-2 text-sm">
-                              <MobileValue
+                            <div className="space-y-3">
+                              <MobileStackValue
                                 label="Monthly"
                                 value={
                                   row
@@ -534,7 +482,7 @@ export default function Page() {
                                     : "NA"
                                 }
                               />
-                              <MobileValue
+                              <MobileStackValue
                                 label="DAP / ECC"
                                 value={
                                   row
@@ -572,7 +520,7 @@ export default function Page() {
                           </tr>
                         </thead>
                         <tbody>
-                          {availablePlans.map((mp) => {
+                          {mpOrder.map((mp) => {
                             const row = currentTable?.[mp];
                             const isSelected = selectedPlan === mp;
 
@@ -588,21 +536,21 @@ export default function Page() {
 
                                 {selectedTab === "upfront" ? (
                                   <>
-                                    <td className="px-4 py-3 text-slate-100">
+                                    <td className="px-4 py-3 text-slate-200">
                                       {row
                                         ? formatMoney(
                                             (row as { devicePrice?: number | string }).devicePrice
                                           )
                                         : "NA"}
                                     </td>
-                                    <td className="px-4 py-3 text-slate-100">
+                                    <td className="px-4 py-3 text-slate-200">
                                       {row
                                         ? "dapLabel" in row && row.dapLabel
                                           ? row.dapLabel
                                           : formatMoney((row as { dap?: number | string }).dap)
                                         : "NA"}
                                     </td>
-                                    <td className="px-4 py-3 text-slate-100">
+                                    <td className="px-4 py-3 text-slate-200">
                                       {row
                                         ? formatMoney(
                                             (row as { totalUpfront?: number | string }).totalUpfront
@@ -612,12 +560,12 @@ export default function Page() {
                                   </>
                                 ) : (
                                   <>
-                                    <td className="px-4 py-3 text-slate-100">
+                                    <td className="px-4 py-3 text-slate-200">
                                       {row
                                         ? formatMoney((row as { monthly?: number | string }).monthly)
                                         : "NA"}
                                     </td>
-                                    <td className="px-4 py-3 text-slate-100">
+                                    <td className="px-4 py-3 text-slate-200">
                                       {row
                                         ? "dapLabel" in row && row.dapLabel
                                           ? row.dapLabel
@@ -660,7 +608,7 @@ export default function Page() {
                 </div>
 
                 <div className="rounded-2xl border border-white/8 bg-slate-950/50 p-4">
-                  <pre className="quote-pre whitespace-pre-wrap text-sm text-slate-100">
+                  <pre className="quote-pre whitespace-pre-wrap text-sm text-slate-200">
                     {quoteText || "Select a valid plan row to generate quote."}
                   </pre>
                 </div>
@@ -736,7 +684,7 @@ function QuickStat({ label, value }: { label: string; value: string }) {
 
 function MiniBadge({ label }: { label: string }) {
   return (
-    <div className="rounded-full border border-white/8 bg-white/4 px-3 py-1.5 text-xs text-slate-200">
+    <div className="rounded-full border border-white/8 bg-white/4 px-3 py-1.5 text-xs text-slate-300">
       {label}
     </div>
   );
@@ -751,11 +699,11 @@ function InfoCard({ label, value }: { label: string; value: string }) {
   );
 }
 
-function MobileValue({ label, value }: { label: string; value: string }) {
+function MobileStackValue({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-start justify-between gap-3 rounded-xl border border-white/8 bg-white/6 px-3 py-3">
-      <span className="text-slate-300">{label}</span>
-      <span className="text-right font-bold text-white">{value}</span>
+    <div className="rounded-xl border border-white/8 bg-white/6 px-4 py-3">
+      <div className="text-sm text-slate-300">{label}</div>
+      <div className="mt-1 text-lg font-bold text-white">{value || "NA"}</div>
     </div>
   );
 }
