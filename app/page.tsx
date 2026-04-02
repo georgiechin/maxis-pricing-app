@@ -20,7 +20,7 @@ function formatMoney(value: number | string | null | undefined) {
   if (value === null || value === undefined || value === "" || value === "NA") {
     return "NA";
   }
-  if (Number(value) === 1) return "FREE";
+  if (Number(value) === 0 || Number(value) === 1) return "FREE";
   return `RM ${Number(value).toLocaleString()}`;
 }
 
@@ -28,7 +28,7 @@ function moneyPlain(value: number | string | null | undefined) {
   if (value === null || value === undefined || value === "" || value === "NA") {
     return "NA";
   }
-  if (Number(value) === 1) return "FREE";
+  if (Number(value) === 0 || Number(value) === 1) return "FREE";
   return `RM${Number(value).toLocaleString()}`;
 }
 
@@ -58,28 +58,66 @@ export default function Page() {
   const currentTable = regionPricing ? regionPricing[selectedTab] : null;
   const selectedRow = currentTable?.[selectedPlan];
 
+  const getBestDefaultPlan = (
+    model: CatalogModel,
+    storageName: string,
+    mode: PricingMode
+  ) => {
+    const storage =
+      model.storages.find((s) => s.storage === storageName) || model.storages[0];
+    const table = storage.regions.ECEM?.[mode];
+
+    if (!table) return "MP99";
+
+    const preferredOrder = ["MP139", "MP109", "MP99", "MP89", "MP69", "MP169", "MP199"];
+
+    for (const plan of preferredOrder) {
+      const row = table[plan];
+      if (!row) continue;
+
+      if (mode === "upfront") {
+        const price = (row as { devicePrice?: number | string }).devicePrice;
+        if (price !== undefined && price !== "NA") return plan;
+      } else {
+        const monthly = (row as { monthly?: number | string }).monthly;
+        if (monthly !== undefined && monthly !== "NA") return plan;
+      }
+    }
+
+    return "MP99";
+  };
+
   const chooseBrand = (brand: CatalogBrand["brand"]) => {
     const nextBrand = catalog.find((b) => b.brand === brand) || catalog[0];
+    const nextModel = nextBrand.models[0];
+    const nextStorage = nextModel.storages[0].storage;
+
     setSelectedBrand(nextBrand.brand);
-    setSelectedModel(nextBrand.models[0]);
-    setSelectedStorage(nextBrand.models[0].storages[0].storage);
+    setSelectedModel(nextModel);
+    setSelectedStorage(nextStorage);
     setSelectedTab("upfront");
-    setSelectedPlan("MP99");
+    setSelectedPlan(getBestDefaultPlan(nextModel, nextStorage, "upfront"));
   };
 
   const chooseModel = (model: CatalogModel) => {
+    const nextStorage = model.storages[0].storage;
+
     setSelectedModel(model);
-    setSelectedStorage(model.storages[0].storage);
+    setSelectedStorage(nextStorage);
     setSelectedTab("upfront");
-    setSelectedPlan("MP99");
+    setSelectedPlan(getBestDefaultPlan(model, nextStorage, "upfront"));
   };
 
   const resetAll = () => {
-    setSelectedBrand(catalog[0].brand);
-    setSelectedModel(catalog[0].models[0]);
-    setSelectedStorage(catalog[0].models[0].storages[0].storage);
+    const firstBrand = catalog[0];
+    const firstModel = firstBrand.models[0];
+    const firstStorage = firstModel.storages[0].storage;
+
+    setSelectedBrand(firstBrand.brand);
+    setSelectedModel(firstModel);
+    setSelectedStorage(firstStorage);
     setSelectedTab("upfront");
-    setSelectedPlan("MP99");
+    setSelectedPlan(getBestDefaultPlan(firstModel, firstStorage, "upfront"));
   };
 
   const quoteText = useMemo(() => {
@@ -253,7 +291,7 @@ export default function Page() {
                     key={storage.storage}
                     onClick={() => {
                       setSelectedStorage(storage.storage);
-                      setSelectedPlan("MP99");
+                      setSelectedPlan(getBestDefaultPlan(selectedModel, storage.storage, selectedTab));
                     }}
                     className={`rounded-xl border px-4 py-2 text-sm font-medium transition ${
                       active
@@ -285,7 +323,7 @@ export default function Page() {
                     key={tab.key}
                     onClick={() => {
                       setSelectedTab(tab.key);
-                      setSelectedPlan("MP99");
+                      setSelectedPlan(getBestDefaultPlan(selectedModel, selectedStorage, tab.key));
                     }}
                     className={`rounded-xl border px-3 py-3 text-sm font-medium transition ${
                       active
