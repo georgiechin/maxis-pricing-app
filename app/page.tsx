@@ -16,14 +16,6 @@ const pricingTabs: { key: PricingMode; label: string; mobileLabel: string }[] = 
 
 const mpOrder = ["MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
 
-function normalize(text: string) {
-  return text.toLowerCase().replace(/\s+/g, " ").trim();
-}
-
-function normalizeTight(text: string) {
-  return text.toLowerCase().replace(/[\s"']/g, "").trim();
-}
-
 function formatMoney(value: number | string | null | undefined) {
   if (value === null || value === undefined || value === "" || value === "NA") {
     return "NA";
@@ -39,7 +31,6 @@ function moneyPlain(value: number | string | null | undefined) {
 }
 
 export default function Page() {
-  const [search, setSearch] = useState("");
   const [selectedBrand, setSelectedBrand] = useState<CatalogBrand["brand"]>(catalog[0].brand);
   const [selectedModel, setSelectedModel] = useState<CatalogModel>(catalog[0].models[0]);
   const [selectedStorage, setSelectedStorage] = useState(catalog[0].models[0].storages[0].storage);
@@ -52,29 +43,7 @@ export default function Page() {
     [selectedBrand]
   );
 
-  const filteredModels = useMemo(() => {
-    const q = normalize(search);
-    const qTight = normalizeTight(search);
-    if (!q) return activeBrand.models;
-
-    return activeBrand.models.filter((m) => {
-      const hitModel = normalize(m.model).includes(q) || normalizeTight(m.model).includes(qTight);
-      const hitAliases = m.aliases.some(
-        (a) =>
-          normalize(a).includes(q) ||
-          q.includes(normalize(a)) ||
-          normalizeTight(a).includes(qTight) ||
-          qTight.includes(normalizeTight(a))
-      );
-      const hitStorage = m.storages.some(
-        (s) =>
-          normalize(s.storage).includes(q) ||
-          normalizeTight(s.storage).includes(qTight) ||
-          qTight.includes(normalizeTight(s.storage))
-      );
-      return hitModel || hitAliases || hitStorage;
-    });
-  }, [search, activeBrand]);
+  const filteredModels = activeBrand.models;
 
   const activeStorage = useMemo(
     () =>
@@ -87,60 +56,6 @@ export default function Page() {
   const currentTable = regionPricing ? regionPricing[selectedTab] : null;
   const selectedRow = currentTable?.[selectedPlan];
 
-  const globalSuggestions = useMemo(() => {
-    const q = normalize(search);
-    const qTight = normalizeTight(search);
-    if (!q) return [];
-
-    const hits: {
-      brand: string;
-      model: CatalogModel;
-      score: number;
-    }[] = [];
-
-    for (const brand of catalog) {
-      for (const model of brand.models) {
-        let score = 0;
-
-        if (normalize(model.model) === q || normalizeTight(model.model) === qTight) score += 100;
-        if (
-          normalize(model.model).includes(q) ||
-          normalizeTight(model.model).includes(qTight)
-        ) {
-          score += 40;
-        }
-
-        for (const alias of model.aliases) {
-          if (normalize(alias) === q || normalizeTight(alias) === qTight) score += 90;
-          else if (
-            normalize(alias).includes(q) ||
-            q.includes(normalize(alias)) ||
-            normalizeTight(alias).includes(qTight) ||
-            qTight.includes(normalizeTight(alias))
-          ) {
-            score += 30;
-          }
-        }
-
-        for (const storage of model.storages) {
-          if (
-            normalize(storage.storage).includes(q) ||
-            normalizeTight(storage.storage).includes(qTight) ||
-            qTight.includes(normalizeTight(storage.storage))
-          ) {
-            score += 10;
-          }
-        }
-
-        if (score > 0) {
-          hits.push({ brand: brand.brand, model, score });
-        }
-      }
-    }
-
-    return hits.sort((a, b) => b.score - a.score).slice(0, 8);
-  }, [search]);
-
   const chooseBrand = (brand: CatalogBrand["brand"]) => {
     const nextBrand = catalog.find((b) => b.brand === brand) || catalog[0];
     setSelectedBrand(nextBrand.brand);
@@ -148,7 +63,6 @@ export default function Page() {
     setSelectedStorage(nextBrand.models[0].storages[0].storage);
     setSelectedTab("upfront");
     setSelectedPlan("MP99");
-    setSearch("");
   };
 
   const chooseModel = (brandName: string, model: CatalogModel) => {
@@ -224,7 +138,7 @@ export default function Page() {
                   Maxis ECEM Device Pricing Browser
                 </h1>
                 <p className="mt-1 text-sm text-slate-400">
-                  Faster search, cleaner mobile flow, easier quote copy for staff
+                  Choose brand, tap model, select plan, and copy quote fast
                 </p>
               </div>
 
@@ -234,50 +148,17 @@ export default function Page() {
               </div>
             </div>
 
-            <div className="mt-4 grid gap-3 lg:grid-cols-[1fr_auto]">
-              <div className="relative">
-                <input
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search model, alias, or storage. Example: ip17 pro max, honor, 512gb"
-                  className="w-full rounded-2xl border border-white/10 bg-slate-950/50 px-4 py-3.5 text-[15px] text-white outline-none placeholder:text-slate-500 focus:border-green-500/70"
-                />
-              </div>
-
+            <div className="mt-4">
               <button
                 onClick={() => {
-                  setSearch("");
-                  setSelectedBrand(catalog[0].brand);
-                  setSelectedModel(catalog[0].models[0]);
-                  setSelectedStorage(catalog[0].models[0].storages[0].storage);
                   setSelectedTab("upfront");
                   setSelectedPlan("MP99");
                 }}
-                className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+                className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium text-slate-200 transition hover:bg-white/10 lg:w-auto"
               >
-                Reset filters
+                Reset pricing selection
               </button>
             </div>
-
-            {globalSuggestions.length > 0 && (
-              <div className="mt-3 soft-panel p-2">
-                <div className="mb-2 px-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
-                  Search results
-                </div>
-                <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-4">
-                  {globalSuggestions.map((item) => (
-                    <button
-                      key={`${item.brand}-${item.model.model}`}
-                      onClick={() => chooseModel(item.brand, item.model)}
-                      className="rounded-2xl border border-white/6 bg-white/4 px-3 py-3 text-left transition hover:border-green-500/30 hover:bg-green-500/8"
-                    >
-                      <div className="text-sm font-semibold text-white">{item.model.model}</div>
-                      <div className="mt-1 text-xs text-slate-400">{item.brand}</div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
           </header>
 
           <section className="grid gap-4 p-3 pb-32 md:p-4 md:pb-6 xl:grid-cols-[280px_minmax(0,1fr)_360px]">
@@ -411,7 +292,7 @@ export default function Page() {
                   <div className="border-b border-white/8 px-4 py-3">
                     <div className="text-sm font-semibold text-white">Mobile quick select</div>
                     <div className="text-xs text-slate-400">
-                      Tap any plan card to prepare quote
+                      Tap any plan card to prepare quote.
                     </div>
                   </div>
 
@@ -445,9 +326,7 @@ export default function Page() {
                                 label="Device Price / Upfront"
                                 value={
                                   row
-                                    ? formatMoney(
-                                        (row as { devicePrice?: number | string }).devicePrice
-                                      )
+                                    ? formatMoney((row as { devicePrice?: number | string }).devicePrice)
                                     : "NA"
                                 }
                               />
@@ -594,9 +473,7 @@ export default function Page() {
                 <div className="mb-3 flex items-start justify-between gap-3">
                   <div>
                     <div className="text-sm font-semibold text-white">Quick Quote</div>
-                    <div className="text-xs text-slate-400">
-                      Tap plan, then copy for WhatsApp
-                    </div>
+                    <div className="text-xs text-slate-400">Tap plan, then copy for WhatsApp</div>
                   </div>
                   <button
                     onClick={copyQuote}
@@ -617,7 +494,7 @@ export default function Page() {
               <section className="soft-panel p-4">
                 <div className="mb-3 text-sm font-semibold text-white">Staff flow</div>
                 <ul className="space-y-2 text-sm text-slate-300">
-                  <li>1. Search or choose brand</li>
+                  <li>1. Choose brand</li>
                   <li>2. Tap model</li>
                   <li>3. Tap storage</li>
                   <li>4. Tap pricing plan</li>
