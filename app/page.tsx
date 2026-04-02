@@ -38,6 +38,16 @@ function moneyPlain(value: number | string | null | undefined) {
   return `RM${Number(value).toLocaleString()}`;
 }
 
+function hasRealValue(value: unknown) {
+  return !(
+    value === null ||
+    value === undefined ||
+    value === "" ||
+    value === "NA" ||
+    value === "-"
+  );
+}
+
 export default function Page() {
   const [search, setSearch] = useState("");
   const [selectedBrand, setSelectedBrand] = useState<CatalogBrand["brand"]>(catalog[0].brand);
@@ -141,6 +151,46 @@ export default function Page() {
     return hits.sort((a, b) => b.score - a.score).slice(0, 8);
   }, [search]);
 
+  const availablePlans = useMemo(() => {
+    if (!currentTable) return mpOrder;
+
+    const plansWithValues = mpOrder.filter((mp) => {
+      const row = currentTable[mp];
+      if (!row) return false;
+
+      if (selectedTab === "upfront") {
+        const upfrontRow = row as {
+          devicePrice?: number | string;
+          dap?: number | string;
+          dapLabel?: string;
+          totalUpfront?: number | string;
+        };
+
+        return (
+          hasRealValue(upfrontRow.devicePrice) ||
+          hasRealValue(upfrontRow.dap) ||
+          hasRealValue(upfrontRow.dapLabel) ||
+          hasRealValue(upfrontRow.totalUpfront)
+        );
+      }
+
+      const zeroRow = row as {
+        monthly?: number | string;
+        dapLabel?: string;
+      };
+
+      return hasRealValue(zeroRow.monthly) || hasRealValue(zeroRow.dapLabel);
+    });
+
+    return plansWithValues.length > 0 ? plansWithValues : mpOrder;
+  }, [currentTable, selectedTab]);
+
+  useEffect(() => {
+    if (!availablePlans.includes(selectedPlan)) {
+      setSelectedPlan(availablePlans[0] || "MP99");
+    }
+  }, [availablePlans, selectedPlan]);
+
   const chooseBrand = (brand: CatalogBrand["brand"]) => {
     const nextBrand = catalog.find((b) => b.brand === brand) || catalog[0];
     setSelectedBrand(nextBrand.brand);
@@ -148,6 +198,7 @@ export default function Page() {
     setSelectedStorage(nextBrand.models[0].storages[0].storage);
     setSelectedTab("upfront");
     setSelectedPlan("MP99");
+    setSearch("");
   };
 
   const chooseModel = (brandName: string, model: CatalogModel) => {
@@ -276,14 +327,17 @@ export default function Page() {
             )}
           </header>
 
-          <section className="grid gap-4 p-3 md:p-4 xl:grid-cols-[280px_minmax(0,1fr)_360px]">
+          <section className="grid gap-4 p-3 pb-28 md:p-4 md:pb-6 xl:grid-cols-[280px_minmax(0,1fr)_360px]">
             <aside className="space-y-4">
               <section className="soft-panel p-3">
-                <div className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
-                  Brands
+                <div className="mb-3 flex items-center justify-between gap-2">
+                  <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                    Brands
+                  </div>
+                  <div className="text-[11px] text-slate-500 xl:hidden">Swipe</div>
                 </div>
 
-                <div className="brand-scroll flex gap-2 overflow-x-auto pb-1 xl:grid xl:grid-cols-1 xl:overflow-visible">
+                <div className="brand-scroll flex gap-2 overflow-x-auto pb-2 pr-2 xl:grid xl:grid-cols-1 xl:overflow-visible">
                   {catalog.map((brand) => {
                     const active = selectedBrand === brand.brand;
 
@@ -291,13 +345,13 @@ export default function Page() {
                       <button
                         key={brand.brand}
                         onClick={() => chooseBrand(brand.brand)}
-                        className={`min-w-max rounded-2xl px-4 py-3 text-left text-sm transition xl:min-w-0 ${
+                        className={`min-w-[128px] shrink-0 rounded-2xl px-3 py-3 text-left text-sm transition xl:min-w-0 ${
                           active
                             ? "bg-green-500 text-slate-950 shadow-lg shadow-green-500/20"
                             : "glass-chip text-slate-200 hover:bg-white/8"
                         }`}
                       >
-                        <div className="font-semibold">{brand.brand}</div>
+                        <div className="truncate font-semibold">{brand.brand}</div>
                         <div className={`text-xs ${active ? "text-slate-900/80" : "text-slate-400"}`}>
                           {brand.models.length} models
                         </div>
@@ -343,9 +397,11 @@ export default function Page() {
             <section className="space-y-4">
               <div className="soft-panel p-4 md:p-5">
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                  <div>
+                  <div className="min-w-0">
                     <div className="text-sm text-slate-400">{selectedBrand}</div>
-                    <h2 className="mt-1 text-2xl font-bold md:text-3xl">{selectedModel.model}</h2>
+                    <h2 className="mt-1 break-words text-2xl font-bold md:text-3xl">
+                      {selectedModel.model}
+                    </h2>
                     <div className="mt-2 flex flex-wrap gap-2">
                       <MiniBadge label={`Storage: ${activeStorage.storage}`} />
                       <MiniBadge label={`RRP: ${formatMoney(activeStorage.rrp)}`} />
@@ -377,7 +433,7 @@ export default function Page() {
                   ))}
                 </div>
 
-                <div className="mt-4 rounded-2xl border border-white/8 bg-slate-950/45 p-3 text-sm text-slate-300">
+                <div className="mt-4 rounded-2xl border border-white/8 bg-slate-950/45 p-3 text-sm text-slate-200">
                   {activeStorage.notes || "Use ECEM pricing shown below."}
                 </div>
               </div>
@@ -403,185 +459,181 @@ export default function Page() {
               </div>
 
               {regionPricing ? (
-                <>
-                  <div className="soft-panel overflow-hidden">
-                    <div className="border-b border-white/8 px-4 py-3">
-                      <div className="text-sm font-semibold text-white">
-                        Mobile quick select
-                      </div>
-                      <div className="text-xs text-slate-400">
-                        Best for staff on phone. Tap any plan card to prepare quote.
-                      </div>
-                    </div>
-
-                    <div className="grid gap-3 p-3 md:hidden">
-                      {mpOrder.map((mp) => {
-                        const row = currentTable?.[mp];
-                        const isSelected = selectedPlan === mp;
-
-                        return (
-                          <button
-                            key={mp}
-                            onClick={() => setSelectedPlan(mp)}
-                            className={`rounded-2xl border p-4 text-left transition ${
-                              isSelected
-                                ? "border-green-500/40 bg-green-500/10"
-                                : "border-white/8 bg-white/3"
-                            }`}
-                          >
-                            <div className="mb-3 flex items-center justify-between">
-                              <div className="text-base font-semibold text-white">{mp}</div>
-                              {isSelected && (
-                                <span className="rounded-full bg-green-500 px-2.5 py-1 text-xs font-bold text-slate-950">
-                                  Selected
-                                </span>
-                              )}
-                            </div>
-
-                            {selectedTab === "upfront" ? (
-                              <div className="grid gap-2 text-sm">
-                                <MobileValue
-                                  label="Device Price / Upfront"
-                                  value={
-                                    row
-                                      ? formatMoney(
-                                          (row as { devicePrice?: number | string }).devicePrice
-                                        )
-                                      : "NA"
-                                  }
-                                />
-                                <MobileValue
-                                  label="DAP"
-                                  value={
-                                    row
-                                      ? "dapLabel" in row && row.dapLabel
-                                        ? row.dapLabel
-                                        : formatMoney((row as { dap?: number | string }).dap)
-                                      : "NA"
-                                  }
-                                />
-                                <MobileValue
-                                  label="Total Upfront"
-                                  value={
-                                    row
-                                      ? formatMoney(
-                                          (row as { totalUpfront?: number | string }).totalUpfront
-                                        )
-                                      : "NA"
-                                  }
-                                />
-                              </div>
-                            ) : (
-                              <div className="grid gap-2 text-sm">
-                                <MobileValue
-                                  label="Monthly"
-                                  value={
-                                    row
-                                      ? formatMoney((row as { monthly?: number | string }).monthly)
-                                      : "NA"
-                                  }
-                                />
-                                <MobileValue
-                                  label="DAP / ECC"
-                                  value={
-                                    row
-                                      ? "dapLabel" in row && row.dapLabel
-                                        ? row.dapLabel
-                                        : "Check ECC"
-                                      : "NA"
-                                  }
-                                />
-                              </div>
-                            )}
-                          </button>
-                        );
-                      })}
-                    </div>
-
-                    <div className="hidden md:block">
-                      <div className="table-scroll overflow-x-auto">
-                        <table className="min-w-full text-sm">
-                          <thead className="bg-white/4 text-slate-300">
-                            <tr>
-                              <th className="px-4 py-3 text-left">Plan</th>
-                              {selectedTab === "upfront" ? (
-                                <>
-                                  <th className="px-4 py-3 text-left">Device Price / Upfront</th>
-                                  <th className="px-4 py-3 text-left">DAP</th>
-                                  <th className="px-4 py-3 text-left">Total Upfront</th>
-                                </>
-                              ) : (
-                                <>
-                                  <th className="px-4 py-3 text-left">Monthly</th>
-                                  <th className="px-4 py-3 text-left">DAP / ECC</th>
-                                </>
-                              )}
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {mpOrder.map((mp) => {
-                              const row = currentTable?.[mp];
-                              const isSelected = selectedPlan === mp;
-
-                              return (
-                                <tr
-                                  key={mp}
-                                  onClick={() => setSelectedPlan(mp)}
-                                  className={`cursor-pointer border-t border-white/6 transition ${
-                                    isSelected ? "bg-green-500/10" : "hover:bg-white/4"
-                                  }`}
-                                >
-                                  <td className="px-4 py-3 font-semibold text-white">{mp}</td>
-
-                                  {selectedTab === "upfront" ? (
-                                    <>
-                                      <td className="px-4 py-3 text-slate-200">
-                                        {row
-                                          ? formatMoney(
-                                              (row as { devicePrice?: number | string }).devicePrice
-                                            )
-                                          : "NA"}
-                                      </td>
-                                      <td className="px-4 py-3 text-slate-200">
-                                        {row
-                                          ? "dapLabel" in row && row.dapLabel
-                                            ? row.dapLabel
-                                            : formatMoney((row as { dap?: number | string }).dap)
-                                          : "NA"}
-                                      </td>
-                                      <td className="px-4 py-3 text-slate-200">
-                                        {row
-                                          ? formatMoney(
-                                              (row as { totalUpfront?: number | string }).totalUpfront
-                                            )
-                                          : "NA"}
-                                      </td>
-                                    </>
-                                  ) : (
-                                    <>
-                                      <td className="px-4 py-3 text-slate-200">
-                                        {row
-                                          ? formatMoney((row as { monthly?: number | string }).monthly)
-                                          : "NA"}
-                                      </td>
-                                      <td className="px-4 py-3 text-slate-200">
-                                        {row
-                                          ? "dapLabel" in row && row.dapLabel
-                                            ? row.dapLabel
-                                            : "Check ECC"
-                                          : "NA"}
-                                      </td>
-                                    </>
-                                  )}
-                                </tr>
-                              );
-                            })}
-                          </tbody>
-                        </table>
-                      </div>
+                <div className="soft-panel overflow-hidden">
+                  <div className="border-b border-white/8 px-4 py-3">
+                    <div className="text-sm font-semibold text-white">Mobile quick select</div>
+                    <div className="text-xs text-slate-400">
+                      Tap any plan card to prepare quote
                     </div>
                   </div>
-                </>
+
+                  <div className="grid gap-3 p-3 md:hidden">
+                    {availablePlans.map((mp) => {
+                      const row = currentTable?.[mp];
+                      const isSelected = selectedPlan === mp;
+
+                      return (
+                        <button
+                          key={mp}
+                          onClick={() => setSelectedPlan(mp)}
+                          className={`rounded-2xl border p-4 text-left transition ${
+                            isSelected
+                              ? "border-green-500/40 bg-green-500/10"
+                              : "border-white/8 bg-white/3"
+                          }`}
+                        >
+                          <div className="mb-3 flex items-center justify-between gap-3">
+                            <div className="text-2xl font-bold text-white">{mp}</div>
+                            {isSelected && (
+                              <span className="rounded-full bg-green-500 px-2.5 py-1 text-xs font-bold text-slate-950">
+                                Selected
+                              </span>
+                            )}
+                          </div>
+
+                          {selectedTab === "upfront" ? (
+                            <div className="grid gap-2 text-sm">
+                              <MobileValue
+                                label="Device Price / Upfront"
+                                value={
+                                  row
+                                    ? formatMoney(
+                                        (row as { devicePrice?: number | string }).devicePrice
+                                      )
+                                    : "NA"
+                                }
+                              />
+                              <MobileValue
+                                label="DAP"
+                                value={
+                                  row
+                                    ? "dapLabel" in row && row.dapLabel
+                                      ? row.dapLabel
+                                      : formatMoney((row as { dap?: number | string }).dap)
+                                    : "NA"
+                                }
+                              />
+                              <MobileValue
+                                label="Total Upfront"
+                                value={
+                                  row
+                                    ? formatMoney(
+                                        (row as { totalUpfront?: number | string }).totalUpfront
+                                      )
+                                    : "NA"
+                                }
+                              />
+                            </div>
+                          ) : (
+                            <div className="grid gap-2 text-sm">
+                              <MobileValue
+                                label="Monthly"
+                                value={
+                                  row
+                                    ? formatMoney((row as { monthly?: number | string }).monthly)
+                                    : "NA"
+                                }
+                              />
+                              <MobileValue
+                                label="DAP / ECC"
+                                value={
+                                  row
+                                    ? "dapLabel" in row && row.dapLabel
+                                      ? row.dapLabel
+                                      : "Check ECC"
+                                    : "NA"
+                                }
+                              />
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <div className="hidden md:block">
+                    <div className="table-scroll overflow-x-auto">
+                      <table className="min-w-full text-sm">
+                        <thead className="bg-white/4 text-slate-300">
+                          <tr>
+                            <th className="px-4 py-3 text-left">Plan</th>
+                            {selectedTab === "upfront" ? (
+                              <>
+                                <th className="px-4 py-3 text-left">Device Price / Upfront</th>
+                                <th className="px-4 py-3 text-left">DAP</th>
+                                <th className="px-4 py-3 text-left">Total Upfront</th>
+                              </>
+                            ) : (
+                              <>
+                                <th className="px-4 py-3 text-left">Monthly</th>
+                                <th className="px-4 py-3 text-left">DAP / ECC</th>
+                              </>
+                            )}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {availablePlans.map((mp) => {
+                            const row = currentTable?.[mp];
+                            const isSelected = selectedPlan === mp;
+
+                            return (
+                              <tr
+                                key={mp}
+                                onClick={() => setSelectedPlan(mp)}
+                                className={`cursor-pointer border-t border-white/6 transition ${
+                                  isSelected ? "bg-green-500/10" : "hover:bg-white/4"
+                                }`}
+                              >
+                                <td className="px-4 py-3 font-semibold text-white">{mp}</td>
+
+                                {selectedTab === "upfront" ? (
+                                  <>
+                                    <td className="px-4 py-3 text-slate-100">
+                                      {row
+                                        ? formatMoney(
+                                            (row as { devicePrice?: number | string }).devicePrice
+                                          )
+                                        : "NA"}
+                                    </td>
+                                    <td className="px-4 py-3 text-slate-100">
+                                      {row
+                                        ? "dapLabel" in row && row.dapLabel
+                                          ? row.dapLabel
+                                          : formatMoney((row as { dap?: number | string }).dap)
+                                        : "NA"}
+                                    </td>
+                                    <td className="px-4 py-3 text-slate-100">
+                                      {row
+                                        ? formatMoney(
+                                            (row as { totalUpfront?: number | string }).totalUpfront
+                                          )
+                                        : "NA"}
+                                    </td>
+                                  </>
+                                ) : (
+                                  <>
+                                    <td className="px-4 py-3 text-slate-100">
+                                      {row
+                                        ? formatMoney((row as { monthly?: number | string }).monthly)
+                                        : "NA"}
+                                    </td>
+                                    <td className="px-4 py-3 text-slate-100">
+                                      {row
+                                        ? "dapLabel" in row && row.dapLabel
+                                          ? row.dapLabel
+                                          : "Check ECC"
+                                        : "NA"}
+                                    </td>
+                                  </>
+                                )}
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
               ) : (
                 <div className="rounded-3xl border border-amber-500/30 bg-amber-500/10 p-5 text-sm text-amber-100">
                   No ECEM pricing loaded for this model.
@@ -608,7 +660,7 @@ export default function Page() {
                 </div>
 
                 <div className="rounded-2xl border border-white/8 bg-slate-950/50 p-4">
-                  <pre className="quote-pre whitespace-pre-wrap text-sm text-slate-200">
+                  <pre className="quote-pre whitespace-pre-wrap text-sm text-slate-100">
                     {quoteText || "Select a valid plan row to generate quote."}
                   </pre>
                 </div>
@@ -684,7 +736,7 @@ function QuickStat({ label, value }: { label: string; value: string }) {
 
 function MiniBadge({ label }: { label: string }) {
   return (
-    <div className="rounded-full border border-white/8 bg-white/4 px-3 py-1.5 text-xs text-slate-300">
+    <div className="rounded-full border border-white/8 bg-white/4 px-3 py-1.5 text-xs text-slate-200">
       {label}
     </div>
   );
@@ -701,9 +753,9 @@ function InfoCard({ label, value }: { label: string; value: string }) {
 
 function MobileValue({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-start justify-between gap-3 rounded-xl bg-white/4 px-3 py-2.5">
-      <span className="text-slate-400">{label}</span>
-      <span className="text-right font-semibold text-white">{value}</span>
+    <div className="flex items-start justify-between gap-3 rounded-xl border border-white/8 bg-white/6 px-3 py-3">
+      <span className="text-slate-300">{label}</span>
+      <span className="text-right font-bold text-white">{value}</span>
     </div>
   );
 }
