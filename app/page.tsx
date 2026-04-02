@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   catalog,
   type CatalogBrand,
@@ -8,10 +8,10 @@ import {
   type PricingMode,
 } from "../data/catalog";
 
-const pricingTabs: { key: PricingMode; label: string }[] = [
-  { key: "upfront", label: "Upfront" },
-  { key: "zero24", label: "Zero 24M" },
-  { key: "zero36", label: "Zero 36M" },
+const pricingTabs: { key: PricingMode; label: string; mobileLabel: string }[] = [
+  { key: "upfront", label: "Upfront Pricing", mobileLabel: "Upfront" },
+  { key: "zero24", label: "Zerolution 24M", mobileLabel: "Zero 24M" },
+  { key: "zero36", label: "Zerolution 36M", mobileLabel: "Zero 36M" },
 ];
 
 const mpOrder = ["MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
@@ -45,6 +45,7 @@ export default function Page() {
   const [selectedStorage, setSelectedStorage] = useState(catalog[0].models[0].storages[0].storage);
   const [selectedTab, setSelectedTab] = useState<PricingMode>("upfront");
   const [selectedPlan, setSelectedPlan] = useState("MP99");
+  const [toast, setToast] = useState("");
 
   const activeBrand = useMemo(
     () => catalog.find((b) => b.brand === selectedBrand) || catalog[0],
@@ -102,7 +103,12 @@ export default function Page() {
         let score = 0;
 
         if (normalize(model.model) === q || normalizeTight(model.model) === qTight) score += 100;
-        if (normalize(model.model).includes(q) || normalizeTight(model.model).includes(qTight)) score += 40;
+        if (
+          normalize(model.model).includes(q) ||
+          normalizeTight(model.model).includes(qTight)
+        ) {
+          score += 40;
+        }
 
         for (const alias of model.aliases) {
           if (normalize(alias) === q || normalizeTight(alias) === qTight) score += 90;
@@ -135,11 +141,21 @@ export default function Page() {
     return hits.sort((a, b) => b.score - a.score).slice(0, 8);
   }, [search]);
 
+  const chooseBrand = (brand: CatalogBrand["brand"]) => {
+    const nextBrand = catalog.find((b) => b.brand === brand) || catalog[0];
+    setSelectedBrand(nextBrand.brand);
+    setSelectedModel(nextBrand.models[0]);
+    setSelectedStorage(nextBrand.models[0].storages[0].storage);
+    setSelectedTab("upfront");
+    setSelectedPlan("MP99");
+  };
+
   const chooseModel = (brandName: string, model: CatalogModel) => {
     setSelectedBrand(brandName);
     setSelectedModel(model);
     setSelectedStorage(model.storages[0].storage);
     setSelectedTab("upfront");
+    setSelectedPlan("MP99");
   };
 
   const quoteText = useMemo(() => {
@@ -151,9 +167,17 @@ export default function Page() {
 📍 Region: ECEM
 📱 Plan: ${selectedPlan}
 
-💰 Device Price / Upfront: ${moneyPlain((selectedRow as { devicePrice?: number | string }).devicePrice)}
-📉 DAP: ${"dapLabel" in selectedRow && selectedRow.dapLabel ? selectedRow.dapLabel : moneyPlain((selectedRow as { dap?: number | string }).dap)}
-🧾 Total Upfront: ${moneyPlain((selectedRow as { totalUpfront?: number | string }).totalUpfront)}`;
+💰 Device Price / Upfront: ${moneyPlain(
+        (selectedRow as { devicePrice?: number | string }).devicePrice
+      )}
+📉 DAP: ${
+        "dapLabel" in selectedRow && selectedRow.dapLabel
+          ? selectedRow.dapLabel
+          : moneyPlain((selectedRow as { dap?: number | string }).dap)
+      }
+🧾 Total Upfront: ${moneyPlain(
+        (selectedRow as { totalUpfront?: number | string }).totalUpfront
+      )}`;
     }
 
     return `🔥 ${selectedModel.model}
@@ -163,305 +187,532 @@ export default function Page() {
 🗓 Mode: ${selectedTab === "zero24" ? "Zerolution 24M" : "Zerolution 36M"}
 
 📆 Monthly: ${moneyPlain((selectedRow as { monthly?: number | string }).monthly)}
-📝 Note: ${"dapLabel" in selectedRow && selectedRow.dapLabel ? selectedRow.dapLabel : "Check ECC"}`;
+📝 Note: ${
+      "dapLabel" in selectedRow && selectedRow.dapLabel ? selectedRow.dapLabel : "Check ECC"
+    }`;
   }, [regionPricing, selectedRow, selectedModel, activeStorage, selectedPlan, selectedTab]);
 
   const copyQuote = async () => {
     if (!quoteText) return;
     await navigator.clipboard.writeText(quoteText);
-    alert("Quote copied ✅");
+    setToast("Quote copied");
   };
 
+  useEffect(() => {
+    if (!toast) return;
+    const timer = window.setTimeout(() => setToast(""), 1800);
+    return () => window.clearTimeout(timer);
+  }, [toast]);
+
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
-      <div className="mx-auto max-w-6xl px-4 py-6 md:px-6 md:py-8">
-        <div className="rounded-3xl border border-white/10 bg-slate-900 shadow-2xl">
-          <div className="border-b border-white/10 px-5 py-5 md:px-6">
-            <h1 className="text-2xl font-bold md:text-3xl">ECEM Device Pricing Browser</h1>
-            <p className="mt-1 text-sm text-slate-400">
-              Staff mode · browse by brand, model, storage, pricing type, and quick quote
-            </p>
-          </div>
-
-          <div className="grid gap-6 p-5 md:grid-cols-[280px_1fr] md:p-6">
-            <div className="space-y-5">
-              <div className="rounded-2xl border border-green-500/20 bg-green-500/10 p-3 text-sm text-green-100">
-                ECEM pricing only
-              </div>
-
+    <main className="min-h-screen text-white">
+      <div className="app-shell">
+        <div className="app-card overflow-hidden">
+          <header className="border-b border-white/8 px-4 py-4 md:px-6 md:py-5">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-300">Search</label>
-                <input
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Try: ip17, 17 pro, honor 600, samsung"
-                  className="w-full rounded-2xl border border-white/10 bg-slate-800 px-4 py-3 text-white outline-none placeholder:text-slate-500 focus:border-green-500"
-                />
+                <div className="mb-2 flex flex-wrap items-center gap-2">
+                  <span className="rounded-full bg-green-500/15 px-3 py-1 text-xs font-semibold text-green-300 ring-1 ring-green-500/20">
+                    ECEM only
+                  </span>
+                  <span className="rounded-full bg-white/5 px-3 py-1 text-xs text-slate-300 ring-1 ring-white/8">
+                    Staff pricing tool
+                  </span>
+                </div>
+                <h1 className="text-xl font-bold tracking-tight md:text-3xl">
+                  Maxis ECEM Device Pricing Browser
+                </h1>
+                <p className="mt-1 text-sm text-slate-400">
+                  Faster search, cleaner mobile flow, easier quote copy for staff
+                </p>
               </div>
 
-              <div>
-                <div className="mb-2 text-sm font-medium text-slate-300">Brands</div>
-                <div className="flex flex-wrap gap-2">
-                  {catalog.map((brand) => (
-                    <button
-                      key={brand.brand}
-                      onClick={() => {
-                        setSelectedBrand(brand.brand);
-                        setSelectedModel(brand.models[0]);
-                        setSelectedStorage(brand.models[0].storages[0].storage);
-                        setSelectedTab("upfront");
-                        setSelectedPlan("MP99");
-                      }}
-                      className={`rounded-full px-3 py-2 text-sm transition ${
-                        selectedBrand === brand.brand
-                          ? "bg-green-500 font-semibold text-black"
-                          : "bg-slate-800 text-slate-200 hover:bg-slate-700"
-                      }`}
-                    >
-                      {brand.brand}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {globalSuggestions.length > 0 && (
-                <div className="rounded-2xl border border-white/10 bg-slate-800 p-3">
-                  <div className="mb-2 text-xs uppercase tracking-wide text-slate-400">
-                    Search results
-                  </div>
-                  <div className="space-y-2">
-                    {globalSuggestions.map((item) => (
-                      <button
-                        key={`${item.brand}-${item.model.model}`}
-                        onClick={() => chooseModel(item.brand, item.model)}
-                        className="block w-full rounded-xl px-3 py-3 text-left hover:bg-slate-700"
-                      >
-                        <div className="font-medium text-white">{item.model.model}</div>
-                        <div className="text-xs text-slate-400">{item.brand}</div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              <div className="rounded-2xl border border-white/10 bg-slate-800 p-3">
-                <div className="mb-2 text-xs uppercase tracking-wide text-slate-400">
-                  Models in {activeBrand.brand}
-                </div>
-                <div className="max-h-[460px] space-y-2 overflow-y-auto pr-1">
-                  {filteredModels.map((model) => (
-                    <button
-                      key={model.model}
-                      onClick={() => chooseModel(activeBrand.brand, model)}
-                      className={`block w-full rounded-xl px-3 py-3 text-left transition ${
-                        selectedModel.model === model.model
-                          ? "bg-slate-700"
-                          : "hover:bg-slate-700"
-                      }`}
-                    >
-                      <div className="font-medium text-white">{model.model}</div>
-                      <div className="text-xs text-slate-400">
-                        {model.storages.map((s) => s.storage).join(" · ")}
-                      </div>
-                    </button>
-                  ))}
-                </div>
+              <div className="grid grid-cols-2 gap-2 md:flex md:items-center">
+                <QuickStat label="Brand" value={selectedBrand} />
+                <QuickStat label="Model" value={selectedModel.model} />
               </div>
             </div>
 
-            <div className="space-y-5">
-              <div className="rounded-3xl border border-white/10 bg-slate-800/60 p-5">
-                <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div className="mt-4 grid gap-3 lg:grid-cols-[1fr_auto]">
+              <div className="relative">
+                <input
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search model, alias, or storage. Example: ip17 pro max, honor, 512gb"
+                  className="w-full rounded-2xl border border-white/10 bg-slate-950/50 px-4 py-3.5 text-[15px] text-white outline-none placeholder:text-slate-500 focus:border-green-500/70"
+                />
+              </div>
+
+              <button
+                onClick={() => {
+                  setSearch("");
+                  setSelectedTab("upfront");
+                  setSelectedPlan("MP99");
+                }}
+                className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+              >
+                Reset filters
+              </button>
+            </div>
+
+            {globalSuggestions.length > 0 && (
+              <div className="mt-3 soft-panel p-2">
+                <div className="mb-2 px-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                  Search results
+                </div>
+                <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-4">
+                  {globalSuggestions.map((item) => (
+                    <button
+                      key={`${item.brand}-${item.model.model}`}
+                      onClick={() => chooseModel(item.brand, item.model)}
+                      className="rounded-2xl border border-white/6 bg-white/4 px-3 py-3 text-left transition hover:border-green-500/30 hover:bg-green-500/8"
+                    >
+                      <div className="text-sm font-semibold text-white">{item.model.model}</div>
+                      <div className="mt-1 text-xs text-slate-400">{item.brand}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </header>
+
+          <section className="grid gap-4 p-3 md:p-4 xl:grid-cols-[280px_minmax(0,1fr)_360px]">
+            <aside className="space-y-4">
+              <section className="soft-panel p-3">
+                <div className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                  Brands
+                </div>
+
+                <div className="brand-scroll flex gap-2 overflow-x-auto pb-1 xl:grid xl:grid-cols-1 xl:overflow-visible">
+                  {catalog.map((brand) => {
+                    const active = selectedBrand === brand.brand;
+
+                    return (
+                      <button
+                        key={brand.brand}
+                        onClick={() => chooseBrand(brand.brand)}
+                        className={`min-w-max rounded-2xl px-4 py-3 text-left text-sm transition xl:min-w-0 ${
+                          active
+                            ? "bg-green-500 text-slate-950 shadow-lg shadow-green-500/20"
+                            : "glass-chip text-slate-200 hover:bg-white/8"
+                        }`}
+                      >
+                        <div className="font-semibold">{brand.brand}</div>
+                        <div className={`text-xs ${active ? "text-slate-900/80" : "text-slate-400"}`}>
+                          {brand.models.length} models
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+
+              <section className="soft-panel p-3">
+                <div className="mb-3 flex items-center justify-between gap-2">
+                  <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                    Models in {activeBrand.brand}
+                  </div>
+                  <div className="text-xs text-slate-400">{filteredModels.length}</div>
+                </div>
+
+                <div className="model-scroll max-h-[420px] space-y-2 overflow-y-auto pr-1">
+                  {filteredModels.map((model) => {
+                    const active = selectedModel.model === model.model;
+
+                    return (
+                      <button
+                        key={model.model}
+                        onClick={() => chooseModel(activeBrand.brand, model)}
+                        className={`block w-full rounded-2xl border px-3 py-3 text-left transition ${
+                          active
+                            ? "border-green-500/35 bg-green-500/10"
+                            : "border-white/6 bg-white/3 hover:bg-white/6"
+                        }`}
+                      >
+                        <div className="text-sm font-semibold text-white">{model.model}</div>
+                        <div className="mt-1 text-xs text-slate-400">
+                          {model.storages.map((s) => s.storage).join(" · ")}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+            </aside>
+
+            <section className="space-y-4">
+              <div className="soft-panel p-4 md:p-5">
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                   <div>
                     <div className="text-sm text-slate-400">{selectedBrand}</div>
-                    <h2 className="text-2xl font-bold">{selectedModel.model}</h2>
-                    <div className="mt-2 text-sm text-slate-300">
-                      Browse by storage and pricing type
+                    <h2 className="mt-1 text-2xl font-bold md:text-3xl">{selectedModel.model}</h2>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      <MiniBadge label={`Storage: ${activeStorage.storage}`} />
+                      <MiniBadge label={`RRP: ${formatMoney(activeStorage.rrp)}`} />
+                      <MiniBadge label="Region: ECEM" />
                     </div>
                   </div>
 
-                  <div className="rounded-2xl bg-slate-900 px-4 py-3 text-sm">
-                    <div className="text-slate-400">Region</div>
-                    <div className="font-semibold text-white">East Malaysia (EC / EM)</div>
+                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 lg:grid-cols-1">
+                    <InfoCard label="Selected plan" value={selectedPlan} />
                   </div>
                 </div>
               </div>
 
-              <div>
-                <div className="mb-2 text-sm font-medium text-slate-300">Storage</div>
+              <div className="soft-panel p-4">
+                <div className="mb-3 text-sm font-semibold text-white">Choose storage</div>
                 <div className="flex flex-wrap gap-2">
                   {selectedModel.storages.map((storage) => (
                     <button
                       key={storage.storage}
                       onClick={() => setSelectedStorage(storage.storage)}
-                      className={`rounded-full px-3 py-2 text-sm transition ${
+                      className={`rounded-full px-4 py-2.5 text-sm font-medium transition ${
                         selectedStorage === storage.storage
-                          ? "bg-green-500 font-semibold text-black"
-                          : "bg-slate-800 text-slate-200 hover:bg-slate-700"
+                          ? "bg-green-500 text-slate-950"
+                          : "glass-chip text-slate-200 hover:bg-white/8"
                       }`}
                     >
                       {storage.storage}
                     </button>
                   ))}
                 </div>
-              </div>
 
-              <div className="rounded-3xl border border-white/10 bg-slate-800/60 p-5">
-                <div className="grid gap-3 md:grid-cols-3">
-                  <InfoCard label="Storage" value={activeStorage.storage} />
-                  <InfoCard label="RRP" value={formatMoney(activeStorage.rrp)} />
-                  <InfoCard label="Notes" value={activeStorage.notes || "ECEM pricing"} />
+                <div className="mt-4 rounded-2xl border border-white/8 bg-slate-950/45 p-3 text-sm text-slate-300">
+                  {activeStorage.notes || "Use ECEM pricing shown below."}
                 </div>
               </div>
 
-              <div>
-                <div className="mb-3 flex flex-wrap gap-2">
+              <div className="soft-panel p-4">
+                <div className="mb-3 text-sm font-semibold text-white">Pricing mode</div>
+                <div className="grid grid-cols-3 gap-2">
                   {pricingTabs.map((tab) => (
                     <button
                       key={tab.key}
                       onClick={() => setSelectedTab(tab.key)}
-                      className={`rounded-full px-4 py-2 text-sm transition ${
+                      className={`rounded-2xl px-3 py-3 text-center text-sm font-medium transition ${
                         selectedTab === tab.key
-                          ? "bg-green-500 font-semibold text-black"
-                          : "bg-slate-800 text-slate-200 hover:bg-slate-700"
+                          ? "bg-green-500 text-slate-950"
+                          : "glass-chip text-slate-200 hover:bg-white/8"
                       }`}
                     >
-                      {tab.label}
+                      <span className="hidden sm:inline">{tab.label}</span>
+                      <span className="sm:hidden">{tab.mobileLabel}</span>
                     </button>
                   ))}
                 </div>
-
-                {regionPricing ? (
-                  <div className="overflow-hidden rounded-3xl border border-white/10 bg-slate-900">
-                    <div className="border-b border-white/10 px-4 py-3 text-sm font-semibold text-white">
-                      {selectedModel.model} · {activeStorage.storage} ·{" "}
-                      {pricingTabs.find((t) => t.key === selectedTab)?.label}
-                    </div>
-
-                    <div className="overflow-x-auto">
-                      <table className="min-w-full text-sm">
-                        <thead className="bg-slate-800 text-slate-300">
-                          <tr>
-                            <th className="px-4 py-3 text-left">Plan</th>
-                            {selectedTab === "upfront" ? (
-                              <>
-                                <th className="px-4 py-3 text-left">Device Price / Upfront</th>
-                                <th className="px-4 py-3 text-left">DAP</th>
-                                <th className="px-4 py-3 text-left">Total Upfront</th>
-                              </>
-                            ) : (
-                              <>
-                                <th className="px-4 py-3 text-left">Monthly</th>
-                                <th className="px-4 py-3 text-left">DAP / ECC</th>
-                              </>
-                            )}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {mpOrder.map((mp) => {
-                            const row = currentTable?.[mp];
-                            const isSelected = selectedPlan === mp;
-
-                            return (
-                              <tr
-                                key={mp}
-                                onClick={() => setSelectedPlan(mp)}
-                                className={`cursor-pointer border-t border-white/5 ${
-                                  isSelected ? "bg-green-500/10" : "hover:bg-white/5"
-                                }`}
-                              >
-                                <td className="px-4 py-3 font-medium text-white">{mp}</td>
-
-                                {selectedTab === "upfront" ? (
-                                  <>
-                                    <td className="px-4 py-3 text-slate-200">
-                                      {row ? formatMoney((row as { devicePrice?: number | string }).devicePrice) : "NA"}
-                                    </td>
-                                    <td className="px-4 py-3 text-slate-200">
-                                      {row
-                                        ? "dapLabel" in row && row.dapLabel
-                                          ? row.dapLabel
-                                          : formatMoney((row as { dap?: number | string }).dap)
-                                        : "NA"}
-                                    </td>
-                                    <td className="px-4 py-3 text-slate-200">
-                                      {row ? formatMoney((row as { totalUpfront?: number | string }).totalUpfront) : "NA"}
-                                    </td>
-                                  </>
-                                ) : (
-                                  <>
-                                    <td className="px-4 py-3 text-slate-200">
-                                      {row ? formatMoney((row as { monthly?: number | string }).monthly) : "NA"}
-                                    </td>
-                                    <td className="px-4 py-3 text-slate-200">
-                                      {row
-                                        ? "dapLabel" in row && row.dapLabel
-                                          ? row.dapLabel
-                                          : "Check ECC"
-                                        : "NA"}
-                                    </td>
-                                  </>
-                                )}
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="rounded-3xl border border-amber-500/30 bg-amber-500/10 p-5 text-sm text-amber-100">
-                    No ECEM pricing loaded for this model.
-                  </div>
-                )}
               </div>
 
-              <div className="rounded-3xl border border-green-500/20 bg-green-500/10 p-5">
-                <div className="mb-3 flex items-center justify-between gap-3">
+              {regionPricing ? (
+                <>
+                  <div className="soft-panel overflow-hidden">
+                    <div className="border-b border-white/8 px-4 py-3">
+                      <div className="text-sm font-semibold text-white">
+                        Mobile quick select
+                      </div>
+                      <div className="text-xs text-slate-400">
+                        Best for staff on phone. Tap any plan card to prepare quote.
+                      </div>
+                    </div>
+
+                    <div className="grid gap-3 p-3 md:hidden">
+                      {mpOrder.map((mp) => {
+                        const row = currentTable?.[mp];
+                        const isSelected = selectedPlan === mp;
+
+                        return (
+                          <button
+                            key={mp}
+                            onClick={() => setSelectedPlan(mp)}
+                            className={`rounded-2xl border p-4 text-left transition ${
+                              isSelected
+                                ? "border-green-500/40 bg-green-500/10"
+                                : "border-white/8 bg-white/3"
+                            }`}
+                          >
+                            <div className="mb-3 flex items-center justify-between">
+                              <div className="text-base font-semibold text-white">{mp}</div>
+                              {isSelected && (
+                                <span className="rounded-full bg-green-500 px-2.5 py-1 text-xs font-bold text-slate-950">
+                                  Selected
+                                </span>
+                              )}
+                            </div>
+
+                            {selectedTab === "upfront" ? (
+                              <div className="grid gap-2 text-sm">
+                                <MobileValue
+                                  label="Device Price / Upfront"
+                                  value={
+                                    row
+                                      ? formatMoney(
+                                          (row as { devicePrice?: number | string }).devicePrice
+                                        )
+                                      : "NA"
+                                  }
+                                />
+                                <MobileValue
+                                  label="DAP"
+                                  value={
+                                    row
+                                      ? "dapLabel" in row && row.dapLabel
+                                        ? row.dapLabel
+                                        : formatMoney((row as { dap?: number | string }).dap)
+                                      : "NA"
+                                  }
+                                />
+                                <MobileValue
+                                  label="Total Upfront"
+                                  value={
+                                    row
+                                      ? formatMoney(
+                                          (row as { totalUpfront?: number | string }).totalUpfront
+                                        )
+                                      : "NA"
+                                  }
+                                />
+                              </div>
+                            ) : (
+                              <div className="grid gap-2 text-sm">
+                                <MobileValue
+                                  label="Monthly"
+                                  value={
+                                    row
+                                      ? formatMoney((row as { monthly?: number | string }).monthly)
+                                      : "NA"
+                                  }
+                                />
+                                <MobileValue
+                                  label="DAP / ECC"
+                                  value={
+                                    row
+                                      ? "dapLabel" in row && row.dapLabel
+                                        ? row.dapLabel
+                                        : "Check ECC"
+                                      : "NA"
+                                  }
+                                />
+                              </div>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    <div className="hidden md:block">
+                      <div className="table-scroll overflow-x-auto">
+                        <table className="min-w-full text-sm">
+                          <thead className="bg-white/4 text-slate-300">
+                            <tr>
+                              <th className="px-4 py-3 text-left">Plan</th>
+                              {selectedTab === "upfront" ? (
+                                <>
+                                  <th className="px-4 py-3 text-left">Device Price / Upfront</th>
+                                  <th className="px-4 py-3 text-left">DAP</th>
+                                  <th className="px-4 py-3 text-left">Total Upfront</th>
+                                </>
+                              ) : (
+                                <>
+                                  <th className="px-4 py-3 text-left">Monthly</th>
+                                  <th className="px-4 py-3 text-left">DAP / ECC</th>
+                                </>
+                              )}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {mpOrder.map((mp) => {
+                              const row = currentTable?.[mp];
+                              const isSelected = selectedPlan === mp;
+
+                              return (
+                                <tr
+                                  key={mp}
+                                  onClick={() => setSelectedPlan(mp)}
+                                  className={`cursor-pointer border-t border-white/6 transition ${
+                                    isSelected ? "bg-green-500/10" : "hover:bg-white/4"
+                                  }`}
+                                >
+                                  <td className="px-4 py-3 font-semibold text-white">{mp}</td>
+
+                                  {selectedTab === "upfront" ? (
+                                    <>
+                                      <td className="px-4 py-3 text-slate-200">
+                                        {row
+                                          ? formatMoney(
+                                              (row as { devicePrice?: number | string }).devicePrice
+                                            )
+                                          : "NA"}
+                                      </td>
+                                      <td className="px-4 py-3 text-slate-200">
+                                        {row
+                                          ? "dapLabel" in row && row.dapLabel
+                                            ? row.dapLabel
+                                            : formatMoney((row as { dap?: number | string }).dap)
+                                          : "NA"}
+                                      </td>
+                                      <td className="px-4 py-3 text-slate-200">
+                                        {row
+                                          ? formatMoney(
+                                              (row as { totalUpfront?: number | string }).totalUpfront
+                                            )
+                                          : "NA"}
+                                      </td>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <td className="px-4 py-3 text-slate-200">
+                                        {row
+                                          ? formatMoney((row as { monthly?: number | string }).monthly)
+                                          : "NA"}
+                                      </td>
+                                      <td className="px-4 py-3 text-slate-200">
+                                        {row
+                                          ? "dapLabel" in row && row.dapLabel
+                                            ? row.dapLabel
+                                            : "Check ECC"
+                                          : "NA"}
+                                      </td>
+                                    </>
+                                  )}
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div className="rounded-3xl border border-amber-500/30 bg-amber-500/10 p-5 text-sm text-amber-100">
+                  No ECEM pricing loaded for this model.
+                </div>
+              )}
+            </section>
+
+            <aside className="space-y-4">
+              <section className="soft-panel p-4">
+                <div className="mb-3 flex items-start justify-between gap-3">
                   <div>
                     <div className="text-sm font-semibold text-white">Quick Quote</div>
-                    <div className="text-xs text-green-100/80">
-                      Tap any plan row above, then copy for WhatsApp
+                    <div className="text-xs text-slate-400">
+                      Tap plan, then copy for WhatsApp
                     </div>
                   </div>
                   <button
                     onClick={copyQuote}
                     disabled={!quoteText}
-                    className="rounded-2xl bg-green-500 px-4 py-2 text-sm font-semibold text-black transition hover:bg-green-400 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="rounded-2xl bg-green-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-green-400 disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    Copy Quote
+                    Copy
                   </button>
                 </div>
 
-                <div className="rounded-2xl bg-slate-950/50 p-4">
-                  <pre className="whitespace-pre-wrap text-sm text-slate-200">
+                <div className="rounded-2xl border border-white/8 bg-slate-950/50 p-4">
+                  <pre className="quote-pre whitespace-pre-wrap text-sm text-slate-200">
                     {quoteText || "Select a valid plan row to generate quote."}
                   </pre>
                 </div>
-              </div>
+              </section>
 
-              <div className="rounded-3xl border border-white/10 bg-slate-800/60 p-5">
-                <div className="text-sm font-semibold text-white">Sales notes</div>
-                <ul className="mt-3 space-y-2 text-sm text-slate-300">
-                  <li>• Search is for fast staff.</li>
-                  <li>• Brand → model → storage is for browsing.</li>
-                  <li>• Click any plan row to prepare quick quote.</li>
-                  <li>• This version is ECEM only.</li>
+              <section className="soft-panel p-4">
+                <div className="mb-3 text-sm font-semibold text-white">Staff flow</div>
+                <ul className="space-y-2 text-sm text-slate-300">
+                  <li>1. Search or choose brand</li>
+                  <li>2. Tap model</li>
+                  <li>3. Tap storage</li>
+                  <li>4. Tap pricing plan</li>
+                  <li>5. Copy quote</li>
                 </ul>
-              </div>
-            </div>
-          </div>
+              </section>
+
+              <section className="soft-panel p-4">
+                <div className="mb-3 text-sm font-semibold text-white">Current selection</div>
+                <div className="grid gap-2 text-sm">
+                  <SelectionRow label="Brand" value={selectedBrand} />
+                  <SelectionRow label="Model" value={selectedModel.model} />
+                  <SelectionRow label="Storage" value={activeStorage.storage} />
+                  <SelectionRow
+                    label="Mode"
+                    value={pricingTabs.find((t) => t.key === selectedTab)?.label || selectedTab}
+                  />
+                  <SelectionRow label="Plan" value={selectedPlan} />
+                </div>
+              </section>
+            </aside>
+          </section>
         </div>
       </div>
+
+      <div className="sticky-mobile-bar fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-slate-950/92 px-3 py-3 backdrop-blur md:hidden">
+        <div className="mx-auto flex max-w-md items-center gap-3">
+          <div className="min-w-0 flex-1">
+            <div className="truncate text-sm font-semibold text-white">
+              {selectedModel.model} · {selectedPlan}
+            </div>
+            <div className="truncate text-xs text-slate-400">
+              {activeStorage.storage} · {pricingTabs.find((t) => t.key === selectedTab)?.mobileLabel}
+            </div>
+          </div>
+
+          <button
+            onClick={copyQuote}
+            disabled={!quoteText}
+            className="rounded-2xl bg-green-500 px-4 py-3 text-sm font-bold text-slate-950 disabled:opacity-50"
+          >
+            Copy Quote
+          </button>
+        </div>
+      </div>
+
+      {toast && (
+        <div className="fixed right-3 top-3 z-50 rounded-2xl border border-green-500/30 bg-green-500/15 px-4 py-3 text-sm font-semibold text-green-200 shadow-2xl">
+          {toast} ✅
+        </div>
+      )}
+    </main>
+  );
+}
+
+function QuickStat({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-2xl border border-white/8 bg-white/4 px-3 py-2">
+      <div className="text-[11px] uppercase tracking-[0.16em] text-slate-500">{label}</div>
+      <div className="mt-1 max-w-[180px] truncate text-sm font-semibold text-white">{value}</div>
+    </div>
+  );
+}
+
+function MiniBadge({ label }: { label: string }) {
+  return (
+    <div className="rounded-full border border-white/8 bg-white/4 px-3 py-1.5 text-xs text-slate-300">
+      {label}
     </div>
   );
 }
 
 function InfoCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl bg-slate-900 p-4">
-      <div className="text-xs uppercase tracking-wide text-slate-400">{label}</div>
-      <div className="mt-2 text-base font-semibold text-white">{value}</div>
+    <div className="rounded-2xl border border-white/8 bg-white/4 p-3">
+      <div className="text-[11px] uppercase tracking-[0.16em] text-slate-500">{label}</div>
+      <div className="mt-1 text-sm font-semibold text-white">{value}</div>
+    </div>
+  );
+}
+
+function MobileValue({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-start justify-between gap-3 rounded-xl bg-white/4 px-3 py-2.5">
+      <span className="text-slate-400">{label}</span>
+      <span className="text-right font-semibold text-white">{value}</span>
+    </div>
+  );
+}
+
+function SelectionRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-start justify-between gap-3 rounded-2xl border border-white/8 bg-white/4 px-3 py-3">
+      <span className="text-slate-400">{label}</span>
+      <span className="text-right font-semibold text-white">{value}</span>
     </div>
   );
 }
