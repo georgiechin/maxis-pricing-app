@@ -15,6 +15,7 @@ const pricingTabs: { key: PricingMode; label: string }[] = [
 ];
 
 const mpOrder = ["MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
+const mpOrderZero = ["MP48", "MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
 
 function normalize(text: string) {
   return text.toLowerCase().replace(/\s+/g, " ").trim();
@@ -159,11 +160,11 @@ export default function Page() {
     return `🔥 ${selectedModel.model}
 📦 Storage: ${activeStorage.storage}
 📍 Region: ECEM
-📱 Plan: ${selectedPlan}
+📱 Plan: ${selectedPlan}${selectedPlan === "MP48" ? " (Shareline)" : ""}
 🗓 Mode: ${selectedTab === "zero24" ? "Zerolution 24M" : "Zerolution 36M"}
 
 📆 Monthly: ${moneyPlain((selectedRow as { monthly?: number | string }).monthly)}
-📝 Note: ${"dapLabel" in selectedRow && selectedRow.dapLabel ? selectedRow.dapLabel : "Check ECC"}`;
+📝 Note: ${"dapLabel" in selectedRow && selectedRow.dapLabel && selectedRow.dapLabel !== "NA" ? selectedRow.dapLabel : selectedPlan === "MP48" ? "Shareline - no ECC" : "Check ECC"}`;
   }, [regionPricing, selectedRow, selectedModel, activeStorage, selectedPlan, selectedTab]);
 
   const copyQuote = async () => {
@@ -319,7 +320,12 @@ export default function Page() {
                   {pricingTabs.map((tab) => (
                     <button
                       key={tab.key}
-                      onClick={() => setSelectedTab(tab.key)}
+                      onClick={() => {
+                        setSelectedTab(tab.key);
+                        if (tab.key === "upfront" && selectedPlan === "MP48") {
+                          setSelectedPlan("MP99");
+                        }
+                      }}
                       className={`rounded-full px-4 py-2 text-sm transition ${
                         selectedTab === tab.key
                           ? "bg-green-500 font-semibold text-black"
@@ -358,7 +364,7 @@ export default function Page() {
                           </tr>
                         </thead>
                         <tbody>
-                          {mpOrder.map((mp) => {
+                          {(selectedTab === "upfront" ? mpOrder : mpOrderZero).map((mp) => {
                             const row = currentTable?.[mp];
                             const isSelected = selectedPlan === mp;
 
@@ -370,7 +376,12 @@ export default function Page() {
                                   isSelected ? "bg-green-500/10" : "hover:bg-white/5"
                                 }`}
                               >
-                                <td className="px-4 py-3 font-medium text-white">{mp}</td>
+                                <td className="px-4 py-3 font-medium text-white">
+                                  {mp}
+                                  {mp === "MP48" && (
+                                    <span className="ml-2 rounded-full bg-blue-500/20 px-2 py-0.5 text-xs text-blue-300">Shareline</span>
+                                  )}
+                                </td>
 
                                 {selectedTab === "upfront" ? (
                                   <>
