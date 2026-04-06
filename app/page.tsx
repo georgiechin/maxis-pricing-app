@@ -40,6 +40,7 @@ type BudgetResult = {
   storage: CatalogStorage;
   bestPlan: string;
   bestMonthly: number;
+  stretch: boolean; // true = slightly above budget (upsell)
 };
 
 type SimilarResult = {
@@ -141,6 +142,7 @@ export default function Page() {
   const budgetResults = useMemo((): BudgetResult[] => {
     const max = Number(budgetMax);
     if (!budgetMode || isNaN(max) || max <= 0) return [];
+    const stretchMax = max * 1.25; // +25% upsell range
 
     const results: BudgetResult[] = [];
 
@@ -150,38 +152,52 @@ export default function Page() {
           const table = storage.regions.ECEM?.[budgetTab];
           if (!table) continue;
 
-          let bestPlan = "";
-          let bestMonthly = Infinity;
+          let withinPlan = "";
+          let withinPrice = Infinity;
+          let stretchPlan = "";
+          let stretchPrice = Infinity;
 
           for (const [plan, row] of Object.entries(table)) {
+            let price: number;
             if (budgetTab === "upfront") {
               const total = (row as { totalUpfront?: number | string }).totalUpfront;
               if (total === undefined || total === "NA") continue;
-              const t = Number(total);
-              if (!isNaN(t) && t > 0 && t <= max && t < bestMonthly) {
-                bestPlan = plan;
-                bestMonthly = t;
-              }
+              price = Number(total);
             } else {
               const monthly = (row as { monthly?: number | string }).monthly;
               if (monthly === undefined || monthly === "NA") continue;
-              const m = Number(monthly);
-              if (!isNaN(m) && m > 0 && m <= max && m < bestMonthly) {
-                bestPlan = plan;
-                bestMonthly = m;
-              }
+              price = Number(monthly);
+            }
+            if (isNaN(price) || price <= 0) continue;
+
+            if (price <= max && price < withinPrice) {
+              withinPlan = plan;
+              withinPrice = price;
+            } else if (price > max && price <= stretchMax && price < stretchPrice) {
+              stretchPlan = plan;
+              stretchPrice = price;
             }
           }
 
-          if (bestPlan) {
-            results.push({ brand: brand.brand, model, storage, bestPlan, bestMonthly });
+          if (withinPlan) {
+            results.push({ brand: brand.brand, model, storage, bestPlan: withinPlan, bestMonthly: withinPrice, stretch: false });
+          } else if (stretchPlan) {
+            results.push({ brand: brand.brand, model, storage, bestPlan: stretchPlan, bestMonthly: stretchPrice, stretch: true });
           }
         }
       }
     }
 
-    // Sort by RRP descending — best phone for the money first
-    return results.sort((a, b) => (b.storage.rrp || 0) - (a.storage.rrp || 0));
+    // Within budget: best phone first (RRP desc)
+    // Stretch: cheapest first (least extra money needed)
+    const within = results
+      .filter((r) => !r.stretch)
+      .sort((a, b) => (b.storage.rrp || 0) - (a.storage.rrp || 0));
+    const stretch = results
+      .filter((r) => r.stretch)
+      .sort((a, b) => a.bestMonthly - b.bestMonthly);
+
+    return [...within, ...stretch];
   }, [budgetMode, budgetMax, budgetTab]);
 
   // ── Similar price phones ────────────────────────────────────────────────────
@@ -529,36 +545,50 @@ export default function Page() {
 
               {budgetMax && Number(budgetMax) > 0 && (
                 <div className="text-xs text-slate-500">
-                  {budgetResults.length} phone{budgetResults.length !== 1 ? "s" : ""} found
+                  {budgetResults.filter((r) => !r.stretch).length} within ·{" "}
+                  {budgetResults.filter((r) => r.stretch).length} stretch
                 </div>
               )}
 
               <div className="max-h-[calc(100vh-300px)] space-y-2 overflow-y-auto pr-1">
-                {budgetResults.map((result, i) => (
-                  <button
-                    key={`${result.brand}-${result.model.model}-${result.storage.storage}-${i}`}
-                    onClick={() =>
+                {/* Within budget phones */}
+                {budgetResults.filter((r) => !r.stretch).map((result, i) => (
+                  <BudgetCard
+                    key={`within-${result.brand}-${result.model.model}-${result.storage.storage}-${i}`}
+                    result={result}
+                    budgetTab={budgetTab}
+                    onSelect={() =>
                       navigateToDevice(result.brand, result.model, result.storage.storage, budgetTab)
                     }
-                    className="block w-full rounded-xl border border-white/8 bg-transparent px-3 py-3 text-left transition hover:border-white/15 hover:bg-[#181c1f]"
-                  >
-                    <div className="truncate text-sm font-medium text-white">
-                      {result.model.model}
-                    </div>
-                    <div className="mt-0.5 text-xs text-slate-500">
-                      {result.storage.storage} · {result.brand}
-                    </div>
-                    <div className="mt-2 flex items-center justify-between">
-                      <span className="text-xs text-slate-400">{result.bestPlan}</span>
-                      <span className="text-sm font-bold text-[#00D46A]">
-                        RM{result.bestMonthly}{budgetTab === "upfront" ? " total" : "/mo"}
-                      </span>
-                    </div>
-                  </button>
+                  />
                 ))}
+
+                {/* Stretch upsell phones */}
+                {budgetResults.some((r) => r.stretch) && (
+                  <>
+                    <div className="flex items-center gap-2 pt-1">
+                      <div className="h-px flex-1 bg-white/8" />
+                      <span className="text-[10px] font-medium text-amber-400/80">
+                        ✨ Stretch a little
+                      </span>
+                      <div className="h-px flex-1 bg-white/8" />
+                    </div>
+                    {budgetResults.filter((r) => r.stretch).map((result, i) => (
+                      <BudgetCard
+                        key={`stretch-${result.brand}-${result.model.model}-${result.storage.storage}-${i}`}
+                        result={result}
+                        budgetTab={budgetTab}
+                        onSelect={() =>
+                          navigateToDevice(result.brand, result.model, result.storage.storage, budgetTab)
+                        }
+                      />
+                    ))}
+                  </>
+                )}
+
                 {budgetMax && Number(budgetMax) > 0 && budgetResults.length === 0 && (
                   <div className="rounded-xl border border-white/8 p-4 text-center text-sm text-slate-500">
-                    No phones within RM{budgetMax}/mo
+                    No phones found near RM{budgetMax}
                   </div>
                 )}
               </div>
@@ -1131,6 +1161,43 @@ export default function Page() {
         </div>
       )}
     </main>
+  );
+}
+
+function BudgetCard({
+  result,
+  budgetTab,
+  onSelect,
+}: {
+  result: BudgetResult;
+  budgetTab: "upfront" | "zero24" | "zero36";
+  onSelect: () => void;
+}) {
+  const priceLabel =
+    budgetTab === "upfront"
+      ? `RM${result.bestMonthly} total`
+      : `RM${result.bestMonthly}/mo`;
+
+  return (
+    <button
+      onClick={onSelect}
+      className={`block w-full rounded-xl border px-3 py-3 text-left transition hover:bg-[#181c1f] ${
+        result.stretch
+          ? "border-amber-500/20 bg-amber-500/5 hover:border-amber-500/30"
+          : "border-white/8 bg-transparent hover:border-white/15"
+      }`}
+    >
+      <div className="truncate text-sm font-medium text-white">{result.model.model}</div>
+      <div className="mt-0.5 text-xs text-slate-500">
+        {result.storage.storage} · {result.brand}
+      </div>
+      <div className="mt-2 flex items-center justify-between">
+        <span className="text-xs text-slate-400">{result.bestPlan}</span>
+        <span className={`text-sm font-bold ${result.stretch ? "text-amber-400" : "text-[#00D46A]"}`}>
+          {priceLabel}
+        </span>
+      </div>
+    </button>
   );
 }
 
