@@ -1,8 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #07111f;
+  --foreground: #ecf3ff;
+  --panel: #0b1728;
+  --panel-2: #101d31;
+  --line: rgba(255, 255, 255, 0.08);
+  --muted: #95a6c7;
+  --accent: #35e07f;
+  --accent-2: #1cc86a;
+  --danger: #ff6b6b;
+  --shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
 }
 
 @theme inline {
@@ -12,15 +20,89 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
+  background:
+    radial-gradient(circle at top left, rgba(53, 224, 127, 0.1), transparent 28%),
+    linear-gradient(180deg, #07111f 0%, #081426 100%);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(53, 224, 127, 0.28);
+  color: #ffffff;
+}
+
+.app-shell {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.app-card {
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(11, 23, 40, 0.96) 0%, rgba(9, 18, 33, 0.94) 100%);
+  box-shadow: var(--shadow);
+  border-radius: 28px;
+}
+
+.soft-panel {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 22px;
+}
+
+.glass-chip {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(10px);
+}
+
+.brand-scroll::-webkit-scrollbar,
+.model-scroll::-webkit-scrollbar,
+.table-scroll::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.brand-scroll::-webkit-scrollbar-thumb,
+.model-scroll::-webkit-scrollbar-thumb,
+.table-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+}
+
+.quote-pre {
+  font-family: var(--font-geist-mono), monospace;
+  line-height: 1.6;
+}
+
+.sticky-mobile-bar {
+  padding-bottom: calc(14px + env(safe-area-inset-bottom));
+}
+
+@media (max-width: 767px) {
+  .app-shell {
+    padding: 10px;
+  }
+
+  .app-card {
+    border-radius: 22px;
+  }
 }
