@@ -69,6 +69,10 @@ export default function Page() {
   const [budgetMax, setBudgetMax] = useState("");
   const [budgetTab, setBudgetTab] = useState<"zero24" | "zero36">("zero24");
 
+  // Sidebar collapse state
+  const [brandExpanded, setBrandExpanded] = useState(true);
+  const [modelExpanded, setModelExpanded] = useState(true);
+
   const activeBrand = useMemo(
     () => catalog.find((b) => b.brand === selectedBrand) || catalog[0],
     [selectedBrand]
@@ -239,6 +243,8 @@ export default function Page() {
     setSelectedPlan(getBestDefaultPlan(model, targetStorage, targetTab));
     setSearchQuery("");
     setBudgetMode(false);
+    setBrandExpanded(false);
+    setModelExpanded(false);
   };
 
   const chooseBrand = (brand: CatalogBrand["brand"]) => {
@@ -253,6 +259,8 @@ export default function Page() {
     setSelectedPlan(getBestDefaultPlan(nextModel, nextStorage, "upfront"));
     setSearchQuery("");
     setBudgetMode(false);
+    setBrandExpanded(false);   // collapse brands after selecting
+    setModelExpanded(true);    // auto-open models
   };
 
   const chooseModel = (model: CatalogModel) => {
@@ -263,6 +271,7 @@ export default function Page() {
     setSelectedTab("upfront");
     setSelectedPlan(getBestDefaultPlan(model, nextStorage, "upfront"));
     setSearchQuery("");
+    setModelExpanded(false);   // collapse models after selecting
   };
 
   const resetAll = () => {
@@ -278,6 +287,8 @@ export default function Page() {
     setSearchQuery("");
     setBudgetMode(false);
     setBudgetMax("");
+    setBrandExpanded(true);
+    setModelExpanded(true);
   };
 
   const quoteText = useMemo(() => {
@@ -499,72 +510,113 @@ export default function Page() {
           ) : (
             /* Normal Brand/Model Mode */
             <>
-              <section className="mb-4">
-                <div className="mb-2 flex items-center justify-between gap-2">
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-                    Brands
+              {/* ── Brand section ─────────────────────────────────────── */}
+              {brandExpanded ? (
+                <section className="mb-4">
+                  <div className="mb-2 flex items-center justify-between gap-2">
+                    <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                      ① Brand
+                    </div>
+                    <button
+                      onClick={() => setBudgetMode(true)}
+                      className="rounded-lg border border-white/10 bg-[#1e2225] px-2 py-1 text-[10px] font-medium text-slate-400 transition hover:border-[#00D46A]/30 hover:text-[#00D46A]"
+                    >
+                      💰 Budget
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-1">
+                    {catalog.map((brand) => {
+                      const active = brand.brand === selectedBrand;
+                      return (
+                        <button
+                          key={brand.brand}
+                          onClick={() => chooseBrand(brand.brand)}
+                          className={`rounded-xl border px-3 py-3 text-left transition ${
+                            active
+                              ? "border-[#00D46A] bg-[#00D46A] text-black"
+                              : "border-white/8 bg-transparent text-slate-300 hover:border-white/15 hover:bg-[#181c1f] hover:text-white"
+                          }`}
+                        >
+                          <div className="truncate text-sm font-semibold">{brand.brand}</div>
+                          <div className={`mt-1 text-xs ${active ? "text-black/70" : "text-slate-500"}`}>
+                            {brand.models.length} models
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </section>
+              ) : (
+                <section className="mb-3">
+                  <div className="mb-1.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-slate-600">
+                    ① Brand
                   </div>
                   <button
-                    onClick={() => setBudgetMode(true)}
-                    className="rounded-lg border border-white/10 bg-[#1e2225] px-2 py-1 text-[10px] font-medium text-slate-400 transition hover:border-[#00D46A]/30 hover:text-[#00D46A]"
+                    onClick={() => setBrandExpanded(true)}
+                    className="flex w-full items-center justify-between rounded-xl border border-[#00D46A]/30 bg-[#00D46A]/8 px-3 py-2.5 transition hover:border-[#00D46A]/50 hover:bg-[#00D46A]/12"
                   >
-                    💰 Budget
+                    <span className="text-sm font-semibold text-white">{selectedBrand}</span>
+                    <span className="text-[10px] font-medium text-[#00D46A]/70">change ↕</span>
                   </button>
-                </div>
+                </section>
+              )}
 
-                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-1">
-                  {catalog.map((brand) => {
-                    const active = brand.brand === selectedBrand;
-                    return (
-                      <button
-                        key={brand.brand}
-                        onClick={() => chooseBrand(brand.brand)}
-                        className={`rounded-xl border px-3 py-3 text-left transition ${
-                          active
-                            ? "border-[#00D46A] bg-[#00D46A] text-black"
-                            : "border-white/8 bg-transparent text-slate-300 hover:border-white/15 hover:bg-[#181c1f] hover:text-white"
-                        }`}
-                      >
-                        <div className="truncate text-sm font-semibold">{brand.brand}</div>
-                        <div className={`mt-1 text-xs ${active ? "text-black/70" : "text-slate-500"}`}>
-                          {brand.models.length} models
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </section>
-
-              <section>
-                <div className="mb-2 flex items-center justify-between gap-2">
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-                    Models
+              {/* ── Model section ─────────────────────────────────────── */}
+              {modelExpanded ? (
+                <section>
+                  <div className="mb-2 flex items-center justify-between gap-2">
+                    <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                      ② Model
+                    </div>
+                    <div className="text-xs text-slate-500">{activeBrand.models.length}</div>
                   </div>
-                  <div className="text-xs text-slate-500">{activeBrand.models.length}</div>
-                </div>
 
-                <div className="max-h-[320px] space-y-2 overflow-y-auto pr-1">
-                  {activeBrand.models.map((model) => {
-                    const active = model.model === selectedModel.model;
-                    return (
-                      <button
-                        key={model.model}
-                        onClick={() => chooseModel(model)}
-                        className={`block w-full rounded-xl border px-3 py-3 text-left transition ${
-                          active
-                            ? "border-[#00D46A]/40 bg-[#00D46A]/10"
-                            : "border-white/8 bg-transparent hover:border-white/15 hover:bg-[#181c1f]"
-                        }`}
-                      >
-                        <div className="text-sm font-medium text-white">{model.model}</div>
-                        <div className="mt-1 text-xs text-slate-500">
-                          {model.storages.map((s) => s.storage).join(" · ")}
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </section>
+                  <div className="max-h-[420px] space-y-2 overflow-y-auto pr-1">
+                    {activeBrand.models.map((model) => {
+                      const active = model.model === selectedModel.model;
+                      return (
+                        <button
+                          key={model.model}
+                          onClick={() => chooseModel(model)}
+                          className={`block w-full rounded-xl border px-3 py-3 text-left transition ${
+                            active
+                              ? "border-[#00D46A]/40 bg-[#00D46A]/10"
+                              : "border-white/8 bg-transparent hover:border-white/15 hover:bg-[#181c1f]"
+                          }`}
+                        >
+                          <div className="text-sm font-medium text-white">{model.model}</div>
+                          <div className="mt-1 text-xs text-slate-500">
+                            {model.storages.map((s) => s.storage).join(" · ")}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </section>
+              ) : (
+                <section>
+                  <div className="mb-1.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-slate-600">
+                    ② Model
+                  </div>
+                  <button
+                    onClick={() => setModelExpanded(true)}
+                    className="flex w-full items-center justify-between rounded-xl border border-[#00D46A]/30 bg-[#00D46A]/8 px-3 py-2.5 transition hover:border-[#00D46A]/50 hover:bg-[#00D46A]/12"
+                  >
+                    <div className="min-w-0 flex-1 text-left">
+                      <div className="truncate text-sm font-semibold text-white">
+                        {selectedModel.model}
+                      </div>
+                      <div className="mt-0.5 text-xs text-[#00D46A]/60">
+                        {activeStorage.storage}
+                      </div>
+                    </div>
+                    <span className="ml-3 flex-shrink-0 text-[10px] font-medium text-[#00D46A]/70">
+                      change ↕
+                    </span>
+                  </button>
+                </section>
+              )}
             </>
           )}
         </aside>
