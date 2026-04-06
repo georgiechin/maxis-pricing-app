@@ -73,6 +73,7 @@ export default function Page() {
   // Sidebar collapse state
   const [brandExpanded, setBrandExpanded] = useState(true);
   const [modelExpanded, setModelExpanded] = useState(true);
+  const [pricingExpanded, setPricingExpanded] = useState(true);
 
   const activeBrand = useMemo(
     () => catalog.find((b) => b.brand === selectedBrand) || catalog[0],
@@ -271,6 +272,7 @@ export default function Page() {
     setBudgetMode(false);
     setBrandExpanded(false);
     setModelExpanded(false);
+    setPricingExpanded(true);   // let staff pick a plan on arrival
   };
 
   const chooseBrand = (brand: CatalogBrand["brand"]) => {
@@ -285,8 +287,9 @@ export default function Page() {
     setSelectedPlan(getBestDefaultPlan(nextModel, nextStorage, "upfront"));
     setSearchQuery("");
     setBudgetMode(false);
-    setBrandExpanded(false);   // collapse brands after selecting
-    setModelExpanded(true);    // auto-open models
+    setBrandExpanded(false);
+    setModelExpanded(true);
+    setPricingExpanded(true);
   };
 
   const chooseModel = (model: CatalogModel) => {
@@ -297,7 +300,8 @@ export default function Page() {
     setSelectedTab("upfront");
     setSelectedPlan(getBestDefaultPlan(model, nextStorage, "upfront"));
     setSearchQuery("");
-    setModelExpanded(false);   // collapse models after selecting
+    setModelExpanded(false);
+    setPricingExpanded(true);
   };
 
   const resetAll = () => {
@@ -315,6 +319,7 @@ export default function Page() {
     setBudgetMax("");
     setBrandExpanded(true);
     setModelExpanded(true);
+    setPricingExpanded(true);
   };
 
   const quoteText = useMemo(() => {
@@ -738,6 +743,7 @@ export default function Page() {
                     onClick={() => {
                       setSelectedStorage(storage.storage);
                       setSelectedPlan(getBestDefaultPlan(selectedModel, storage.storage, selectedTab));
+                      setPricingExpanded(true);
                     }}
                     className={`rounded-xl border px-4 py-2 text-sm font-medium transition ${
                       active
@@ -770,6 +776,7 @@ export default function Page() {
                     onClick={() => {
                       setSelectedTab(tab.key);
                       setSelectedPlan(getBestDefaultPlan(selectedModel, selectedStorage, tab.key));
+                      setPricingExpanded(true);
                     }}
                     className={`rounded-xl border px-3 py-3 text-sm font-medium transition ${
                       active
@@ -785,9 +792,58 @@ export default function Page() {
             </div>
           </div>
 
+          {/* ── Collapsed plan view ─────────────────────────────────────── */}
+          {!pricingExpanded && selectedRow && (
+            <button
+              onClick={() => setPricingExpanded(true)}
+              className="flex w-full items-center justify-between rounded-2xl border border-[#00D46A]/30 bg-[#00D46A]/8 px-5 py-4 text-left transition hover:border-[#00D46A]/50 hover:bg-[#00D46A]/12"
+            >
+              <div>
+                <div className="mb-1 text-[9px] font-semibold uppercase tracking-[0.15em] text-slate-600">
+                  ③ Plan
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-xl font-bold text-white">{selectedPlan}</span>
+                  {selectedPlan === "MP48" && (
+                    <span className="rounded-full bg-blue-500/20 px-2 py-0.5 text-xs text-blue-300">
+                      Shareline
+                    </span>
+                  )}
+                  <span className="text-xs text-slate-500">·</span>
+                  <span className="text-sm text-slate-400">
+                    {pricingTabs.find((t) => t.key === selectedTab)?.label}
+                  </span>
+                </div>
+                <div className="mt-1.5 text-base font-bold text-[#00D46A]">
+                  {selectedTab === "upfront"
+                    ? (() => {
+                        const r = selectedRow as {
+                          devicePrice?: number | string;
+                          totalUpfront?: number | string;
+                        };
+                        return r.devicePrice !== "NA"
+                          ? `${formatMoney(r.devicePrice)} device · ${formatMoney(r.totalUpfront)} total`
+                          : "NA";
+                      })()
+                    : (() => {
+                        const r = selectedRow as { monthly?: number | string };
+                        return r.monthly !== "NA"
+                          ? `${formatMoney(r.monthly)}/mo`
+                          : "NA";
+                      })()}
+                </div>
+              </div>
+              <span className="ml-4 flex-shrink-0 text-[10px] font-medium text-[#00D46A]/70">
+                change ↕
+              </span>
+            </button>
+          )}
+
+          {/* ── Expanded plan pricing table ──────────────────────────────── */}
+          {pricingExpanded && (
           <div className="overflow-hidden rounded-2xl border border-white/8 bg-[#111417]">
             <div className="flex items-center justify-between border-b border-white/8 px-4 py-3">
-              <div className="text-sm font-semibold text-white">Plan pricing</div>
+              <div className="text-sm font-semibold text-white">③ Plan pricing</div>
               <div className="text-xs text-slate-500">Tap row to select</div>
             </div>
 
@@ -813,7 +869,7 @@ export default function Page() {
                     return (
                       <button
                         key={mp}
-                        onClick={() => setSelectedPlan(mp)}
+                        onClick={() => { setSelectedPlan(mp); setPricingExpanded(false); }}
                         className={`rounded-2xl border p-4 text-left transition ${
                           active
                             ? "border-[#00D46A]/40 bg-[#00D46A]/10"
@@ -945,7 +1001,7 @@ export default function Page() {
                         return (
                           <tr
                             key={mp}
-                            onClick={() => setSelectedPlan(mp)}
+                            onClick={() => { setSelectedPlan(mp); setPricingExpanded(false); }}
                             className={`cursor-pointer border-t border-white/8 transition ${
                               active ? "bg-[#00D46A]/10" : "hover:bg-[#181c1f]"
                             }`}
@@ -1016,6 +1072,7 @@ export default function Page() {
               </div>
             )}
           </div>
+          )}
         </section>
 
         {/* ── RIGHT SIDEBAR ───────────────────────────────────────────────── */}
