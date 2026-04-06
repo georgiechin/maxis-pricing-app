@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   catalog,
   type CatalogBrand,
   type CatalogModel,
+  type CatalogStorage,
   type PricingMode,
 } from "../data/catalog";
 
@@ -33,6 +34,21 @@ function moneyPlain(value: number | string | null | undefined) {
   return `RM${Number(value).toLocaleString()}`;
 }
 
+type BudgetResult = {
+  brand: string;
+  model: CatalogModel;
+  storage: CatalogStorage;
+  bestPlan: string;
+  bestMonthly: number;
+};
+
+type SimilarResult = {
+  brand: string;
+  model: CatalogModel;
+  storage: CatalogStorage;
+  price: number;
+};
+
 export default function Page() {
   const [selectedBrand, setSelectedBrand] = useState<CatalogBrand["brand"]>(catalog[0].brand);
   const [selectedModel, setSelectedModel] = useState<CatalogModel>(catalog[0].models[0]);
@@ -42,6 +58,16 @@ export default function Page() {
   const [selectedTab, setSelectedTab] = useState<PricingMode>("upfront");
   const [selectedPlan, setSelectedPlan] = useState("MP99");
   const [toast, setToast] = useState("");
+
+  // Search state
+  const [searchQuery, setSearchQuery] = useState("");
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const searchDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Budget filter state
+  const [budgetMode, setBudgetMode] = useState(false);
+  const [budgetMax, setBudgetMax] = useState("");
+  const [budgetTab, setBudgetTab] = useState<"zero24" | "zero36">("zero24");
 
   const activeBrand = useMemo(
     () => catalog.find((b) => b.brand === selectedBrand) || catalog[0],
@@ -88,6 +114,133 @@ export default function Page() {
     return "MP99";
   };
 
+  // ── Search results ──────────────────────────────────────────────────────────
+  const searchResults = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (q.length < 2) return [];
+    const results: { brand: string; model: CatalogModel }[] = [];
+    for (const brand of catalog) {
+      for (const model of brand.models) {
+        if (
+          model.model.toLowerCase().includes(q) ||
+          (model.aliases && model.aliases.some((a) => a.toLowerCase().includes(q)))
+        ) {
+          results.push({ brand: brand.brand, model });
+          if (results.length >= 8) return results;
+        }
+      }
+    }
+    return results;
+  }, [searchQuery]);
+
+  // ── Budget filter results ───────────────────────────────────────────────────
+  const budgetResults = useMemo((): BudgetResult[] => {
+    const max = Number(budgetMax);
+    if (!budgetMode || isNaN(max) || max <= 0) return [];
+
+    const results: BudgetResult[] = [];
+
+    for (const brand of catalog) {
+      for (const model of brand.models) {
+        for (const storage of model.storages) {
+          const table = storage.regions.ECEM?.[budgetTab];
+          if (!table) continue;
+
+          let bestPlan = "";
+          let bestMonthly = Infinity;
+
+          for (const [plan, row] of Object.entries(table)) {
+            const monthly = (row as { monthly?: number | string }).monthly;
+            if (monthly === undefined || monthly === "NA") continue;
+            const m = Number(monthly);
+            if (!isNaN(m) && m > 0 && m <= max && m < bestMonthly) {
+              bestPlan = plan;
+              bestMonthly = m;
+            }
+          }
+
+          if (bestPlan) {
+            results.push({ brand: brand.brand, model, storage, bestPlan, bestMonthly });
+          }
+        }
+      }
+    }
+
+    // Sort by RRP descending — best phone for the money first
+    return results.sort((a, b) => (b.storage.rrp || 0) - (a.storage.rrp || 0));
+  }, [budgetMode, budgetMax, budgetTab]);
+
+  // ── Similar price phones ────────────────────────────────────────────────────
+  const similarPhones = useMemo((): SimilarResult[] => {
+    if (!selectedRow) return [];
+
+    let refPrice: number;
+    if (selectedTab === "upfront") {
+      const p = (selectedRow as { devicePrice?: number | string }).devicePrice;
+      if (p === undefined || p === "NA") return [];
+      refPrice = Number(p);
+    } else {
+      const p = (selectedRow as { monthly?: number | string }).monthly;
+      if (p === undefined || p === "NA") return [];
+      refPrice = Number(p);
+    }
+
+    if (isNaN(refPrice) || refPrice <= 0) return [];
+
+    const margin = Math.max(refPrice * 0.25, 15);
+    const results: SimilarResult[] = [];
+
+    for (const brand of catalog) {
+      for (const model of brand.models) {
+        if (model.model === selectedModel.model) continue;
+        for (const storage of model.storages) {
+          const table = storage.regions.ECEM?.[selectedTab];
+          if (!table) continue;
+          const row = table[selectedPlan];
+          if (!row) continue;
+
+          let price: number;
+          if (selectedTab === "upfront") {
+            const p = (row as { devicePrice?: number | string }).devicePrice;
+            if (p === undefined || p === "NA") continue;
+            price = Number(p);
+          } else {
+            const p = (row as { monthly?: number | string }).monthly;
+            if (p === undefined || p === "NA") continue;
+            price = Number(p);
+          }
+
+          if (isNaN(price) || price <= 0) continue;
+          if (Math.abs(price - refPrice) <= margin) {
+            results.push({ brand: brand.brand, model, storage, price });
+          }
+        }
+      }
+    }
+
+    return results
+      .sort((a, b) => Math.abs(a.price - refPrice) - Math.abs(b.price - refPrice))
+      .slice(0, 4);
+  }, [selectedRow, selectedTab, selectedPlan, selectedModel]);
+
+  // ── Navigation helpers ──────────────────────────────────────────────────────
+  const navigateToDevice = (
+    brand: string,
+    model: CatalogModel,
+    storageName?: string,
+    tab?: PricingMode
+  ) => {
+    const targetStorage = storageName || model.storages[0].storage;
+    const targetTab = tab || selectedTab;
+    setSelectedBrand(brand);
+    setSelectedModel(model);
+    setSelectedStorage(targetStorage);
+    setSelectedTab(targetTab);
+    setSelectedPlan(getBestDefaultPlan(model, targetStorage, targetTab));
+    setSearchQuery("");
+    setBudgetMode(false);
+  };
+
   const chooseBrand = (brand: CatalogBrand["brand"]) => {
     const nextBrand = catalog.find((b) => b.brand === brand) || catalog[0];
     const nextModel = nextBrand.models[0];
@@ -98,6 +251,8 @@ export default function Page() {
     setSelectedStorage(nextStorage);
     setSelectedTab("upfront");
     setSelectedPlan(getBestDefaultPlan(nextModel, nextStorage, "upfront"));
+    setSearchQuery("");
+    setBudgetMode(false);
   };
 
   const chooseModel = (model: CatalogModel) => {
@@ -107,6 +262,7 @@ export default function Page() {
     setSelectedStorage(nextStorage);
     setSelectedTab("upfront");
     setSelectedPlan(getBestDefaultPlan(model, nextStorage, "upfront"));
+    setSearchQuery("");
   };
 
   const resetAll = () => {
@@ -119,6 +275,9 @@ export default function Page() {
     setSelectedStorage(firstStorage);
     setSelectedTab("upfront");
     setSelectedPlan(getBestDefaultPlan(firstModel, firstStorage, "upfront"));
+    setSearchQuery("");
+    setBudgetMode(false);
+    setBudgetMax("");
   };
 
   const quoteText = useMemo(() => {
@@ -173,9 +332,28 @@ export default function Page() {
     return () => window.clearTimeout(timer);
   }, [toast]);
 
+  // Close search dropdown when clicking outside
+  useEffect(() => {
+    if (!searchQuery) return;
+    const handler = (e: MouseEvent) => {
+      if (
+        searchInputRef.current &&
+        !searchInputRef.current.contains(e.target as Node) &&
+        searchDropdownRef.current &&
+        !searchDropdownRef.current.contains(e.target as Node)
+      ) {
+        setSearchQuery("");
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [searchQuery]);
+
   return (
     <main className="min-h-screen bg-[#0a0d0f] text-[#f0f2f4]">
       <div className="min-h-screen lg:grid lg:grid-cols-[220px_minmax(0,1fr)_320px] lg:grid-rows-[auto_1fr]">
+
+        {/* ── HEADER ──────────────────────────────────────────────────────── */}
         <header className="border-b border-white/8 bg-[#111417] px-4 py-4 lg:col-span-3 lg:px-5">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
@@ -188,7 +366,42 @@ export default function Page() {
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              {/* Search */}
+              <div className="relative">
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  placeholder="🔍 Search model..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => e.key === "Escape" && setSearchQuery("")}
+                  className="w-44 rounded-xl border border-white/10 bg-[#1e2225] px-3 py-2 text-xs text-white placeholder-slate-500 transition focus:border-[#00D46A]/50 focus:outline-none"
+                />
+                {searchResults.length > 0 && (
+                  <div
+                    ref={searchDropdownRef}
+                    className="absolute right-0 top-full z-50 mt-1 w-72 overflow-hidden rounded-xl border border-white/10 bg-[#1a1e22] shadow-2xl"
+                  >
+                    {searchResults.map(({ brand, model }) => (
+                      <button
+                        key={`${brand}-${model.model}`}
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          navigateToDevice(brand, model);
+                        }}
+                        className="w-full border-b border-white/5 px-4 py-3 text-left transition last:border-b-0 hover:bg-[#262b2f]"
+                      >
+                        <div className="text-sm font-medium text-white">{model.model}</div>
+                        <div className="mt-0.5 text-xs text-slate-500">
+                          {brand} · {model.storages.map((s) => s.storage).join(" / ")}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               <span className="rounded-full border border-[#00D46A]/25 bg-[#00D46A]/12 px-3 py-1 text-xs font-semibold text-[#00D46A]">
                 ECEM
               </span>
@@ -202,67 +415,161 @@ export default function Page() {
           </div>
         </header>
 
+        {/* ── LEFT SIDEBAR ────────────────────────────────────────────────── */}
         <aside className="border-b border-white/8 bg-[#111417] p-3 lg:row-start-2 lg:border-b-0 lg:border-r lg:p-4">
-          <section className="mb-4">
-            <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-              Brands
-            </div>
-
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-1">
-              {catalog.map((brand) => {
-                const active = brand.brand === selectedBrand;
-                return (
-                  <button
-                    key={brand.brand}
-                    onClick={() => chooseBrand(brand.brand)}
-                    className={`rounded-xl border px-3 py-3 text-left transition ${
-                      active
-                        ? "border-[#00D46A] bg-[#00D46A] text-black"
-                        : "border-white/8 bg-transparent text-slate-300 hover:border-white/15 hover:bg-[#181c1f] hover:text-white"
-                    }`}
-                  >
-                    <div className="truncate text-sm font-semibold">{brand.brand}</div>
-                    <div className={`mt-1 text-xs ${active ? "text-black/70" : "text-slate-500"}`}>
-                      {brand.models.length} models
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          </section>
-
-          <section>
-            <div className="mb-2 flex items-center justify-between gap-2">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-                Models
+          {budgetMode ? (
+            /* Budget Filter Mode */
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center justify-between">
+                <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#00D46A]">
+                  💰 Budget Filter
+                </div>
+                <button
+                  onClick={() => { setBudgetMode(false); setBudgetMax(""); }}
+                  className="text-xs text-slate-500 transition hover:text-white"
+                >
+                  ✕ Close
+                </button>
               </div>
-              <div className="text-xs text-slate-500">{activeBrand.models.length}</div>
-            </div>
 
-            <div className="max-h-[320px] space-y-2 overflow-y-auto pr-1">
-              {activeBrand.models.map((model) => {
-                const active = model.model === selectedModel.model;
-                return (
+              <div>
+                <label className="mb-1.5 block text-xs text-slate-400">Max monthly (RM)</label>
+                <input
+                  type="number"
+                  placeholder="e.g. 100"
+                  value={budgetMax}
+                  onChange={(e) => setBudgetMax(e.target.value)}
+                  autoFocus
+                  className="w-full rounded-xl border border-white/10 bg-[#1e2225] px-3 py-2 text-sm text-white placeholder-slate-600 transition focus:border-[#00D46A]/50 focus:outline-none"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                {(["zero24", "zero36"] as const).map((tab) => (
                   <button
-                    key={model.model}
-                    onClick={() => chooseModel(model)}
-                    className={`block w-full rounded-xl border px-3 py-3 text-left transition ${
-                      active
-                        ? "border-[#00D46A]/40 bg-[#00D46A]/10"
-                        : "border-white/8 bg-transparent hover:border-white/15 hover:bg-[#181c1f]"
+                    key={tab}
+                    onClick={() => setBudgetTab(tab)}
+                    className={`rounded-xl border px-2 py-2 text-xs font-medium transition ${
+                      budgetTab === tab
+                        ? "border-[#00D46A] bg-[#00D46A] text-black"
+                        : "border-white/8 bg-transparent text-slate-400 hover:text-white"
                     }`}
                   >
-                    <div className="text-sm font-medium text-white">{model.model}</div>
-                    <div className="mt-1 text-xs text-slate-500">
-                      {model.storages.map((s) => s.storage).join(" · ")}
+                    {tab === "zero24" ? "Zero 24M" : "Zero 36M"}
+                  </button>
+                ))}
+              </div>
+
+              {budgetMax && Number(budgetMax) > 0 && (
+                <div className="text-xs text-slate-500">
+                  {budgetResults.length} phone{budgetResults.length !== 1 ? "s" : ""} found
+                </div>
+              )}
+
+              <div className="max-h-[calc(100vh-300px)] space-y-2 overflow-y-auto pr-1">
+                {budgetResults.map((result, i) => (
+                  <button
+                    key={`${result.brand}-${result.model.model}-${result.storage.storage}-${i}`}
+                    onClick={() =>
+                      navigateToDevice(result.brand, result.model, result.storage.storage, budgetTab)
+                    }
+                    className="block w-full rounded-xl border border-white/8 bg-transparent px-3 py-3 text-left transition hover:border-white/15 hover:bg-[#181c1f]"
+                  >
+                    <div className="truncate text-sm font-medium text-white">
+                      {result.model.model}
+                    </div>
+                    <div className="mt-0.5 text-xs text-slate-500">
+                      {result.storage.storage} · {result.brand}
+                    </div>
+                    <div className="mt-2 flex items-center justify-between">
+                      <span className="text-xs text-slate-400">{result.bestPlan}</span>
+                      <span className="text-sm font-bold text-[#00D46A]">
+                        RM{result.bestMonthly}/mo
+                      </span>
                     </div>
                   </button>
-                );
-              })}
+                ))}
+                {budgetMax && Number(budgetMax) > 0 && budgetResults.length === 0 && (
+                  <div className="rounded-xl border border-white/8 p-4 text-center text-sm text-slate-500">
+                    No phones within RM{budgetMax}/mo
+                  </div>
+                )}
+              </div>
             </div>
-          </section>
+          ) : (
+            /* Normal Brand/Model Mode */
+            <>
+              <section className="mb-4">
+                <div className="mb-2 flex items-center justify-between gap-2">
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                    Brands
+                  </div>
+                  <button
+                    onClick={() => setBudgetMode(true)}
+                    className="rounded-lg border border-white/10 bg-[#1e2225] px-2 py-1 text-[10px] font-medium text-slate-400 transition hover:border-[#00D46A]/30 hover:text-[#00D46A]"
+                  >
+                    💰 Budget
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-1">
+                  {catalog.map((brand) => {
+                    const active = brand.brand === selectedBrand;
+                    return (
+                      <button
+                        key={brand.brand}
+                        onClick={() => chooseBrand(brand.brand)}
+                        className={`rounded-xl border px-3 py-3 text-left transition ${
+                          active
+                            ? "border-[#00D46A] bg-[#00D46A] text-black"
+                            : "border-white/8 bg-transparent text-slate-300 hover:border-white/15 hover:bg-[#181c1f] hover:text-white"
+                        }`}
+                      >
+                        <div className="truncate text-sm font-semibold">{brand.brand}</div>
+                        <div className={`mt-1 text-xs ${active ? "text-black/70" : "text-slate-500"}`}>
+                          {brand.models.length} models
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+
+              <section>
+                <div className="mb-2 flex items-center justify-between gap-2">
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                    Models
+                  </div>
+                  <div className="text-xs text-slate-500">{activeBrand.models.length}</div>
+                </div>
+
+                <div className="max-h-[320px] space-y-2 overflow-y-auto pr-1">
+                  {activeBrand.models.map((model) => {
+                    const active = model.model === selectedModel.model;
+                    return (
+                      <button
+                        key={model.model}
+                        onClick={() => chooseModel(model)}
+                        className={`block w-full rounded-xl border px-3 py-3 text-left transition ${
+                          active
+                            ? "border-[#00D46A]/40 bg-[#00D46A]/10"
+                            : "border-white/8 bg-transparent hover:border-white/15 hover:bg-[#181c1f]"
+                        }`}
+                      >
+                        <div className="text-sm font-medium text-white">{model.model}</div>
+                        <div className="mt-1 text-xs text-slate-500">
+                          {model.storages.map((s) => s.storage).join(" · ")}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+            </>
+          )}
         </aside>
 
+        {/* ── MAIN CONTENT ────────────────────────────────────────────────── */}
         <section className="space-y-4 p-3 pb-32 lg:row-start-2 lg:p-5 lg:pb-5">
           <div className="rounded-2xl border border-white/8 bg-[#111417] p-5">
             <div className="mb-2 text-[11px] font-medium uppercase tracking-[0.12em] text-slate-500">
@@ -451,7 +758,7 @@ export default function Page() {
                   })}
                 </div>
 
-                <div className="hidden md:block overflow-x-auto">
+                <div className="hidden overflow-x-auto md:block">
                   <table className="min-w-full border-collapse">
                     <thead>
                       <tr className="bg-[#181c1f] text-left">
@@ -573,6 +880,7 @@ export default function Page() {
           </div>
         </section>
 
+        {/* ── RIGHT SIDEBAR ───────────────────────────────────────────────── */}
         <aside className="space-y-4 border-t border-white/8 bg-[#111417] p-3 pb-28 lg:row-start-2 lg:border-l lg:border-t-0 lg:p-4 lg:pb-4">
           <section>
             <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
@@ -611,6 +919,67 @@ export default function Page() {
             </button>
           </section>
 
+          {/* Similar Price Phones */}
+          {similarPhones.length > 0 && (
+            <section>
+              <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                Similar Price · {selectedPlan}
+              </div>
+
+              <div className="space-y-2">
+                {similarPhones.map((phone, i) => {
+                  const refPrice =
+                    selectedTab === "upfront"
+                      ? Number(
+                          (selectedRow as { devicePrice?: number | string } | undefined)
+                            ?.devicePrice
+                        )
+                      : Number(
+                          (selectedRow as { monthly?: number | string } | undefined)?.monthly
+                        );
+                  const diff = phone.price - refPrice;
+                  const diffLabel =
+                    diff === 0
+                      ? "Same"
+                      : diff > 0
+                      ? `+RM${diff}`
+                      : `-RM${Math.abs(diff)}`;
+                  const diffColor =
+                    diff === 0
+                      ? "text-slate-400"
+                      : diff > 0
+                      ? "text-red-400"
+                      : "text-emerald-400";
+
+                  return (
+                    <button
+                      key={`${phone.brand}-${phone.model.model}-${phone.storage.storage}-${i}`}
+                      onClick={() =>
+                        navigateToDevice(phone.brand, phone.model, phone.storage.storage)
+                      }
+                      className="block w-full rounded-xl border border-white/8 bg-[#181c1f] px-3 py-3 text-left transition hover:border-white/15 hover:bg-[#1e2225]"
+                    >
+                      <div className="truncate text-sm font-medium text-white">
+                        {phone.model.model}
+                      </div>
+                      <div className="mt-0.5 text-xs text-slate-500">
+                        {phone.storage.storage} · {phone.brand}
+                      </div>
+                      <div className="mt-2 flex items-center justify-between gap-2">
+                        <span className="text-sm font-bold text-[#00D46A]">
+                          {selectedTab === "upfront"
+                            ? `RM${phone.price}`
+                            : `RM${phone.price}/mo`}
+                        </span>
+                        <span className={`text-xs font-medium ${diffColor}`}>{diffLabel}</span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
           <section className="rounded-xl border border-white/8 bg-[#181c1f] p-4">
             <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
               Flow
@@ -626,6 +995,7 @@ export default function Page() {
         </aside>
       </div>
 
+      {/* Mobile sticky bar */}
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-black/90 px-3 py-3 backdrop-blur lg:hidden">
         <div className="mx-auto flex max-w-md items-center gap-3">
           <div className="min-w-0 flex-1">
