@@ -15,6 +15,7 @@ const pricingTabs: { key: PricingMode; label: string; short: string }[] = [
 ];
 
 const mpOrder = ["MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
+const mpOrderZero = ["MP48", "MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
 
 function formatMoney(value: number | string | null | undefined) {
   if (value === null || value === undefined || value === "" || value === "NA") {
@@ -153,11 +154,11 @@ export default function Page() {
     return `🔥 ${selectedModel.model}
 📦 Storage: ${activeStorage.storage}
 📍 Region: ECEM
-📱 Plan: ${selectedPlan}
+📱 Plan: ${selectedPlan}${selectedPlan === "MP48" ? " (Shareline)" : ""}
 🗓 Mode: ${selectedTab === "zero24" ? "Zerolution 24M" : "Zerolution 36M"}
 
 📆 Monthly: ${moneyPlain(row.monthly)}
-📝 Note: ${row.dapLabel ? row.dapLabel : "Check ECC"}`;
+📝 Note: ${row.dapLabel && row.dapLabel !== "NA" ? row.dapLabel : selectedPlan === "MP48" ? "Shareline - no ECC" : "Check ECC"}`;
   }, [regionPricing, selectedRow, selectedModel, activeStorage, selectedPlan, selectedTab]);
 
   const copyQuote = async () => {
@@ -348,7 +349,7 @@ export default function Page() {
             {regionPricing ? (
               <>
                 <div className="grid gap-3 p-3 md:hidden">
-                  {mpOrder.map((mp) => {
+                  {(selectedTab === "upfront" ? mpOrder : mpOrderZero).map((mp) => {
                     const row = currentTable?.[mp];
                     const active = mp === selectedPlan;
 
@@ -375,7 +376,12 @@ export default function Page() {
                         }`}
                       >
                         <div className="mb-4 flex items-center justify-between gap-3">
-                          <div className="text-2xl font-bold text-white">{mp}</div>
+                          <div className="flex items-center gap-2">
+                            <div className="text-2xl font-bold text-white">{mp}</div>
+                            {mp === "MP48" && (
+                              <span className="rounded-full bg-blue-500/20 px-2 py-0.5 text-xs text-blue-300">Shareline</span>
+                            )}
+                          </div>
                           {active && (
                             <span className="rounded-full bg-[#00D46A] px-3 py-1 text-xs font-bold text-black">
                               Selected
@@ -477,7 +483,7 @@ export default function Page() {
                       </tr>
                     </thead>
                     <tbody>
-                      {mpOrder.map((mp) => {
+                      {(selectedTab === "upfront" ? mpOrder : mpOrderZero).map((mp) => {
                         const row = currentTable?.[mp];
                         const active = mp === selectedPlan;
 
@@ -499,7 +505,12 @@ export default function Page() {
                               active ? "bg-[#00D46A]/10" : "hover:bg-[#181c1f]"
                             }`}
                           >
-                            <td className="px-4 py-3 text-sm font-bold text-white">{mp}</td>
+                            <td className="px-4 py-3 text-sm font-bold text-white">
+                              <span>{mp}</span>
+                              {mp === "MP48" && (
+                                <span className="ml-2 rounded-full bg-blue-500/20 px-2 py-0.5 text-xs font-normal text-blue-300">Shareline</span>
+                              )}
+                            </td>
 
                             {selectedTab === "upfront" ? (
                               <>
