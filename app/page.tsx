@@ -365,8 +365,9 @@ export default function Page() {
       <div className="min-h-screen lg:grid lg:grid-cols-[220px_minmax(0,1fr)_320px] lg:grid-rows-[auto_1fr]">
 
         {/* ── HEADER ──────────────────────────────────────────────────────── */}
-        <header className="border-b border-white/8 bg-[#111417] px-4 py-4 lg:col-span-3 lg:px-5">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <header className="relative border-b border-white/8 bg-[#111417] px-4 py-4 lg:col-span-3 lg:px-5">
+          {/* Row 1: logo + badges (always) */}
+          <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#00D46A] text-sm font-bold text-black">
                 M
@@ -377,9 +378,9 @@ export default function Page() {
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-2">
-              {/* Search */}
-              <div className="relative">
+            <div className="flex items-center gap-2">
+              {/* Search — desktop only inline */}
+              <div className="relative hidden sm:block">
                 <input
                   ref={searchInputRef}
                   type="text"
@@ -423,6 +424,49 @@ export default function Page() {
                 ↺ Reset
               </button>
             </div>
+          </div>
+
+          {/* Row 2: search — mobile only, full width */}
+          <div className="relative mt-3 sm:hidden">
+            <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">
+              🔍
+            </span>
+            <input
+              type="text"
+              placeholder="Search model..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => e.key === "Escape" && setSearchQuery("")}
+              className="w-full rounded-xl border border-white/10 bg-[#1e2225] py-2.5 pl-9 pr-9 text-sm text-white placeholder-slate-500 transition focus:border-[#00D46A]/50 focus:outline-none"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-white"
+              >
+                ✕
+              </button>
+            )}
+            {/* Mobile dropdown — full width, never off-screen */}
+            {searchResults.length > 0 && (
+              <div className="absolute left-0 right-0 top-full z-50 mt-1 overflow-hidden rounded-xl border border-white/10 bg-[#1a1e22] shadow-2xl">
+                {searchResults.map(({ brand, model }) => (
+                  <button
+                    key={`${brand}-${model.model}`}
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      navigateToDevice(brand, model);
+                    }}
+                    className="w-full border-b border-white/5 px-4 py-3.5 text-left transition last:border-b-0 active:bg-[#262b2f]"
+                  >
+                    <div className="text-sm font-medium text-white">{model.model}</div>
+                    <div className="mt-0.5 text-xs text-slate-500">
+                      {brand} · {model.storages.map((s) => s.storage).join(" / ")}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </header>
 
