@@ -67,7 +67,7 @@ export default function Page() {
   // Budget filter state
   const [budgetMode, setBudgetMode] = useState(false);
   const [budgetMax, setBudgetMax] = useState("");
-  const [budgetTab, setBudgetTab] = useState<"zero24" | "zero36">("zero24");
+  const [budgetTab, setBudgetTab] = useState<"upfront" | "zero24" | "zero36">("zero24");
 
   // Sidebar collapse state
   const [brandExpanded, setBrandExpanded] = useState(true);
@@ -154,12 +154,22 @@ export default function Page() {
           let bestMonthly = Infinity;
 
           for (const [plan, row] of Object.entries(table)) {
-            const monthly = (row as { monthly?: number | string }).monthly;
-            if (monthly === undefined || monthly === "NA") continue;
-            const m = Number(monthly);
-            if (!isNaN(m) && m > 0 && m <= max && m < bestMonthly) {
-              bestPlan = plan;
-              bestMonthly = m;
+            if (budgetTab === "upfront") {
+              const total = (row as { totalUpfront?: number | string }).totalUpfront;
+              if (total === undefined || total === "NA") continue;
+              const t = Number(total);
+              if (!isNaN(t) && t > 0 && t <= max && t < bestMonthly) {
+                bestPlan = plan;
+                bestMonthly = t;
+              }
+            } else {
+              const monthly = (row as { monthly?: number | string }).monthly;
+              if (monthly === undefined || monthly === "NA") continue;
+              const m = Number(monthly);
+              if (!isNaN(m) && m > 0 && m <= max && m < bestMonthly) {
+                bestPlan = plan;
+                bestMonthly = m;
+              }
             }
           }
 
@@ -488,10 +498,12 @@ export default function Page() {
               </div>
 
               <div>
-                <label className="mb-1.5 block text-xs text-slate-400">Max monthly (RM)</label>
+                <label className="mb-1.5 block text-xs text-slate-400">
+                  {budgetTab === "upfront" ? "Max total upfront (RM)" : "Max monthly (RM)"}
+                </label>
                 <input
                   type="number"
-                  placeholder="e.g. 100"
+                  placeholder={budgetTab === "upfront" ? "e.g. 500" : "e.g. 100"}
                   value={budgetMax}
                   onChange={(e) => setBudgetMax(e.target.value)}
                   autoFocus
@@ -499,18 +511,18 @@ export default function Page() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-2">
-                {(["zero24", "zero36"] as const).map((tab) => (
+              <div className="grid grid-cols-3 gap-1.5">
+                {(["upfront", "zero24", "zero36"] as const).map((tab) => (
                   <button
                     key={tab}
-                    onClick={() => setBudgetTab(tab)}
-                    className={`rounded-xl border px-2 py-2 text-xs font-medium transition ${
+                    onClick={() => { setBudgetTab(tab); setBudgetMax(""); }}
+                    className={`rounded-xl border px-1.5 py-2 text-[10px] font-medium transition ${
                       budgetTab === tab
                         ? "border-[#00D46A] bg-[#00D46A] text-black"
                         : "border-white/8 bg-transparent text-slate-400 hover:text-white"
                     }`}
                   >
-                    {tab === "zero24" ? "Zero 24M" : "Zero 36M"}
+                    {tab === "upfront" ? "Upfront" : tab === "zero24" ? "Zero 24M" : "Zero 36M"}
                   </button>
                 ))}
               </div>
@@ -539,7 +551,7 @@ export default function Page() {
                     <div className="mt-2 flex items-center justify-between">
                       <span className="text-xs text-slate-400">{result.bestPlan}</span>
                       <span className="text-sm font-bold text-[#00D46A]">
-                        RM{result.bestMonthly}/mo
+                        RM{result.bestMonthly}{budgetTab === "upfront" ? " total" : "/mo"}
                       </span>
                     </div>
                   </button>
