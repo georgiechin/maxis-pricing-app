@@ -64,6 +64,7 @@ export default function Page() {
   const [searchQuery, setSearchQuery] = useState("");
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchDropdownRef = useRef<HTMLDivElement>(null);
+  const planSectionRef = useRef<HTMLDivElement>(null);
 
   // Budget filter state
   const [budgetMode, setBudgetMode] = useState(false);
@@ -373,6 +374,13 @@ export default function Page() {
     const timer = window.setTimeout(() => setToast(""), 1800);
     return () => window.clearTimeout(timer);
   }, [toast]);
+
+  // Scroll plan section into view when table collapses
+  useEffect(() => {
+    if (!pricingExpanded && planSectionRef.current) {
+      planSectionRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }, [pricingExpanded]);
 
   // Close search dropdown when clicking outside
   useEffect(() => {
@@ -792,7 +800,10 @@ export default function Page() {
             </div>
           </div>
 
-          {/* ── Collapsed plan view ─────────────────────────────────────── */}
+          {/* ── Plan section (collapsible) ──────────────────────────────── */}
+          <div ref={planSectionRef}>
+
+          {/* Collapsed plan view */}
           {!pricingExpanded && selectedRow && (
             <button
               onClick={() => setPricingExpanded(true)}
@@ -1073,6 +1084,8 @@ export default function Page() {
             )}
           </div>
           )}
+
+          </div>{/* end plan section */}
         </section>
 
         {/* ── RIGHT SIDEBAR ───────────────────────────────────────────────── */}
