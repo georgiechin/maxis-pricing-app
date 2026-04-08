@@ -436,8 +436,12 @@ export default function Page() {
                 M
               </div>
               <div>
-                <div className="text-sm font-semibold text-white">Maxis ECEM Pricing Browser</div>
-                <div className="text-xs text-slate-400">Staff tool — ECEM / Sarawak</div>
+                <div className="text-sm font-semibold text-white">Device Price Check</div>
+                <div className="flex items-center gap-1.5 text-[10px] text-slate-500">
+                  <span className="text-[#00D46A]/70">ECEM</span>
+                  <span>·</span>
+                  <span>{CATALOG_SOURCE}</span>
+                </div>
               </div>
             </div>
 
@@ -476,13 +480,6 @@ export default function Page() {
                   </div>
                 )}
               </div>
-
-              <span className="hidden rounded-full border border-slate-600/40 bg-slate-700/30 px-2 py-1 text-[10px] font-medium text-slate-400 sm:inline">
-                {CATALOG_SOURCE}
-              </span>
-              <span className="rounded-full border border-[#00D46A]/25 bg-[#00D46A]/12 px-3 py-1 text-xs font-semibold text-[#00D46A]">
-                ECEM
-              </span>
               <button
                 onClick={resetAll}
                 className="rounded-xl border border-white/10 bg-[#1e2225] px-3 py-2 text-xs font-medium text-slate-300 transition hover:text-white"
@@ -707,7 +704,7 @@ export default function Page() {
                         onClick={() => setFreeDeviceMode(true)}
                         className="rounded-lg border border-white/10 bg-[#1e2225] px-2 py-1 text-[10px] font-medium text-slate-400 transition hover:border-[#00D46A]/30 hover:text-[#00D46A]"
                       >
-                        🎁 Free
+                        🎁 Free Device
                       </button>
                       <button
                         onClick={() => setBudgetMode(true)}
