@@ -1527,56 +1527,78 @@ export default function Page() {
           </div>{/* end plan section */}
 
           {/* ── Upgrade Ladder ──────────────────────────────────────────── */}
-          {upgradeLadder.length > 1 && (
-            <div className="overflow-hidden rounded-2xl border border-white/8 bg-[#111417]">
-              <div className="border-b border-white/8 px-4 py-3">
-                <div className="text-sm font-semibold text-white">📊 Compare plans — {selectedModel.model}</div>
-                <div className="mt-1 flex items-start gap-1.5 rounded-lg bg-blue-400/8 px-2.5 py-2">
-                  <span className="mt-0.5 text-[11px]">💡</span>
-                  <p className="text-[11px] leading-4 text-blue-200">
-                    DAP is a deposit — Maxis returns it to you monthly. Cash today is similar across plans. Higher plan = more DAP comes back = phone costs less.
-                  </p>
+          {upgradeLadder.length > 1 && (() => {
+            const currentRow = upgradeLadder.find(r => r.plan === selectedPlan);
+            if (!currentRow) return null;
+            return (
+              <div className="overflow-hidden rounded-2xl border border-white/8 bg-[#111417]">
+                <div className="border-b border-white/8 px-4 py-3">
+                  <div className="text-sm font-semibold text-white">📊 Plan comparison</div>
+                  <div className="mt-0.5 text-xs text-slate-500">vs your selected plan {selectedPlan} · tap to switch</div>
+                </div>
+                <div className="divide-y divide-white/5">
+                  {upgradeLadder.map((row) => {
+                    const isSelected = row.plan === selectedPlan;
+                    const monthlyDiff = row.planCost - currentRow.planCost;
+                    const cashDiff = row.cashToday - currentRow.cashToday;
+                    const isSameCash = Math.abs(cashDiff) <= 50;
+                    const isLessCash = cashDiff < -50;
+
+                    return (
+                      <button
+                        key={row.plan}
+                        onClick={() => { setSelectedPlan(row.plan); setPricingExpanded(false); }}
+                        className={`flex w-full items-center gap-3 px-4 py-3.5 text-left transition ${
+                          isSelected
+                            ? "bg-[#00D46A]/8"
+                            : monthlyDiff < 0 ? "opacity-50 hover:opacity-80 hover:bg-[#181c1f]"
+                            : "hover:bg-[#181c1f]"
+                        }`}
+                      >
+                        {/* Plan */}
+                        <div className="w-12 flex-shrink-0">
+                          <div className={`text-sm font-bold ${isSelected ? "text-[#00D46A]" : "text-white"}`}>{row.plan}</div>
+                          {isSelected && <div className="text-[9px] text-[#00D46A]/60">current</div>}
+                        </div>
+
+                        {/* Phone price — the main message */}
+                        <div className="w-20 flex-shrink-0">
+                          {row.isFree
+                            ? <span className="text-sm font-bold text-red-400">FREE 🔥</span>
+                            : <span className={`text-sm font-semibold ${isSelected ? "text-[#00D46A]" : "text-white"}`}>RM{row.devicePrice}</span>
+                          }
+                          <div className="text-[10px] text-slate-500">phone</div>
+                        </div>
+
+                        {/* Delta vs selected — what staff say out loud */}
+                        <div className="min-w-0 flex-1">
+                          {isSelected ? (
+                            <div className="text-xs text-slate-500">selected plan</div>
+                          ) : (
+                            <div className="space-y-0.5">
+                              <div className={`text-xs font-medium ${monthlyDiff > 0 ? "text-slate-300" : "text-slate-500"}`}>
+                                {monthlyDiff > 0 ? `+RM${monthlyDiff}/mth` : `-RM${Math.abs(monthlyDiff)}/mth`}
+                              </div>
+                              {!isSelected && (
+                                <div className="text-[10px]">
+                                  {isLessCash
+                                    ? <span className="text-emerald-400">RM{Math.abs(cashDiff)} less today</span>
+                                    : isSameCash
+                                    ? <span className="text-slate-500">same cash today</span>
+                                    : <span className="text-slate-500">RM{Math.abs(cashDiff)} {cashDiff > 0 ? "more" : "less"} today</span>
+                                  }
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
-              {/* Table header */}
-              <div className="grid grid-cols-[80px_1fr_1fr_1fr] border-b border-white/5 px-4 py-2">
-                <div className="text-[10px] font-semibold uppercase text-slate-600">Plan</div>
-                <div className="text-[10px] font-semibold uppercase text-slate-600">Phone cost</div>
-                <div className="text-[10px] font-semibold uppercase text-slate-600">Cash today</div>
-                <div className="text-[10px] font-semibold uppercase text-slate-600">Monthly</div>
-              </div>
-              <div className="divide-y divide-white/5">
-                {upgradeLadder.map((row) => {
-                  const isSelected = row.plan === selectedPlan;
-                  return (
-                    <button
-                      key={row.plan}
-                      onClick={() => { setSelectedPlan(row.plan); setPricingExpanded(false); }}
-                      className={`grid w-full grid-cols-[80px_1fr_1fr_1fr] items-center px-4 py-3 text-left transition ${
-                        isSelected ? "bg-[#00D46A]/8" : "hover:bg-[#181c1f]"
-                      }`}
-                    >
-                      <div>
-                        <div className={`text-sm font-bold ${isSelected ? "text-[#00D46A]" : "text-white"}`}>{row.plan}</div>
-                        {isSelected && <div className="text-[9px] text-[#00D46A]/70">selected</div>}
-                      </div>
-                      <div>
-                        {row.isFree
-                          ? <span className="text-sm font-bold text-red-400">FREE 🔥</span>
-                          : <span className={`text-sm font-semibold ${isSelected ? "text-[#00D46A]" : "text-white"}`}>RM{row.devicePrice}</span>
-                        }
-                      </div>
-                      <div className="text-sm text-slate-400">RM{row.cashToday}</div>
-                      <div className="text-sm text-slate-400">RM{row.planCost}/mth</div>
-                    </button>
-                  );
-                })}
-              </div>
-              <div className="border-t border-white/5 px-4 py-2 text-[10px] text-slate-600">
-                Tap any row to select that plan
-              </div>
-            </div>
-          )}
+            );
+          })()}
 
         </section>
 
