@@ -323,6 +323,53 @@ export default function Page() {
     return recs.slice(0, 3);
   }, [currentTable, selectedTab]);
 
+  // ── Upgrade ladder (upfront mode only) ─────────────────────────────────────
+  type LadderRow = { plan: string; planCost: number; devicePrice: number; isFree: boolean };
+  const upgradeLadder = useMemo((): LadderRow[] => {
+    if (!currentTable || selectedTab !== "upfront") return [];
+    const rows: LadderRow[] = [];
+    for (const plan of mpOrder) {
+      const row = currentTable[plan];
+      if (!row) continue;
+      const dp = (row as { devicePrice?: number | string }).devicePrice;
+      if (dp === undefined || dp === "NA") continue;
+      const price = Number(dp);
+      if (isNaN(price)) continue;
+      rows.push({ plan, planCost: planFee(plan), devicePrice: price, isFree: price === 0 });
+    }
+    return rows;
+  }, [currentTable, selectedTab]);
+
+  // Best plain-English tip from current selected plan
+  const valueTip = useMemo((): { plan: string; message: string; extraPerMonth: number } | null => {
+    if (upgradeLadder.length < 2) return null;
+    const currentIdx = upgradeLadder.findIndex((r) => r.plan === selectedPlan);
+    if (currentIdx < 0) return null;
+    const current = upgradeLadder[currentIdx];
+    for (let i = currentIdx + 1; i < upgradeLadder.length; i++) {
+      const next = upgradeLadder[i];
+      const extraPerMonth = next.planCost - current.planCost;
+      const deviceSaving = current.devicePrice - next.devicePrice;
+      if (deviceSaving <= 0) continue;
+      if (next.isFree) {
+        return {
+          plan: next.plan,
+          extraPerMonth,
+          message: `${next.plan} — phone is FREE. Customer pays RM${extraPerMonth} more per month, saves RM${current.devicePrice} on device today.`,
+        };
+      }
+      const breakEven = extraPerMonth > 0 ? Math.ceil(deviceSaving / extraPerMonth) : 99;
+      if (breakEven <= 12) {
+        return {
+          plan: next.plan,
+          extraPerMonth,
+          message: `${next.plan} — saves RM${deviceSaving} on device. Only RM${extraPerMonth} more per month. Worth it after ${breakEven} months.`,
+        };
+      }
+    }
+    return null;
+  }, [upgradeLadder, selectedPlan]);
+
   // ── Similar price phones ────────────────────────────────────────────────────
   const similarPhones = useMemo((): SimilarResult[] => {
     if (!selectedRow) return [];
@@ -1406,6 +1453,104 @@ export default function Page() {
           )}
 
           </div>{/* end plan section */}
+
+          {/* ── Upgrade Ladder ──────────────────────────────────────────── */}
+          {upgradeLadder.length > 1 && (
+            <div className="overflow-hidden rounded-2xl border border-white/8 bg-[#111417]">
+              <div className="border-b border-white/8 px-4 py-3">
+                <div className="text-sm font-semibold text-white">📊 Is it worth going higher?</div>
+                <div className="mt-0.5 text-xs text-slate-500">
+                  Compare all plans for {selectedModel.model} · cheapest plan is the baseline
+                </div>
+              </div>
+              <div className="divide-y divide-white/5">
+                {upgradeLadder.map((row, i) => {
+                  const isSelected = row.plan === selectedPlan;
+                  const baseline = upgradeLadder[0];
+                  const extraVsBase = row.planCost - baseline.planCost;
+                  const savedVsBase = baseline.devicePrice - row.devicePrice;
+                  const breakEven =
+                    extraVsBase > 0 && savedVsBase > 0
+                      ? Math.ceil(savedVsBase / extraVsBase)
+                      : null;
+
+                  return (
+                    <button
+                      key={row.plan}
+                      onClick={() => { setSelectedPlan(row.plan); setPricingExpanded(false); }}
+                      className={`flex w-full items-start gap-3 px-4 py-3.5 text-left transition ${
+                        isSelected ? "bg-[#00D46A]/8" : "hover:bg-[#181c1f]"
+                      }`}
+                    >
+                      {/* Plan name */}
+                      <div className="w-14 flex-shrink-0">
+                        <div className={`text-sm font-bold ${isSelected ? "text-[#00D46A]" : "text-white"}`}>
+                          {row.plan}
+                        </div>
+                        {isSelected && (
+                          <div className="mt-0.5 text-[9px] font-medium text-[#00D46A]/70">selected</div>
+                        )}
+                      </div>
+
+                      {/* Device price */}
+                      <div className="w-20 flex-shrink-0">
+                        {row.isFree ? (
+                          <span className="text-sm font-bold text-red-400">FREE</span>
+                        ) : (
+                          <span className="text-sm font-semibold text-white">RM{row.devicePrice}</span>
+                        )}
+                        <div className="text-[10px] text-slate-500">device</div>
+                      </div>
+
+                      {/* Value insight */}
+                      <div className="min-w-0 flex-1">
+                        {i === 0 ? (
+                          <div className="text-[11px] text-slate-500">baseline</div>
+                        ) : savedVsBase > 0 ? (
+                          <div className="space-y-0.5">
+                            <div className="text-[11px] font-medium text-emerald-400">
+                              Save RM{savedVsBase} on device
+                            </div>
+                            <div className="text-[10px] text-slate-500">
+                              +RM{extraVsBase}/mth more than {baseline.plan}
+                              {breakEven && breakEven <= 24
+                                ? ` · worth it in ${breakEven}M`
+                                : ""}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="text-[11px] text-slate-500">
+                            +RM{extraVsBase}/mth · same device price
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Badge */}
+                      <div className="flex-shrink-0">
+                        {row.isFree && savedVsBase > 0 && breakEven && breakEven <= 12 ? (
+                          <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-bold text-emerald-400">
+                            ⭐ Best
+                          </span>
+                        ) : row.isFree ? (
+                          <span className="rounded-full bg-red-400/15 px-2 py-0.5 text-[10px] font-bold text-red-400">
+                            🔥 Free
+                          </span>
+                        ) : breakEven && breakEven <= 8 ? (
+                          <span className="rounded-full bg-blue-500/15 px-2 py-0.5 text-[10px] font-medium text-blue-300">
+                            Good deal
+                          </span>
+                        ) : null}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="border-t border-white/5 px-4 py-2.5 text-[10px] text-slate-600">
+                Tap any row to switch to that plan
+              </div>
+            </div>
+          )}
+
         </section>
 
         {/* ── RIGHT SIDEBAR ───────────────────────────────────────────────── */}
@@ -1426,6 +1571,24 @@ export default function Page() {
               <SelectionRow label="Plan" value={selectedPlan} />
             </div>
           </section>
+
+          {/* Value Tip */}
+          {valueTip && (
+            <section>
+              <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                💡 Better Deal
+              </div>
+              <div className="rounded-xl border border-blue-400/25 bg-blue-400/8 p-3">
+                <p className="text-xs leading-5 text-blue-200">{valueTip.message}</p>
+                <button
+                  onClick={() => { setSelectedPlan(valueTip.plan); setPricingExpanded(false); }}
+                  className="mt-2 w-full rounded-lg bg-blue-500/20 px-3 py-1.5 text-xs font-semibold text-blue-300 transition hover:bg-blue-500/30"
+                >
+                  Show me {valueTip.plan} pricing →
+                </button>
+              </div>
+            </section>
+          )}
 
           <section>
             <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
