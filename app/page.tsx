@@ -53,7 +53,7 @@ function getEccStatus(tab: PricingMode, plan: string, row: unknown): EccStatus {
   return "required";
 }
 
-type CopyMode = "basic" | "recommended" | "aggressive";
+type CopyMode = "recommended" | "aggressive";
 
 type BudgetResult = {
   brand: string;
@@ -64,12 +64,6 @@ type BudgetResult = {
   stretch: boolean; // true = slightly above budget (upsell)
 };
 
-type SimilarResult = {
-  brand: string;
-  model: CatalogModel;
-  storage: CatalogStorage;
-  price: number;
-};
 
 export default function Page() {
   const [selectedBrand, setSelectedBrand] = useState<CatalogBrand["brand"]>(catalog[0].brand);
@@ -328,63 +322,6 @@ export default function Page() {
     return false;
   }, [activeStorage.promo, selectedTab, selectedRow]);
 
-  // ── Plan recommender ────────────────────────────────────────────────────────
-  const planRecommendations = useMemo((): { tag: string; plan: string; emoji: string; reason: string }[] => {
-    if (!currentTable) return [];
-
-    const plans = selectedTab === "upfront" ? mpOrder : mpOrderZero;
-    let cheapestPlan = "";
-    let cheapestPrice = Infinity;
-    let freePlan = "";
-    let easyPlan = "";
-
-    for (const plan of plans) {
-      const row = currentTable[plan];
-      if (!row) continue;
-
-      if (selectedTab === "upfront") {
-        const d = (row as { devicePrice?: number | string }).devicePrice;
-        if (d === undefined || d === "NA") continue;
-        const price = Number(d);
-        if (isNaN(price)) continue;
-        if (price < cheapestPrice) { cheapestPrice = price; cheapestPlan = plan; }
-        if (price === 0 && !freePlan) freePlan = plan;
-      } else {
-        const m = (row as { monthly?: number | string }).monthly;
-        if (m === undefined || m === "NA") continue;
-        const price = Number(m);
-        if (isNaN(price)) continue;
-        if (price < cheapestPrice) { cheapestPrice = price; cheapestPlan = plan; }
-      }
-
-      if (!easyPlan && (plan === "MP89" || plan === "MP99")) easyPlan = plan;
-    }
-
-    if (!easyPlan) {
-      for (const p of ["MP109", "MP89", "MP139", "MP69"]) {
-        if (currentTable[p]) { easyPlan = p; break; }
-      }
-    }
-
-    const bestValuePlan = freePlan || cheapestPlan;
-    const seen = new Set<string>();
-    const recs: { tag: string; plan: string; emoji: string; reason: string }[] = [];
-
-    if (bestValuePlan) {
-      seen.add(bestValuePlan);
-      recs.push({ tag: "best-value", plan: bestValuePlan, emoji: "⭐", reason: freePlan ? "Free device" : "Best deal" });
-    }
-    if (cheapestPlan && !seen.has(cheapestPlan)) {
-      seen.add(cheapestPlan);
-      recs.push({ tag: "cheapest", plan: cheapestPlan, emoji: "💸", reason: "Cheapest entry" });
-    }
-    if (easyPlan && !seen.has(easyPlan)) {
-      seen.add(easyPlan);
-      recs.push({ tag: "easy", plan: easyPlan, emoji: "⚡", reason: "Easy approval" });
-    }
-
-    return recs.slice(0, 3);
-  }, [currentTable, selectedTab]);
 
   // ── Upgrade ladder (upfront mode only) ─────────────────────────────────────
   type LadderRow = { plan: string; planCost: number; devicePrice: number; isFree: boolean };
@@ -433,58 +370,6 @@ export default function Page() {
     return null;
   }, [upgradeLadder, selectedPlan]);
 
-  // ── Similar price phones ────────────────────────────────────────────────────
-  const similarPhones = useMemo((): SimilarResult[] => {
-    if (!selectedRow) return [];
-
-    let refPrice: number;
-    if (selectedTab === "upfront") {
-      const p = (selectedRow as { devicePrice?: number | string }).devicePrice;
-      if (p === undefined || p === "NA") return [];
-      refPrice = Number(p);
-    } else {
-      const p = (selectedRow as { monthly?: number | string }).monthly;
-      if (p === undefined || p === "NA") return [];
-      refPrice = Number(p);
-    }
-
-    if (isNaN(refPrice) || refPrice <= 0) return [];
-
-    const margin = Math.max(refPrice * 0.25, 15);
-    const results: SimilarResult[] = [];
-
-    for (const brand of catalog) {
-      for (const model of brand.models) {
-        if (model.model === selectedModel.model) continue;
-        for (const storage of model.storages) {
-          const table = storage.regions.ECEM?.[selectedTab];
-          if (!table) continue;
-          const row = table[selectedPlan];
-          if (!row) continue;
-
-          let price: number;
-          if (selectedTab === "upfront") {
-            const p = (row as { devicePrice?: number | string }).devicePrice;
-            if (p === undefined || p === "NA") continue;
-            price = Number(p);
-          } else {
-            const p = (row as { monthly?: number | string }).monthly;
-            if (p === undefined || p === "NA") continue;
-            price = Number(p);
-          }
-
-          if (isNaN(price) || price <= 0) continue;
-          if (Math.abs(price - refPrice) <= margin) {
-            results.push({ brand: brand.brand, model, storage, price });
-          }
-        }
-      }
-    }
-
-    return results
-      .sort((a, b) => Math.abs(a.price - refPrice) - Math.abs(b.price - refPrice))
-      .slice(0, 4);
-  }, [selectedRow, selectedTab, selectedPlan, selectedModel]);
 
   // ── Navigation helpers ──────────────────────────────────────────────────────
   const navigateToDevice = (
@@ -591,18 +476,7 @@ export default function Page() {
       const isFree = Number(row.devicePrice) === 0;
       const dapText = row.dapLabel ? row.dapLabel : moneyPlain(row.dap);
 
-      if (copyMode === "basic") {
-        return `🔥 ${deviceName}
-📦 Storage: ${activeStorage.storage}
-📍 Region: ECEM
-📱 Plan: ${selectedPlan}
-
-💰 Device Price: ${moneyPlain(row.devicePrice)}
-📉 DAP: ${dapText}
-🧾 Total Upfront: ${moneyPlain(row.totalUpfront)}`;
-      }
-
-      if (copyMode === "recommended") {
+        if (copyMode === "recommended") {
         return [
           `🔥 ${deviceName}`,
           ``,
@@ -652,17 +526,6 @@ export default function Page() {
         : row.dapLabel && row.dapLabel !== "NA"
         ? row.dapLabel
         : "Check ECC";
-
-    if (copyMode === "basic") {
-      return `🔥 ${deviceName}
-📦 Storage: ${activeStorage.storage}
-📍 Region: ECEM
-📱 Plan: ${selectedPlan}${selectedPlan === "MP48" ? " (Shareline)" : ""}
-🗓 Mode: ${modeLabel}
-
-📆 Monthly: ${moneyPlain(row.monthly)}
-📝 Note: ${eccNote}`;
-    }
 
     if (copyMode === "recommended") {
       return [
@@ -1821,22 +1684,20 @@ export default function Page() {
             )}
 
             {/* Copy mode picker */}
-            <div className="mb-2 grid grid-cols-3 gap-1.5">
-              {(["basic", "recommended", "aggressive"] as const).map((mode) => (
+            <div className="mb-2 grid grid-cols-2 gap-1.5">
+              {(["recommended", "aggressive"] as const).map((mode) => (
                 <button
                   key={mode}
                   onClick={() => setCopyMode(mode)}
-                  className={`rounded-xl border py-2 text-[10px] font-medium transition ${
+                  className={`rounded-xl border py-2 text-xs font-medium transition ${
                     copyMode === mode
                       ? mode === "aggressive"
                         ? "border-red-400/50 bg-red-400/15 text-red-300"
-                        : mode === "recommended"
-                        ? "border-[#00D46A] bg-[#00D46A] text-black"
-                        : "border-white/20 bg-[#2a2f33] text-white"
+                        : "border-[#00D46A] bg-[#00D46A] text-black"
                       : "border-white/8 bg-transparent text-slate-500 hover:text-slate-300"
                   }`}
                 >
-                  {mode === "basic" ? "Basic" : mode === "recommended" ? "⭐ Smart" : "🔥 Closing"}
+                  {mode === "recommended" ? "⭐ Smart" : "🔥 Closing"}
                 </button>
               ))}
             </div>
@@ -1859,116 +1720,10 @@ export default function Page() {
               disabled={!quoteText}
               className="mt-3 w-full rounded-xl bg-[#00D46A] px-4 py-3 text-sm font-bold text-black transition hover:bg-[#00b85c] disabled:cursor-not-allowed disabled:bg-[#1e2225] disabled:text-slate-500"
             >
-              {copyMode === "aggressive" ? "🔥 Copy Closing Message" : copyMode === "recommended" ? "⭐ Copy Smart Quote" : "Copy Quote"}
+              {copyMode === "aggressive" ? "🔥 Copy Closing Message" : "⭐ Copy Smart Quote"}
             </button>
           </section>
 
-          {/* Plan Recommender */}
-          {planRecommendations.length > 0 && (
-            <section>
-              <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-                Smart Picks
-              </div>
-              <div className="space-y-2">
-                {planRecommendations.map(({ plan, emoji, reason }) => {
-                  const isActive = plan === selectedPlan;
-                  return (
-                    <button
-                      key={plan}
-                      onClick={() => { setSelectedPlan(plan); setPricingExpanded(false); }}
-                      className={`flex w-full items-center justify-between rounded-xl border px-3 py-2.5 text-left transition ${
-                        isActive
-                          ? "border-[#00D46A]/40 bg-[#00D46A]/10"
-                          : "border-white/8 bg-[#181c1f] hover:border-white/15 hover:bg-[#1e2225]"
-                      }`}
-                    >
-                      <div>
-                        <span className="text-xs font-semibold text-white">{emoji} {plan}</span>
-                        <span className="ml-2 text-[10px] text-slate-500">{reason}</span>
-                      </div>
-                      {isActive && (
-                        <span className="text-[10px] font-medium text-[#00D46A]">selected</span>
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-            </section>
-          )}
-
-          {/* Similar Price Phones */}
-          {similarPhones.length > 0 && (
-            <section>
-              <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-                Similar Price · {selectedPlan}
-              </div>
-
-              <div className="space-y-2">
-                {similarPhones.map((phone, i) => {
-                  const refPrice =
-                    selectedTab === "upfront"
-                      ? Number(
-                          (selectedRow as { devicePrice?: number | string } | undefined)
-                            ?.devicePrice
-                        )
-                      : Number(
-                          (selectedRow as { monthly?: number | string } | undefined)?.monthly
-                        );
-                  const diff = phone.price - refPrice;
-                  const diffLabel =
-                    diff === 0
-                      ? "Same"
-                      : diff > 0
-                      ? `+RM${diff}`
-                      : `-RM${Math.abs(diff)}`;
-                  const diffColor =
-                    diff === 0
-                      ? "text-slate-400"
-                      : diff > 0
-                      ? "text-red-400"
-                      : "text-emerald-400";
-
-                  return (
-                    <button
-                      key={`${phone.brand}-${phone.model.model}-${phone.storage.storage}-${i}`}
-                      onClick={() =>
-                        navigateToDevice(phone.brand, phone.model, phone.storage.storage)
-                      }
-                      className="block w-full rounded-xl border border-white/8 bg-[#181c1f] px-3 py-3 text-left transition hover:border-white/15 hover:bg-[#1e2225]"
-                    >
-                      <div className="truncate text-sm font-medium text-white">
-                        {phone.model.model}
-                      </div>
-                      <div className="mt-0.5 text-xs text-slate-500">
-                        {phone.storage.storage} · {phone.brand}
-                      </div>
-                      <div className="mt-2 flex items-center justify-between gap-2">
-                        <span className="text-sm font-bold text-[#00D46A]">
-                          {selectedTab === "upfront"
-                            ? `RM${phone.price}`
-                            : `RM${phone.price}/mo`}
-                        </span>
-                        <span className={`text-xs font-medium ${diffColor}`}>{diffLabel}</span>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </section>
-          )}
-
-          <section className="rounded-xl border border-white/8 bg-[#181c1f] p-4">
-            <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-              Flow
-            </div>
-            <div className="space-y-2 text-sm text-slate-300">
-              <div>① Choose brand</div>
-              <div>② Tap model</div>
-              <div>③ Select storage</div>
-              <div>④ Pick pricing mode</div>
-              <div>⑤ Click plan → Copy</div>
-            </div>
-          </section>
         </aside>
       </div>
 
