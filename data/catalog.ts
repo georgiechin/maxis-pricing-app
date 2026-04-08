@@ -32,6 +32,7 @@ export type CatalogStorage = {
 export type CatalogModel = {
   model: string;
   aliases: string[];
+  eol?: boolean;
   storages: CatalogStorage[];
 };
 

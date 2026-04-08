@@ -78,7 +78,7 @@ export default function Page() {
     catalog[0].models[0].storages[0].storage
   );
   const [selectedTab, setSelectedTab] = useState<PricingMode>("upfront");
-  const [selectedPlan, setSelectedPlan] = useState("MP99");
+  const [selectedPlan, setSelectedPlan] = useState("MP69");
   const [toast, setToast] = useState("");
 
   // Search state
@@ -98,6 +98,29 @@ export default function Page() {
 
   // Copy mode
   const [copyMode, setCopyMode] = useState<CopyMode>("recommended");
+
+  // Favourites (persisted to localStorage)
+  const [favourites, setFavourites] = useState<string[]>(() => {
+    if (typeof window === "undefined") return [];
+    try { return JSON.parse(localStorage.getItem("maxis-favs") || "[]"); } catch { return []; }
+  });
+  const toggleFavourite = (modelName: string) => {
+    setFavourites((prev) => {
+      const next = prev.includes(modelName) ? prev.filter((m) => m !== modelName) : [...prev, modelName];
+      localStorage.setItem("maxis-favs", JSON.stringify(next));
+      return next;
+    });
+  };
+
+  // By Plan filter
+  const [byPlanMode, setByPlanMode] = useState(false);
+  const [byPlanSelected, setByPlanSelected] = useState("MP99");
+
+  // Compare mode
+  type CompareDevice = { brand: string; model: CatalogModel; storage: CatalogStorage };
+  const [compareA, setCompareA] = useState<CompareDevice | null>(null);
+  const [compareB, setCompareB] = useState<CompareDevice | null>(null);
+  const [showCompare, setShowCompare] = useState(false);
 
   // Sidebar collapse state
   const [brandExpanded, setBrandExpanded] = useState(true);
@@ -131,7 +154,7 @@ export default function Page() {
 
     if (!table) return "MP99";
 
-    const preferredOrder = ["MP139", "MP109", "MP99", "MP89", "MP69", "MP169", "MP199"];
+    const preferredOrder = ["MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
 
     for (const plan of preferredOrder) {
       const row = table[plan];
@@ -248,6 +271,46 @@ export default function Page() {
     }
     return results;
   }, [freeDeviceMode, freeDevicePlan]);
+
+  // ── By Plan results ────────────────────────────────────────────────────────
+  type ByPlanResult = { brand: string; model: CatalogModel; storage: CatalogStorage; devicePrice: number; isFree: boolean };
+  const byPlanResults = useMemo((): ByPlanResult[] => {
+    if (!byPlanMode) return [];
+    const results: ByPlanResult[] = [];
+    for (const brand of catalog) {
+      for (const model of brand.models) {
+        for (const storage of model.storages) {
+          const row = storage.regions.ECEM?.upfront?.[byPlanSelected];
+          if (!row) continue;
+          const dp = (row as { devicePrice?: number | string }).devicePrice;
+          if (dp === undefined || dp === "NA") continue;
+          const price = Number(dp);
+          if (isNaN(price)) continue;
+          results.push({ brand: brand.brand, model, storage, devicePrice: price, isFree: price === 0 });
+        }
+      }
+    }
+    return results.sort((a, b) => a.devicePrice - b.devicePrice);
+  }, [byPlanMode, byPlanSelected]);
+
+  // ── Total contract cost ─────────────────────────────────────────────────────
+  const totalContractCost = useMemo((): string | null => {
+    if (!selectedRow) return null;
+    const fee = planFee(selectedPlan);
+    if (selectedTab === "upfront") {
+      const total = (selectedRow as { totalUpfront?: number | string }).totalUpfront;
+      if (total === undefined || total === "NA") return null;
+      const t = Number(total);
+      if (isNaN(t)) return null;
+      return `RM${(t + fee * 24).toLocaleString()} over 24 months`;
+    }
+    const months = selectedTab === "zero24" ? 24 : 36;
+    const monthly = (selectedRow as { monthly?: number | string }).monthly;
+    if (monthly === undefined || monthly === "NA") return null;
+    const m = Number(monthly);
+    if (isNaN(m)) return null;
+    return `RM${((fee + m) * months).toLocaleString()} over ${months} months`;
+  }, [selectedRow, selectedTab, selectedPlan]);
 
   // ── ECC status for selected row ─────────────────────────────────────────────
   const eccStatus = useMemo((): EccStatus => {
@@ -439,9 +502,27 @@ export default function Page() {
     setSelectedPlan(getBestDefaultPlan(model, targetStorage, targetTab));
     setSearchQuery("");
     setBudgetMode(false);
+    setByPlanMode(false);
     setBrandExpanded(false);
     setModelExpanded(false);
-    setPricingExpanded(true);   // let staff pick a plan on arrival
+    setPricingExpanded(true);
+  };
+
+  const pinToCompare = () => {
+    const storage = selectedModel.storages.find((s) => s.storage === selectedStorage) || selectedModel.storages[0];
+    const device: CompareDevice = { brand: selectedBrand, model: selectedModel, storage };
+    if (!compareA) {
+      setCompareA(device);
+      setToast("Pinned A — now pick device B");
+    } else if (!compareB) {
+      setCompareB(device);
+      setShowCompare(true);
+    } else {
+      setCompareA(device);
+      setCompareB(null);
+      setShowCompare(false);
+      setToast("Pinned A — now pick device B");
+    }
   };
 
   const chooseBrand = (brand: CatalogBrand["brand"]) => {
@@ -827,6 +908,71 @@ export default function Page() {
                 )}
               </div>
             </div>
+          ) : byPlanMode ? (
+            /* By Plan Filter Mode */
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center justify-between">
+                <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#00D46A]">
+                  📋 By Plan
+                </div>
+                <button
+                  onClick={() => setByPlanMode(false)}
+                  className="text-xs text-slate-500 transition hover:text-white"
+                >
+                  ✕ Close
+                </button>
+              </div>
+              <div>
+                <label className="mb-1.5 block text-xs text-slate-400">Customer is on which plan?</label>
+                <div className="grid grid-cols-4 gap-1.5">
+                  {["MP69","MP89","MP99","MP109","MP139","MP169","MP199"].map((plan) => (
+                    <button
+                      key={plan}
+                      onClick={() => setByPlanSelected(plan)}
+                      className={`rounded-xl border px-1 py-2 text-[10px] font-medium transition ${
+                        byPlanSelected === plan
+                          ? "border-[#00D46A] bg-[#00D46A] text-black"
+                          : "border-white/8 bg-transparent text-slate-400 hover:text-white"
+                      }`}
+                    >
+                      {plan}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="text-xs text-slate-500">
+                {byPlanResults.filter(r => r.isFree).length} free · {byPlanResults.length} total on {byPlanSelected}
+              </div>
+              <div className="max-h-[calc(100vh-300px)] space-y-2 overflow-y-auto pr-1">
+                {byPlanResults.map(({ brand, model, storage, devicePrice, isFree }, i) => (
+                  <button
+                    key={`byplan-${brand}-${model.model}-${storage.storage}-${i}`}
+                    onClick={() => navigateToDevice(brand, model, storage.storage, "upfront")}
+                    className="w-full rounded-xl border border-white/8 bg-[#181c1f] p-3 text-left transition hover:border-white/15 hover:bg-[#1e2225]"
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <div className="truncate text-xs font-semibold text-white">{model.model}</div>
+                        <div className="mt-0.5 text-[10px] text-slate-500">{brand} · {storage.storage}</div>
+                      </div>
+                      {isFree ? (
+                        <span className="flex-shrink-0 text-xs font-bold text-red-400">FREE</span>
+                      ) : (
+                        <span className="flex-shrink-0 text-xs font-semibold text-[#00D46A]">RM{devicePrice}</span>
+                      )}
+                    </div>
+                    {model.eol && (
+                      <div className="mt-1 text-[10px] font-medium text-red-400">⚠️ Stock ending</div>
+                    )}
+                  </button>
+                ))}
+                {byPlanResults.length === 0 && (
+                  <div className="rounded-xl border border-white/8 p-4 text-center text-sm text-slate-500">
+                    No devices found on {byPlanSelected}
+                  </div>
+                )}
+              </div>
+            </div>
           ) : budgetMode ? (
             /* Budget Filter Mode */
             <div className="flex flex-col gap-3">
@@ -937,7 +1083,13 @@ export default function Page() {
                         onClick={() => setFreeDeviceMode(true)}
                         className="rounded-lg border border-white/10 bg-[#1e2225] px-2 py-1 text-[10px] font-medium text-slate-400 transition hover:border-[#00D46A]/30 hover:text-[#00D46A]"
                       >
-                        🎁 Free Device
+                        🎁 Free
+                      </button>
+                      <button
+                        onClick={() => setByPlanMode(true)}
+                        className="rounded-lg border border-white/10 bg-[#1e2225] px-2 py-1 text-[10px] font-medium text-slate-400 transition hover:border-[#00D46A]/30 hover:text-[#00D46A]"
+                      >
+                        📋 By Plan
                       </button>
                       <button
                         onClick={() => setBudgetMode(true)}
@@ -996,23 +1148,56 @@ export default function Page() {
                   </div>
 
                   <div className="max-h-[420px] space-y-2 overflow-y-auto pr-1">
-                    {activeBrand.models.map((model) => {
+                    {/* Favourites first */}
+                    {activeBrand.models.some(m => favourites.includes(m.model)) && (
+                      <>
+                        {activeBrand.models.filter(m => favourites.includes(m.model)).map((model) => {
+                          const active = model.model === selectedModel.model;
+                          return (
+                            <div key={`fav-${model.model}`} className="flex items-stretch gap-1.5">
+                              <button
+                                onClick={() => chooseModel(model)}
+                                className={`flex-1 rounded-xl border px-3 py-3 text-left transition ${
+                                  active ? "border-[#00D46A]/40 bg-[#00D46A]/10" : "border-white/8 bg-transparent hover:border-white/15 hover:bg-[#181c1f]"
+                                }`}
+                              >
+                                <div className="flex items-center gap-1.5">
+                                  <span className="text-[10px] text-amber-400">⭐</span>
+                                  <span className="text-sm font-medium text-white">{model.model}</span>
+                                  {model.eol && <span className="text-[9px] font-bold text-red-400">EOL</span>}
+                                </div>
+                                <div className="mt-1 text-xs text-slate-500">{model.storages.map(s => s.storage).join(" · ")}</div>
+                              </button>
+                              <button onClick={() => toggleFavourite(model.model)} className="rounded-xl border border-white/8 px-2 text-amber-400 hover:bg-[#181c1f]">★</button>
+                            </div>
+                          );
+                        })}
+                        <div className="flex items-center gap-2 py-1">
+                          <div className="h-px flex-1 bg-white/8" />
+                          <span className="text-[9px] text-slate-600">ALL</span>
+                          <div className="h-px flex-1 bg-white/8" />
+                        </div>
+                      </>
+                    )}
+                    {/* All models */}
+                    {activeBrand.models.filter(m => !favourites.includes(m.model)).map((model) => {
                       const active = model.model === selectedModel.model;
                       return (
-                        <button
-                          key={model.model}
-                          onClick={() => chooseModel(model)}
-                          className={`block w-full rounded-xl border px-3 py-3 text-left transition ${
-                            active
-                              ? "border-[#00D46A]/40 bg-[#00D46A]/10"
-                              : "border-white/8 bg-transparent hover:border-white/15 hover:bg-[#181c1f]"
-                          }`}
-                        >
-                          <div className="text-sm font-medium text-white">{model.model}</div>
-                          <div className="mt-1 text-xs text-slate-500">
-                            {model.storages.map((s) => s.storage).join(" · ")}
-                          </div>
-                        </button>
+                        <div key={model.model} className="flex items-stretch gap-1.5">
+                          <button
+                            onClick={() => chooseModel(model)}
+                            className={`flex-1 rounded-xl border px-3 py-3 text-left transition ${
+                              active ? "border-[#00D46A]/40 bg-[#00D46A]/10" : "border-white/8 bg-transparent hover:border-white/15 hover:bg-[#181c1f]"
+                            }`}
+                          >
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-sm font-medium text-white">{model.model}</span>
+                              {model.eol && <span className="text-[9px] font-bold text-red-400">EOL</span>}
+                            </div>
+                            <div className="mt-1 text-xs text-slate-500">{model.storages.map(s => s.storage).join(" · ")}</div>
+                          </button>
+                          <button onClick={() => toggleFavourite(model.model)} className="rounded-xl border border-white/8 px-2 text-slate-600 hover:bg-[#181c1f] hover:text-amber-400">☆</button>
+                        </div>
                       );
                     })}
                   </div>
@@ -1062,6 +1247,29 @@ export default function Page() {
                 <span className="rounded-full border border-red-400/30 bg-red-400/10 px-3 py-1.5 text-sm font-bold text-red-400">
                   🔥 HOT DEAL
                 </span>
+              )}
+              {selectedModel.eol && (
+                <span className="rounded-full border border-red-500/40 bg-red-500/10 px-3 py-1.5 text-sm font-bold text-red-400">
+                  ⚠️ Stock ending — sell first
+                </span>
+              )}
+              <button
+                onClick={pinToCompare}
+                className={`rounded-full border px-3 py-1.5 text-sm font-medium transition ${
+                  compareA?.model.model === selectedModel.model
+                    ? "border-blue-400/50 bg-blue-400/15 text-blue-300"
+                    : "border-white/10 bg-[#181c1f] text-slate-400 hover:text-white"
+                }`}
+              >
+                {compareA?.model.model === selectedModel.model ? "📌 Pinned A" : compareB ? "🔄 Replace A" : compareA ? "📌 Pin as B" : "📌 Compare"}
+              </button>
+              {compareA && (
+                <button
+                  onClick={() => { setCompareA(null); setCompareB(null); setShowCompare(false); }}
+                  className="rounded-full border border-white/10 bg-[#181c1f] px-3 py-1.5 text-sm text-slate-500 hover:text-white"
+                >
+                  ✕ Clear
+                </button>
               )}
             </div>
             {activeStorage.promo && (
@@ -1644,6 +1852,13 @@ export default function Page() {
               </pre>
             </div>
 
+            {totalContractCost && (
+              <div className="mt-2 rounded-xl border border-white/8 bg-[#181c1f] px-4 py-2.5">
+                <span className="text-[10px] text-slate-500">Total commitment: </span>
+                <span className="text-xs font-semibold text-slate-300">{totalContractCost}</span>
+              </div>
+            )}
+
             <button
               onClick={copyQuote}
               disabled={!quoteText}
@@ -1785,6 +2000,59 @@ export default function Page() {
           </button>
         </div>
       </div>
+
+      {/* ── Compare Panel ───────────────────────────────────────────────── */}
+      {showCompare && compareA && compareB && (
+        <div className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-[#0e1114]/97 backdrop-blur-md lg:bottom-0">
+          <div className="mx-auto max-w-4xl px-4 py-4">
+            <div className="mb-3 flex items-center justify-between">
+              <div className="text-sm font-semibold text-white">Side by side</div>
+              <button
+                onClick={() => setShowCompare(false)}
+                className="text-xs text-slate-500 hover:text-white"
+              >
+                ✕ Close
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {[compareA, compareB].map((dev, idx) => {
+                const table = dev.storage.regions.ECEM?.[selectedTab];
+                const row = table?.[selectedPlan];
+                const label = idx === 0 ? "A" : "B";
+                return (
+                  <div
+                    key={idx}
+                    className={`rounded-xl border p-3 ${idx === 0 ? "border-blue-400/30 bg-blue-400/5" : "border-purple-400/30 bg-purple-400/5"}`}
+                  >
+                    <div className={`mb-1 text-[10px] font-bold ${idx === 0 ? "text-blue-400" : "text-purple-400"}`}>{label}</div>
+                    <div className="truncate text-sm font-semibold text-white">{dev.model.model}</div>
+                    <div className="mb-3 text-[10px] text-slate-500">{dev.storage.storage} · {selectedPlan} · {selectedTab}</div>
+                    {row ? (
+                      selectedTab === "upfront" ? (
+                        <>
+                          <div className="flex justify-between text-xs"><span className="text-slate-400">Device</span><span className="font-semibold text-white">{formatMoney((row as {devicePrice?: number|string}).devicePrice)}</span></div>
+                          <div className="flex justify-between text-xs"><span className="text-slate-400">DAP</span><span className="text-slate-300">{(row as {dapLabel?: string}).dapLabel || formatMoney((row as {dap?: number|string}).dap)}</span></div>
+                          <div className="mt-1 flex justify-between text-xs font-semibold"><span className="text-slate-400">Total upfront</span><span className="text-[#00D46A]">{formatMoney((row as {totalUpfront?: number|string}).totalUpfront)}</span></div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="flex justify-between text-xs"><span className="text-slate-400">Monthly device</span><span className="font-semibold text-white">{formatMoney((row as {monthly?: number|string}).monthly)}</span></div>
+                          <div className="mt-1 flex justify-between text-xs font-semibold"><span className="text-slate-400">Total / month</span><span className="text-[#00D46A]">RM{planFee(selectedPlan) + Number((row as {monthly?: number|string}).monthly)}</span></div>
+                        </>
+                      )
+                    ) : (
+                      <div className="text-xs text-slate-500">Not available on {selectedPlan}</div>
+                    )}
+                    {dev.storage.promo && (
+                      <div className="mt-2 text-[10px] text-amber-400">{dev.storage.promo}</div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
 
       {toast && (
         <div className="fixed right-4 top-4 z-50 rounded-xl border border-[#00D46A]/30 bg-[#00D46A]/15 px-4 py-3 text-sm font-semibold text-[#00D46A] shadow-2xl">
