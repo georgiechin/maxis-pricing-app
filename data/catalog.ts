@@ -1642,7 +1642,7 @@ storages: [
 {
 storage: "256GB",
 rrp: 1399,
-      promo: "Price down — RM299 with MP89. Free with MP169 & up.",
+      promo: "Price down — RM299 with MP89. Free on MP139.",
 regions: {
 ECEM: {
 upfront: {
@@ -2705,7 +2705,7 @@ storages: [
 {
 storage: "Default",
 rrp: 1399,
-      promo: "RM199 with MP89. Free with MP99 & up.",
+      promo: "RM199 with MP89. Free from MP99.",
 regions: {
 ECEM: {
 upfront: {
@@ -2852,9 +2852,9 @@ MP48: { monthly: 216, dapLabel: "NA" },
 MP69: { monthly: "NA", dapLabel: "Check ECC" },
 MP89: { monthly: "NA", dapLabel: "Check ECC" },
 MP99: { monthly: 174, dapLabel: "Check ECC" },
-MP109: { monthly: 155, dapLabel: "Check ECC" },
-MP139: { monthly: 144, dapLabel: "Check ECC" },
-MP169: { monthly: 130, dapLabel: "Check ECC" },
+MP109: { monthly: 174, dapLabel: "Check ECC" },
+MP139: { monthly: 155, dapLabel: "Check ECC" },
+MP169: { monthly: 144, dapLabel: "Check ECC" },
 MP199: { monthly: 130, dapLabel: "Check ECC" }
 },
 zero36: {
@@ -2862,7 +2862,7 @@ MP48: { monthly: 144, dapLabel: "NA" },
 MP69: { monthly: "NA", dapLabel: "Check ECC" },
 MP89: { monthly: "NA", dapLabel: "Check ECC" },
 MP99: { monthly: 115, dapLabel: "Check ECC" },
-MP109: { monthly: 104, dapLabel: "Check ECC" },
+MP109: { monthly: 115, dapLabel: "Check ECC" },
 MP139: { monthly: 104, dapLabel: "Check ECC" },
 MP169: { monthly: 95, dapLabel: "Check ECC" },
 MP199: { monthly: 80, dapLabel: "Check ECC" }
@@ -3336,7 +3336,7 @@ storages: [
 {
 storage: "8GB+512GB",
 rrp: 1999,
-promo: "Free with MP169 & up. Gift: camera kit worth RM827.",
+promo: "Free with MP169 & up. Gift: Popmart phone pouch (while stocks last).",
 regions: {
 ECEM: {
 upfront: {
