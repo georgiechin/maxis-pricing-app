@@ -301,7 +301,7 @@ storages: [
 {
 storage: "256GB",
 rrp: 2999,
-      promo: "Free with MP169 & up (36M). Available on 36M contract.",
+      promo: "Free from MP169 (36M). Or RM1,941 on MP109 (36M). Save RM1,058.",
 regions: {
 ECEM: {
 upfront: {
@@ -2078,6 +2078,7 @@ storages: [
 {
 storage: "Default",
 rrp: 8688,
+promo: "Gift: Freebuds 7i worth RM329 (while stocks last). Use Bundle B ID.",
 regions: {
 ECEM: {
 upfront: {
@@ -2835,7 +2836,7 @@ storages: [
 {
 storage: "512GB",
 rrp: 5199,
-      promo: "RM104/mo on MP139 (Zero36). Free DAP from MP109.",
+      promo: "RM104/mth on MP139 (Zero36). 0% interest. Free DAP from MP109.",
 regions: {
 ECEM: {
 upfront: {
@@ -2879,7 +2880,7 @@ storages: [
 {
 storage: "512GB",
 rrp: 6199,
-      promo: "RM142/mo on MP99 (Zero36). Free DAP from MP109.",
+      promo: "RM142/mth on MP99 (Zero36). 0% interest. Free DAP from MP109.",
 regions: {
 ECEM: {
 upfront: {
@@ -2923,7 +2924,7 @@ storages: [
 {
 storage: "512GB",
 rrp: 6799,
-      promo: "RM154/mo on MP99 (Zero36). Free DAP from MP109.",
+      promo: "RM154/mth on MP99 (Zero36). 0% interest. Free DAP from MP109.",
 regions: {
 ECEM: {
 upfront: {
