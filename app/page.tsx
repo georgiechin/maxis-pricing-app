@@ -739,7 +739,7 @@ export default function Page() {
 
   return (
     <main className="min-h-screen bg-[#0a0d0f] text-[#f0f2f4]">
-      <div className="min-h-screen lg:grid lg:grid-cols-[220px_minmax(0,1fr)_320px] lg:grid-rows-[auto_1fr]">
+      <div className="min-h-screen lg:grid lg:grid-cols-[240px_minmax(0,1fr)_300px] lg:grid-rows-[auto_1fr]">
 
         {/* ── HEADER ──────────────────────────────────────────────────────── */}
         <header className="relative border-b border-white/8 bg-[#111417] px-4 py-4 lg:col-span-3 lg:px-5">
@@ -848,7 +848,7 @@ export default function Page() {
         </header>
 
         {/* ── LEFT SIDEBAR ────────────────────────────────────────────────── */}
-        <aside className="border-b border-white/8 bg-[#111417] p-3 lg:row-start-2 lg:border-b-0 lg:border-r lg:p-4">
+        <aside className="border-b border-white/8 bg-[#111417] p-3 lg:row-start-2 lg:border-b-0 lg:border-r lg:p-4 lg:overflow-y-auto lg:max-h-[calc(100vh-57px)]">
           {freeDeviceMode ? (
             /* Free Device Filter Mode */
             <div className="flex flex-col gap-3">
@@ -1074,47 +1074,42 @@ export default function Page() {
               {/* ── Brand section ─────────────────────────────────────── */}
               {brandExpanded ? (
                 <section className="mb-4">
-                  <div className="mb-2 flex items-center justify-between gap-2">
-                    <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-                      ① Brand
-                    </div>
-                    <div className="flex gap-1.5">
-                      <button
-                        onClick={() => setFreeDeviceMode(true)}
-                        className="rounded-lg border border-white/10 bg-[#1e2225] px-2 py-1 text-[10px] font-medium text-slate-400 transition hover:border-[#00D46A]/30 hover:text-[#00D46A]"
-                      >
-                        🎁 Free
-                      </button>
-                      <button
-                        onClick={() => setByPlanMode(true)}
-                        className="rounded-lg border border-white/10 bg-[#1e2225] px-2 py-1 text-[10px] font-medium text-slate-400 transition hover:border-[#00D46A]/30 hover:text-[#00D46A]"
-                      >
-                        📋 By Plan
-                      </button>
-                      <button
-                        onClick={() => setBudgetMode(true)}
-                        className="rounded-lg border border-white/10 bg-[#1e2225] px-2 py-1 text-[10px] font-medium text-slate-400 transition hover:border-[#00D46A]/30 hover:text-[#00D46A]"
-                      >
-                        💰 Budget
-                      </button>
-                    </div>
+                  <div className="mb-2 flex items-center justify-between">
+                    <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">① Brand</div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-1">
+                  {/* Filter shortcuts */}
+                  <div className="mb-3 grid grid-cols-3 gap-1.5">
+                    {[
+                      { label: "🎁 Free", onClick: () => setFreeDeviceMode(true) },
+                      { label: "📋 By Plan", onClick: () => setByPlanMode(true) },
+                      { label: "💰 Budget", onClick: () => setBudgetMode(true) },
+                    ].map(({ label, onClick }) => (
+                      <button
+                        key={label}
+                        onClick={onClick}
+                        className="rounded-lg border border-white/10 bg-[#1e2225] py-1.5 text-[11px] font-medium text-slate-400 transition hover:border-[#00D46A]/30 hover:text-[#00D46A]"
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 lg:grid-cols-1">
                     {catalog.map((brand) => {
                       const active = brand.brand === selectedBrand;
                       return (
                         <button
                           key={brand.brand}
                           onClick={() => chooseBrand(brand.brand)}
-                          className={`rounded-xl border px-3 py-3 text-left transition ${
+                          className={`rounded-xl border px-3 py-2.5 text-left transition ${
                             active
                               ? "border-[#00D46A] bg-[#00D46A] text-black"
                               : "border-white/8 bg-transparent text-slate-300 hover:border-white/15 hover:bg-[#181c1f] hover:text-white"
                           }`}
                         >
                           <div className="truncate text-sm font-semibold">{brand.brand}</div>
-                          <div className={`mt-1 text-xs ${active ? "text-black/70" : "text-slate-500"}`}>
+                          <div className={`text-[11px] ${active ? "text-black/70" : "text-slate-500"}`}>
                             {brand.models.length} models
                           </div>
                         </button>
@@ -1230,7 +1225,7 @@ export default function Page() {
         </aside>
 
         {/* ── MAIN CONTENT ────────────────────────────────────────────────── */}
-        <section className="space-y-4 p-3 pb-32 lg:row-start-2 lg:p-5 lg:pb-5">
+        <section className="space-y-4 p-3 pb-32 lg:row-start-2 lg:overflow-y-auto lg:max-h-[calc(100vh-57px)] lg:p-5 lg:pb-5">
           <div className="rounded-2xl border border-white/8 bg-[#111417] p-5">
             <div className="mb-2 text-[11px] font-medium uppercase tracking-[0.12em] text-slate-500">
               {selectedBrand}
@@ -1762,7 +1757,7 @@ export default function Page() {
         </section>
 
         {/* ── RIGHT SIDEBAR ───────────────────────────────────────────────── */}
-        <aside className="space-y-4 border-t border-white/8 bg-[#111417] p-3 pb-28 lg:row-start-2 lg:border-l lg:border-t-0 lg:p-4 lg:pb-4">
+        <aside className="space-y-4 border-t border-white/8 bg-[#111417] p-3 pb-28 lg:row-start-2 lg:border-l lg:border-t-0 lg:overflow-y-auto lg:max-h-[calc(100vh-57px)] lg:p-4 lg:pb-4">
           <section>
             <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
               Current Selection
@@ -1978,25 +1973,24 @@ export default function Page() {
       </div>
 
       {/* Mobile sticky bar */}
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-black/90 px-3 py-3 backdrop-blur lg:hidden">
-        <div className="mx-auto flex max-w-md items-center gap-3">
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-[#0e1114]/95 px-4 py-3 backdrop-blur-md lg:hidden">
+        <div className="flex items-center gap-3">
           <div className="min-w-0 flex-1">
             <div className="truncate text-sm font-semibold text-white">
-              {selectedModel.model} · {selectedPlan}
+              {selectedModel.model}
             </div>
             <div className="truncate text-xs text-slate-400">
-              {activeStorage.storage} · {pricingTabs.find((t) => t.key === selectedTab)?.short}
+              {selectedPlan} · {activeStorage.storage} · {pricingTabs.find((t) => t.key === selectedTab)?.short}
             </div>
           </div>
-
           <button
             onClick={copyQuote}
             disabled={!quoteText}
-            className={`rounded-2xl px-4 py-3 text-sm font-bold text-black disabled:opacity-50 ${
+            className={`flex-shrink-0 rounded-xl px-5 py-3 text-sm font-bold text-black transition disabled:opacity-40 ${
               copyMode === "aggressive" ? "bg-red-400" : "bg-[#00D46A]"
             }`}
           >
-            {copyMode === "aggressive" ? "🔥 Copy" : copyMode === "recommended" ? "⭐ Copy" : "Copy"}
+            {copyMode === "aggressive" ? "🔥 Copy" : "Copy Quote"}
           </button>
         </div>
       </div>
