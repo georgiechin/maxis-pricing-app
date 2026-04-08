@@ -35,6 +35,26 @@ function moneyPlain(value: number | string | null | undefined) {
   return `RM${Number(value).toLocaleString()}`;
 }
 
+// Extract numeric fee from plan name: "MP139" → 139
+function planFee(plan: string): number {
+  const n = parseInt(plan.replace("MP", ""), 10);
+  return isNaN(n) ? 0 : n;
+}
+
+type EccStatus = "none" | "required" | "high";
+
+function getEccStatus(tab: PricingMode, plan: string, row: unknown): EccStatus {
+  if (tab === "upfront") return "none";
+  if (plan === "MP48") return "none";
+  const dapLabel = (row as { dapLabel?: string }).dapLabel;
+  if (!dapLabel || dapLabel === "NA") return "none";
+  const monthly = Number((row as { monthly?: number | string }).monthly);
+  if (!isNaN(monthly) && monthly >= 200) return "high";
+  return "required";
+}
+
+type CopyMode = "basic" | "recommended" | "aggressive";
+
 type BudgetResult = {
   brand: string;
   model: CatalogModel;
@@ -75,6 +95,9 @@ export default function Page() {
   // Free Device filter state
   const [freeDeviceMode, setFreeDeviceMode] = useState(false);
   const [freeDevicePlan, setFreeDevicePlan] = useState("MP169");
+
+  // Copy mode
+  const [copyMode, setCopyMode] = useState<CopyMode>("recommended");
 
   // Sidebar collapse state
   const [brandExpanded, setBrandExpanded] = useState(true);
@@ -226,6 +249,80 @@ export default function Page() {
     return results;
   }, [freeDeviceMode, freeDevicePlan]);
 
+  // ── ECC status for selected row ─────────────────────────────────────────────
+  const eccStatus = useMemo((): EccStatus => {
+    if (!selectedRow) return "none";
+    return getEccStatus(selectedTab, selectedPlan, selectedRow);
+  }, [selectedRow, selectedTab, selectedPlan]);
+
+  // ── Hot deal detection ──────────────────────────────────────────────────────
+  const isHotDeal = useMemo(() => {
+    if (activeStorage.promo) return true;
+    if (selectedTab === "upfront" && selectedRow) {
+      const d = (selectedRow as { devicePrice?: number | string }).devicePrice;
+      if (d !== undefined && d !== "NA" && Number(d) === 0) return true;
+    }
+    return false;
+  }, [activeStorage.promo, selectedTab, selectedRow]);
+
+  // ── Plan recommender ────────────────────────────────────────────────────────
+  const planRecommendations = useMemo((): { tag: string; plan: string; emoji: string; reason: string }[] => {
+    if (!currentTable) return [];
+
+    const plans = selectedTab === "upfront" ? mpOrder : mpOrderZero;
+    let cheapestPlan = "";
+    let cheapestPrice = Infinity;
+    let freePlan = "";
+    let easyPlan = "";
+
+    for (const plan of plans) {
+      const row = currentTable[plan];
+      if (!row) continue;
+
+      if (selectedTab === "upfront") {
+        const d = (row as { devicePrice?: number | string }).devicePrice;
+        if (d === undefined || d === "NA") continue;
+        const price = Number(d);
+        if (isNaN(price)) continue;
+        if (price < cheapestPrice) { cheapestPrice = price; cheapestPlan = plan; }
+        if (price === 0 && !freePlan) freePlan = plan;
+      } else {
+        const m = (row as { monthly?: number | string }).monthly;
+        if (m === undefined || m === "NA") continue;
+        const price = Number(m);
+        if (isNaN(price)) continue;
+        if (price < cheapestPrice) { cheapestPrice = price; cheapestPlan = plan; }
+      }
+
+      if (!easyPlan && (plan === "MP89" || plan === "MP99")) easyPlan = plan;
+    }
+
+    if (!easyPlan) {
+      for (const p of ["MP109", "MP89", "MP139", "MP69"]) {
+        if (currentTable[p]) { easyPlan = p; break; }
+      }
+    }
+
+    const bestValuePlan = freePlan || cheapestPlan;
+    const seen = new Set<string>();
+    const recs: { tag: string; plan: string; emoji: string; reason: string }[] = [];
+
+    if (bestValuePlan) {
+      seen.add(bestValuePlan);
+      recs.push({ tag: "best-value", plan: bestValuePlan, emoji: "⭐", reason: freePlan ? "Free device" : "Best deal" });
+    }
+    if (cheapestPlan && !seen.has(cheapestPlan)) {
+      seen.add(cheapestPlan);
+      recs.push({ tag: "cheapest", plan: cheapestPlan, emoji: "💸", reason: "Cheapest entry" });
+    }
+    if (easyPlan && !seen.has(easyPlan)) {
+      seen.add(easyPlan);
+      recs.push({ tag: "easy", plan: easyPlan, emoji: "⚡", reason: "Easy approval" });
+    }
+
+    return recs.slice(0, 3);
+  }, [currentTable, selectedTab]);
+
   // ── Similar price phones ────────────────────────────────────────────────────
   const similarPhones = useMemo((): SimilarResult[] => {
     if (!selectedRow) return [];
@@ -350,6 +447,11 @@ export default function Page() {
   const quoteText = useMemo(() => {
     if (!regionPricing || !selectedRow) return "";
 
+    const deviceName = selectedModel.model;
+    const promo = activeStorage.promo || "";
+    const modeLabel =
+      selectedTab === "upfront" ? "Upfront" : selectedTab === "zero24" ? "Zerolution 24M" : "Zerolution 36M";
+
     if (selectedTab === "upfront") {
       const row = selectedRow as {
         devicePrice?: number | string;
@@ -357,35 +459,119 @@ export default function Page() {
         dapLabel?: string;
         totalUpfront?: number | string;
       };
-
       if (row.devicePrice === undefined || row.devicePrice === "NA") return "";
+      const isFree = Number(row.devicePrice) === 0;
+      const dapText = row.dapLabel ? row.dapLabel : moneyPlain(row.dap);
 
-      return `🔥 ${selectedModel.model}
+      if (copyMode === "basic") {
+        return `🔥 ${deviceName}
 📦 Storage: ${activeStorage.storage}
 📍 Region: ECEM
 📱 Plan: ${selectedPlan}
 
-💰 Device Price / Upfront: ${moneyPlain(row.devicePrice)}
-📉 DAP: ${row.dapLabel ? row.dapLabel : moneyPlain(row.dap)}
+💰 Device Price: ${moneyPlain(row.devicePrice)}
+📉 DAP: ${dapText}
 🧾 Total Upfront: ${moneyPlain(row.totalUpfront)}`;
+      }
+
+      if (copyMode === "recommended") {
+        return [
+          `🔥 ${deviceName}`,
+          ``,
+          `📱 Plan: ${selectedPlan} (${modeLabel})`,
+          `📦 Device: ${moneyPlain(row.devicePrice)}`,
+          `💳 DAP: ${dapText}`,
+          `🧾 Total upfront: ${moneyPlain(row.totalUpfront)}`,
+          isFree ? `✅ FREE device promo!` : ``,
+          promo ? `🎁 ${promo}` : ``,
+          ``,
+          `⚠️ Subject to stock & verification`,
+          ``,
+          `👉 Reply YES to proceed`,
+          `👉 I guide you step by step`,
+        ].filter((l, i, arr) => !(l === "" && arr[i - 1] === "")).join("\n").trim();
+      }
+
+      // aggressive
+      const strongest = isFree
+        ? `✅ FREE device — zero device cost!`
+        : `📦 Device at ${moneyPlain(row.devicePrice)} only`;
+      return [
+        `🔥 BEST DEAL — ${deviceName}`,
+        ``,
+        strongest,
+        `💳 DAP: ${dapText}`,
+        `📱 Plan: ${selectedPlan} | ${modeLabel}`,
+        promo ? `🎁 ${promo}` : ``,
+        ``,
+        `⚡ Fast approval for eligible customers`,
+        ``,
+        `👉 Grab it — limited stocks`,
+        `👉 Reply YES and I handle everything`,
+      ].filter((l, i, arr) => !(l === "" && arr[i - 1] === "")).join("\n").trim();
     }
 
-    const row = selectedRow as {
-      monthly?: number | string;
-      dapLabel?: string;
-    };
-
+    // Zero modes
+    const row = selectedRow as { monthly?: number | string; dapLabel?: string };
     if (row.monthly === undefined || row.monthly === "NA") return "";
+    const monthly = Number(row.monthly);
+    const fee = planFee(selectedPlan);
+    const effectiveTotal = fee + monthly;
+    const isFreeDevice = monthly === 0;
+    const eccNote =
+      selectedPlan === "MP48"
+        ? "No ECC — Shareline"
+        : row.dapLabel && row.dapLabel !== "NA"
+        ? row.dapLabel
+        : "Check ECC";
 
-    return `🔥 ${selectedModel.model}
+    if (copyMode === "basic") {
+      return `🔥 ${deviceName}
 📦 Storage: ${activeStorage.storage}
 📍 Region: ECEM
 📱 Plan: ${selectedPlan}${selectedPlan === "MP48" ? " (Shareline)" : ""}
-🗓 Mode: ${selectedTab === "zero24" ? "Zerolution 24M" : "Zerolution 36M"}
+🗓 Mode: ${modeLabel}
 
 📆 Monthly: ${moneyPlain(row.monthly)}
-📝 Note: ${row.dapLabel && row.dapLabel !== "NA" ? row.dapLabel : selectedPlan === "MP48" ? "Shareline - no ECC" : "Check ECC"}`;
-  }, [regionPricing, selectedRow, selectedModel, activeStorage, selectedPlan, selectedTab]);
+📝 Note: ${eccNote}`;
+    }
+
+    if (copyMode === "recommended") {
+      return [
+        `🔥 ${deviceName}`,
+        ``,
+        `📱 Plan: ${selectedPlan} (${modeLabel})`,
+        `💰 Device installment: RM${monthly}/mo`,
+        `📊 Total/month: RM${fee} plan + RM${monthly} = RM${effectiveTotal}`,
+        isFreeDevice ? `✅ FREE device — RM0 installment!` : ``,
+        promo ? `🎁 ${promo}` : ``,
+        ``,
+        `📋 ${eccNote}`,
+        `⚠️ Subject to verification`,
+        ``,
+        `👉 Reply YES to proceed`,
+        `👉 I guide you step by step`,
+      ].filter((l, i, arr) => !(l === "" && arr[i - 1] === "")).join("\n").trim();
+    }
+
+    // aggressive
+    const strongest = isFreeDevice
+      ? `✅ FREE device on ${selectedPlan}!`
+      : `💥 Only RM${monthly}/mo device installment`;
+    return [
+      `🔥 BEST DEAL — ${deviceName}`,
+      ``,
+      strongest,
+      `📱 Plan: ${selectedPlan} | ${modeLabel}`,
+      `📊 RM${fee} plan + RM${monthly} device = RM${effectiveTotal}/mo`,
+      promo ? `🎁 ${promo}` : ``,
+      ``,
+      `⚡ Fast approval for eligible customers`,
+      ``,
+      `👉 Grab it — limited promo`,
+      `👉 Reply YES and I handle everything`,
+    ].filter((l, i, arr) => !(l === "" && arr[i - 1] === "")).join("\n").trim();
+  }, [regionPricing, selectedRow, selectedModel, activeStorage, selectedPlan, selectedTab, copyMode]);
 
   const copyQuote = async () => {
     if (!quoteText) return;
@@ -825,6 +1011,11 @@ export default function Page() {
               <InfoChip text={`Storage: ${activeStorage.storage}`} />
               <InfoChip text={`RRP: ${formatMoney(activeStorage.rrp)}`} />
               <InfoChip text="Region: ECEM" />
+              {isHotDeal && (
+                <span className="rounded-full border border-red-400/30 bg-red-400/10 px-3 py-1.5 text-sm font-bold text-red-400">
+                  🔥 HOT DEAL
+                </span>
+              )}
             </div>
             {activeStorage.promo && (
               <div className="mt-3 flex items-start gap-2 rounded-xl border border-amber-400/20 bg-amber-400/8 px-3 py-2">
@@ -935,9 +1126,10 @@ export default function Page() {
                       })()
                     : (() => {
                         const r = selectedRow as { monthly?: number | string };
-                        return r.monthly !== "NA"
-                          ? `${formatMoney(r.monthly)}/mo`
-                          : "NA";
+                        if (r.monthly === "NA" || r.monthly === undefined) return "NA";
+                        const m = Number(r.monthly);
+                        const total = planFee(selectedPlan) + m;
+                        return `RM${m}/mo device · RM${total}/mo total`;
                       })()}
                 </div>
               </div>
@@ -989,6 +1181,12 @@ export default function Page() {
                             <div className="text-2xl font-bold text-white">{mp}</div>
                             {mp === "MP48" && (
                               <span className="rounded-full bg-blue-500/20 px-2 py-0.5 text-xs text-blue-300">Shareline</span>
+                            )}
+                            {selectedTab === "upfront" && row && Number((row as { devicePrice?: number | string }).devicePrice) === 0 && (
+                              <span className="rounded-full bg-red-400/15 px-2 py-0.5 text-xs font-bold text-red-400">🔥 FREE</span>
+                            )}
+                            {selectedTab !== "upfront" && row && Number((row as { monthly?: number | string }).monthly) === 0 && (
+                              <span className="rounded-full bg-red-400/15 px-2 py-0.5 text-xs font-bold text-red-400">🔥 FREE</span>
                             )}
                           </div>
                           {active && (
@@ -1053,6 +1251,17 @@ export default function Page() {
                                   : "NA"
                               }
                             />
+                            {isMonthly && (
+                              <div className="rounded-xl border border-[#00D46A]/20 bg-[#00D46A]/8 px-4 py-3">
+                                <div className="text-sm text-slate-400">Total / month</div>
+                                <div className="mt-1 text-lg font-bold text-[#00D46A]">
+                                  RM{planFee(mp) + Number((row as { monthly?: number | string }).monthly)}
+                                </div>
+                                <div className="text-[10px] text-slate-500">
+                                  RM{planFee(mp)} plan + RM{(row as { monthly?: number | string }).monthly} device
+                                </div>
+                              </div>
+                            )}
                           </div>
                         )}
                       </button>
@@ -1086,6 +1295,9 @@ export default function Page() {
                             </th>
                             <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">
                               DAP / ECC
+                            </th>
+                            <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+                              Total / mo
                             </th>
                           </>
                         )}
@@ -1124,13 +1336,15 @@ export default function Page() {
                             {selectedTab === "upfront" ? (
                               <>
                                 <td className="px-4 py-3 text-sm">
-                                  <span className={upfrontMissing ? "text-slate-500" : "font-semibold text-[#00D46A]"}>
-                                    {upfrontMissing
-                                      ? "NA"
-                                      : formatMoney(
-                                          (row as { devicePrice?: number | string }).devicePrice
-                                        )}
-                                  </span>
+                                  {upfrontMissing ? (
+                                    <span className="text-slate-500">NA</span>
+                                  ) : Number((row as { devicePrice?: number | string }).devicePrice) === 0 ? (
+                                    <span className="font-bold text-red-400">🔥 FREE</span>
+                                  ) : (
+                                    <span className="font-semibold text-[#00D46A]">
+                                      {formatMoney((row as { devicePrice?: number | string }).devicePrice)}
+                                    </span>
+                                  )}
                                 </td>
                                 <td className="px-4 py-3 text-sm text-slate-300">
                                   {upfrontMissing
@@ -1151,11 +1365,15 @@ export default function Page() {
                             ) : (
                               <>
                                 <td className="px-4 py-3 text-sm">
-                                  <span className={monthlyMissing ? "text-slate-500" : "font-semibold text-[#00D46A]"}>
-                                    {monthlyMissing
-                                      ? "NA"
-                                      : formatMoney((row as { monthly?: number | string }).monthly)}
-                                  </span>
+                                  {monthlyMissing ? (
+                                    <span className="text-slate-500">NA</span>
+                                  ) : Number((row as { monthly?: number | string }).monthly) === 0 ? (
+                                    <span className="font-bold text-red-400">🔥 FREE</span>
+                                  ) : (
+                                    <span className="font-semibold text-[#00D46A]">
+                                      {formatMoney((row as { monthly?: number | string }).monthly)}
+                                    </span>
+                                  )}
                                 </td>
                                 <td className="px-4 py-3 text-sm text-slate-300">
                                   {monthlyMissing
@@ -1164,6 +1382,11 @@ export default function Page() {
                                       (row as { dapLabel?: string }).dapLabel
                                     ? (row as { dapLabel?: string }).dapLabel || "NA"
                                     : "Check ECC"}
+                                </td>
+                                <td className="px-4 py-3 text-sm text-slate-400">
+                                  {monthlyMissing
+                                    ? "NA"
+                                    : `RM${planFee(mp) + Number((row as { monthly?: number | string }).monthly)}`}
                                 </td>
                               </>
                             )}
@@ -1209,8 +1432,51 @@ export default function Page() {
               Quick Quote
             </div>
 
+            {/* ECC Status */}
+            {selectedRow && (
+              <div className={`mb-3 flex items-center gap-2 rounded-xl border px-3 py-2 text-xs font-medium ${
+                eccStatus === "none"
+                  ? "border-emerald-500/20 bg-emerald-500/8 text-emerald-400"
+                  : eccStatus === "high"
+                  ? "border-red-500/20 bg-red-500/8 text-red-400"
+                  : "border-amber-400/20 bg-amber-400/8 text-amber-300"
+              }`}>
+                <span>{eccStatus === "none" ? "✅" : eccStatus === "high" ? "🔴" : "⚠️"}</span>
+                <span>
+                  {eccStatus === "none"
+                    ? selectedTab === "upfront"
+                      ? "Upfront — no monthly ECC"
+                      : "No ECC required"
+                    : eccStatus === "high"
+                    ? "High ECC — verify carefully"
+                    : "ECC required — check eligibility"}
+                </span>
+              </div>
+            )}
+
+            {/* Copy mode picker */}
+            <div className="mb-2 grid grid-cols-3 gap-1.5">
+              {(["basic", "recommended", "aggressive"] as const).map((mode) => (
+                <button
+                  key={mode}
+                  onClick={() => setCopyMode(mode)}
+                  className={`rounded-xl border py-2 text-[10px] font-medium transition ${
+                    copyMode === mode
+                      ? mode === "aggressive"
+                        ? "border-red-400/50 bg-red-400/15 text-red-300"
+                        : mode === "recommended"
+                        ? "border-[#00D46A] bg-[#00D46A] text-black"
+                        : "border-white/20 bg-[#2a2f33] text-white"
+                      : "border-white/8 bg-transparent text-slate-500 hover:text-slate-300"
+                  }`}
+                >
+                  {mode === "basic" ? "Basic" : mode === "recommended" ? "⭐ Smart" : "🔥 Closing"}
+                </button>
+              ))}
+            </div>
+
             <div className="rounded-xl border border-white/8 bg-[#181c1f] p-4">
-              <pre className="whitespace-pre-wrap break-words font-mono text-xs leading-7 text-slate-300">
+              <pre className="whitespace-pre-wrap break-words font-mono text-xs leading-6 text-slate-300">
                 {quoteText || "Select a valid plan to generate quote."}
               </pre>
             </div>
@@ -1220,9 +1486,42 @@ export default function Page() {
               disabled={!quoteText}
               className="mt-3 w-full rounded-xl bg-[#00D46A] px-4 py-3 text-sm font-bold text-black transition hover:bg-[#00b85c] disabled:cursor-not-allowed disabled:bg-[#1e2225] disabled:text-slate-500"
             >
-              Copy for WhatsApp
+              {copyMode === "aggressive" ? "🔥 Copy Closing Message" : copyMode === "recommended" ? "⭐ Copy Smart Quote" : "Copy Quote"}
             </button>
           </section>
+
+          {/* Plan Recommender */}
+          {planRecommendations.length > 0 && (
+            <section>
+              <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                Smart Picks
+              </div>
+              <div className="space-y-2">
+                {planRecommendations.map(({ plan, emoji, reason }) => {
+                  const isActive = plan === selectedPlan;
+                  return (
+                    <button
+                      key={plan}
+                      onClick={() => { setSelectedPlan(plan); setPricingExpanded(false); }}
+                      className={`flex w-full items-center justify-between rounded-xl border px-3 py-2.5 text-left transition ${
+                        isActive
+                          ? "border-[#00D46A]/40 bg-[#00D46A]/10"
+                          : "border-white/8 bg-[#181c1f] hover:border-white/15 hover:bg-[#1e2225]"
+                      }`}
+                    >
+                      <div>
+                        <span className="text-xs font-semibold text-white">{emoji} {plan}</span>
+                        <span className="ml-2 text-[10px] text-slate-500">{reason}</span>
+                      </div>
+                      {isActive && (
+                        <span className="text-[10px] font-medium text-[#00D46A]">selected</span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+          )}
 
           {/* Similar Price Phones */}
           {similarPhones.length > 0 && (
@@ -1315,9 +1614,11 @@ export default function Page() {
           <button
             onClick={copyQuote}
             disabled={!quoteText}
-            className="rounded-2xl bg-[#00D46A] px-4 py-3 text-sm font-bold text-black disabled:opacity-50"
+            className={`rounded-2xl px-4 py-3 text-sm font-bold text-black disabled:opacity-50 ${
+              copyMode === "aggressive" ? "bg-red-400" : "bg-[#00D46A]"
+            }`}
           >
-            Copy Quote
+            {copyMode === "aggressive" ? "🔥 Copy" : copyMode === "recommended" ? "⭐ Copy" : "Copy"}
           </button>
         </div>
       </div>
