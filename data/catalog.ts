@@ -25,6 +25,7 @@ export type CatalogStorage = {
   storage: string;
   rrp: number;
   notes?: string;
+  promo?: string;
   regions: RegionPricingMap;
 };
 
@@ -38,6 +39,10 @@ export type CatalogBrand = {
   brand: string;
   models: CatalogModel[];
 };
+
+// Pricing source — update this whenever a new GTM is applied
+export const CATALOG_SOURCE = "GTM 9 Apr 2026";
+export const CATALOG_DATE = "2026-04-09";
 
 export const catalog: CatalogBrand[] = [
 {
@@ -296,6 +301,7 @@ storages: [
 {
 storage: "256GB",
 rrp: 2999,
+      promo: "Free with MP169 & up (36M). Available on 36M contract.",
 regions: {
 ECEM: {
 upfront: {
@@ -376,6 +382,7 @@ storages: [
 {
 storage: "256GB",
 rrp: 3999,
+      promo: "Now FREE with MP199 (36M upfront).",
 regions: {
 ECEM: {
 upfront: {
@@ -1635,11 +1642,12 @@ storages: [
 {
 storage: "256GB",
 rrp: 1399,
+      promo: "Price down — RM299 with MP89. Free with MP169 & up.",
 regions: {
 ECEM: {
 upfront: {
 MP69: { devicePrice: 399, dap: 60, totalUpfront: 459 },
-MP89: { devicePrice: 399, dap: 60, totalUpfront: 459 },
+MP89: { devicePrice: 299, dap: 160, totalUpfront: 459 },
 MP99: { devicePrice: 99, dap: 360, totalUpfront: 459 },
 MP109: { devicePrice: 99, dap: 360, totalUpfront: 459 },
 MP139: { devicePrice: 0, dap: 460, totalUpfront: 460 },
@@ -2697,11 +2705,12 @@ storages: [
 {
 storage: "Default",
 rrp: 1399,
+      promo: "RM199 with MP89. Free with MP99 & up.",
 regions: {
 ECEM: {
 upfront: {
 MP69: { devicePrice: 299, dap: 60, totalUpfront: 359 },
-MP89: { devicePrice: 299, dap: 60, totalUpfront: 359 },
+MP89: { devicePrice: 199, dap: 160, totalUpfront: 359 },
 MP99: { devicePrice: 0, dap: 360, totalUpfront: 360 },
 MP109: { devicePrice: 0, dap: 360, totalUpfront: 360 },
 MP139: { devicePrice: 0, dap: 360, totalUpfront: 360 },
@@ -2826,6 +2835,7 @@ storages: [
 {
 storage: "512GB",
 rrp: 5199,
+      promo: "RM104/mo on MP139 (Zero36). Free DAP from MP109.",
 regions: {
 ECEM: {
 upfront: {
@@ -2841,10 +2851,10 @@ zero24: {
 MP48: { monthly: 216, dapLabel: "NA" },
 MP69: { monthly: "NA", dapLabel: "Check ECC" },
 MP89: { monthly: "NA", dapLabel: "Check ECC" },
-MP99: { monthly: 175, dapLabel: "Check ECC" },
-MP109: { monthly: 175, dapLabel: "Check ECC" },
-MP139: { monthly: 165, dapLabel: "Check ECC" },
-MP169: { monthly: 150, dapLabel: "Check ECC" },
+MP99: { monthly: 174, dapLabel: "Check ECC" },
+MP109: { monthly: 155, dapLabel: "Check ECC" },
+MP139: { monthly: 144, dapLabel: "Check ECC" },
+MP169: { monthly: 130, dapLabel: "Check ECC" },
 MP199: { monthly: 130, dapLabel: "Check ECC" }
 },
 zero36: {
@@ -2852,8 +2862,8 @@ MP48: { monthly: 144, dapLabel: "NA" },
 MP69: { monthly: "NA", dapLabel: "Check ECC" },
 MP89: { monthly: "NA", dapLabel: "Check ECC" },
 MP99: { monthly: 115, dapLabel: "Check ECC" },
-MP109: { monthly: 115, dapLabel: "Check ECC" },
-MP139: { monthly: 105, dapLabel: "Check ECC" },
+MP109: { monthly: 104, dapLabel: "Check ECC" },
+MP139: { monthly: 104, dapLabel: "Check ECC" },
 MP169: { monthly: 95, dapLabel: "Check ECC" },
 MP199: { monthly: 80, dapLabel: "Check ECC" }
 }
@@ -2869,6 +2879,7 @@ storages: [
 {
 storage: "512GB",
 rrp: 6199,
+      promo: "RM142/mo on MP99 (Zero36). Free DAP from MP109.",
 regions: {
 ECEM: {
 upfront: {
@@ -2884,20 +2895,20 @@ zero24: {
 MP48: { monthly: 258, dapLabel: "NA" },
 MP69: { monthly: "NA", dapLabel: "Check ECC" },
 MP89: { monthly: "NA", dapLabel: "Check ECC" },
-MP99: { monthly: 215, dapLabel: "Check ECC" },
-MP109: { monthly: 215, dapLabel: "Check ECC" },
-MP139: { monthly: 205, dapLabel: "Check ECC" },
-MP169: { monthly: 190, dapLabel: "Check ECC" },
+MP99: { monthly: 212, dapLabel: "Check ECC" },
+MP109: { monthly: 212, dapLabel: "Check ECC" },
+MP139: { monthly: 193, dapLabel: "Check ECC" },
+MP169: { monthly: 181, dapLabel: "Check ECC" },
 MP199: { monthly: 170, dapLabel: "Check ECC" }
 },
 zero36: {
 MP48: { monthly: 172, dapLabel: "NA" },
 MP69: { monthly: "NA", dapLabel: "Check ECC" },
 MP89: { monthly: "NA", dapLabel: "Check ECC" },
-MP99: { monthly: 145, dapLabel: "Check ECC" },
-MP109: { monthly: 145, dapLabel: "Check ECC" },
-MP139: { monthly: 135, dapLabel: "Check ECC" },
-MP169: { monthly: 125, dapLabel: "Check ECC" },
+MP99: { monthly: 142, dapLabel: "Check ECC" },
+MP109: { monthly: 142, dapLabel: "Check ECC" },
+MP139: { monthly: 129, dapLabel: "Check ECC" },
+MP169: { monthly: 121, dapLabel: "Check ECC" },
 MP199: { monthly: 105, dapLabel: "Check ECC" }
 }
 }
@@ -2912,6 +2923,7 @@ storages: [
 {
 storage: "512GB",
 rrp: 6799,
+      promo: "RM154/mo on MP99 (Zero36). Free DAP from MP109.",
 regions: {
 ECEM: {
 upfront: {
@@ -2927,20 +2939,20 @@ zero24: {
 MP48: { monthly: 283, dapLabel: "NA" },
 MP69: { monthly: "NA", dapLabel: "Check ECC" },
 MP89: { monthly: "NA", dapLabel: "Check ECC" },
-MP99: { monthly: 240, dapLabel: "Check ECC" },
-MP109: { monthly: 240, dapLabel: "Check ECC" },
-MP139: { monthly: 230, dapLabel: "Check ECC" },
-MP169: { monthly: 220, dapLabel: "Check ECC" },
-MP199: { monthly: 200, dapLabel: "Check ECC" }
+MP99: { monthly: 231, dapLabel: "Check ECC" },
+MP109: { monthly: 231, dapLabel: "Check ECC" },
+MP139: { monthly: 211, dapLabel: "Check ECC" },
+MP169: { monthly: 200, dapLabel: "Check ECC" },
+MP199: { monthly: 191, dapLabel: "Check ECC" }
 },
 zero36: {
 MP48: { monthly: 188, dapLabel: "NA" },
 MP69: { monthly: "NA", dapLabel: "Check ECC" },
 MP89: { monthly: "NA", dapLabel: "Check ECC" },
-MP99: { monthly: 165, dapLabel: "Check ECC" },
-MP109: { monthly: 165, dapLabel: "Check ECC" },
-MP139: { monthly: 155, dapLabel: "Check ECC" },
-MP169: { monthly: 145, dapLabel: "Check ECC" },
+MP99: { monthly: 154, dapLabel: "Check ECC" },
+MP109: { monthly: 154, dapLabel: "Check ECC" },
+MP139: { monthly: 141, dapLabel: "Check ECC" },
+MP169: { monthly: 133, dapLabel: "Check ECC" },
 MP199: { monthly: 125, dapLabel: "Check ECC" }
 }
 }
@@ -2964,21 +2976,21 @@ zero24: {
 MP48: { monthly: 333, dapLabel: "NA" },
 MP69: { monthly: "NA", dapLabel: "Check ECC" },
 MP89: { monthly: "NA", dapLabel: "Check ECC" },
-MP99: { monthly: 290, dapLabel: "Check ECC" },
-MP109: { monthly: 290, dapLabel: "Check ECC" },
-MP139: { monthly: 280, dapLabel: "Check ECC" },
-MP169: { monthly: 270, dapLabel: "Check ECC" },
-MP199: { monthly: 250, dapLabel: "Check ECC" }
+MP99: { monthly: 285, dapLabel: "Check ECC" },
+MP109: { monthly: 285, dapLabel: "Check ECC" },
+MP139: { monthly: 275, dapLabel: "Check ECC" },
+MP169: { monthly: 265, dapLabel: "Check ECC" },
+MP199: { monthly: 245, dapLabel: "Check ECC" }
 },
 zero36: {
 MP48: { monthly: 222, dapLabel: "NA" },
 MP69: { monthly: "NA", dapLabel: "Check ECC" },
 MP89: { monthly: "NA", dapLabel: "Check ECC" },
-MP99: { monthly: 199, dapLabel: "Check ECC" },
-MP109: { monthly: 199, dapLabel: "Check ECC" },
-MP139: { monthly: 189, dapLabel: "Check ECC" },
-MP169: { monthly: 179, dapLabel: "Check ECC" },
-MP199: { monthly: 159, dapLabel: "Check ECC" }
+MP99: { monthly: 195, dapLabel: "Check ECC" },
+MP109: { monthly: 195, dapLabel: "Check ECC" },
+MP139: { monthly: 185, dapLabel: "Check ECC" },
+MP169: { monthly: 175, dapLabel: "Check ECC" },
+MP199: { monthly: 155, dapLabel: "Check ECC" }
 }
 }
 }
@@ -3316,6 +3328,51 @@ MP199: { monthly: 205, dapLabel: "Check ECC" }
 {
 brand: "Vivo",
 models: [
+
+{
+model: "Vivo V70 FE 5G",
+aliases: ["v70fe", "v70 fe"],
+storages: [
+{
+storage: "8GB+512GB",
+rrp: 1999,
+promo: "Free with MP169 & up. Gift: camera kit worth RM827.",
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 699, dap: 300, totalUpfront: 999 },
+MP139: { devicePrice: 399, dap: 600, totalUpfront: 999 },
+MP169: { devicePrice: 0, dap: 1000, totalUpfront: 1000 },
+MP199: { devicePrice: 0, dap: 1000, totalUpfront: 1000 },
+},
+zero24: {
+MP48: { monthly: 83, dapLabel: "NA" },
+MP69: { monthly: 75, dapLabel: "NA" },
+MP89: { monthly: 75, dapLabel: "NA" },
+MP99: { monthly: 70, dapLabel: "NA" },
+MP109: { monthly: 70, dapLabel: "NA" },
+MP139: { monthly: 60, dapLabel: "NA" },
+MP169: { monthly: 45, dapLabel: "NA" },
+MP199: { monthly: 30, dapLabel: "NA" },
+},
+zero36: {
+MP48: { monthly: 55, dapLabel: "NA" },
+MP69: { monthly: 50, dapLabel: "NA" },
+MP89: { monthly: 50, dapLabel: "NA" },
+MP99: { monthly: 45, dapLabel: "NA" },
+MP109: { monthly: 45, dapLabel: "NA" },
+MP139: { monthly: 40, dapLabel: "NA" },
+MP169: { monthly: 30, dapLabel: "NA" },
+MP199: { monthly: 20, dapLabel: "NA" },
+},
+},
+},
+},
+],
+},
 {
 model: "Vivo V70 5G",
 aliases: ["vivo", "v70"],
