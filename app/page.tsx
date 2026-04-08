@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   catalog,
+  CATALOG_SOURCE,
   type CatalogBrand,
   type CatalogModel,
   type CatalogStorage,
@@ -70,6 +71,10 @@ export default function Page() {
   const [budgetMode, setBudgetMode] = useState(false);
   const [budgetMax, setBudgetMax] = useState("");
   const [budgetTab, setBudgetTab] = useState<"upfront" | "zero24" | "zero36">("zero24");
+
+  // Free Device filter state
+  const [freeDeviceMode, setFreeDeviceMode] = useState(false);
+  const [freeDevicePlan, setFreeDevicePlan] = useState("MP169");
 
   // Sidebar collapse state
   const [brandExpanded, setBrandExpanded] = useState(true);
@@ -201,6 +206,25 @@ export default function Page() {
 
     return [...within, ...stretch];
   }, [budgetMode, budgetMax, budgetTab]);
+
+  // ── Free Device phones ──────────────────────────────────────────────────────
+  const freeDeviceResults = useMemo((): { brand: string; model: CatalogModel; storage: CatalogStorage }[] => {
+    if (!freeDeviceMode) return [];
+    const results: { brand: string; model: CatalogModel; storage: CatalogStorage }[] = [];
+    for (const brand of catalog) {
+      for (const model of brand.models) {
+        for (const storage of model.storages) {
+          const table = storage.regions.ECEM?.upfront;
+          if (!table) continue;
+          const row = table[freeDevicePlan];
+          if (row && Number(row.devicePrice) === 0) {
+            results.push({ brand: brand.brand, model, storage });
+          }
+        }
+      }
+    }
+    return results;
+  }, [freeDeviceMode, freeDevicePlan]);
 
   // ── Similar price phones ────────────────────────────────────────────────────
   const similarPhones = useMemo((): SimilarResult[] => {
@@ -453,6 +477,9 @@ export default function Page() {
                 )}
               </div>
 
+              <span className="hidden rounded-full border border-slate-600/40 bg-slate-700/30 px-2 py-1 text-[10px] font-medium text-slate-400 sm:inline">
+                {CATALOG_SOURCE}
+              </span>
               <span className="rounded-full border border-[#00D46A]/25 bg-[#00D46A]/12 px-3 py-1 text-xs font-semibold text-[#00D46A]">
                 ECEM
               </span>
@@ -511,7 +538,66 @@ export default function Page() {
 
         {/* ── LEFT SIDEBAR ────────────────────────────────────────────────── */}
         <aside className="border-b border-white/8 bg-[#111417] p-3 lg:row-start-2 lg:border-b-0 lg:border-r lg:p-4">
-          {budgetMode ? (
+          {freeDeviceMode ? (
+            /* Free Device Filter Mode */
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center justify-between">
+                <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#00D46A]">
+                  🎁 Free Device
+                </div>
+                <button
+                  onClick={() => setFreeDeviceMode(false)}
+                  className="text-xs text-slate-500 transition hover:text-white"
+                >
+                  ✕ Close
+                </button>
+              </div>
+
+              <div>
+                <label className="mb-1.5 block text-xs text-slate-400">Select plan</label>
+                <div className="grid grid-cols-4 gap-1.5">
+                  {["MP89", "MP99", "MP109", "MP139", "MP169", "MP199"].map((plan) => (
+                    <button
+                      key={plan}
+                      onClick={() => setFreeDevicePlan(plan)}
+                      className={`rounded-xl border px-1 py-2 text-[10px] font-medium transition ${
+                        freeDevicePlan === plan
+                          ? "border-[#00D46A] bg-[#00D46A] text-black"
+                          : "border-white/8 bg-transparent text-slate-400 hover:text-white"
+                      }`}
+                    >
+                      {plan}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="text-xs text-slate-500">
+                {freeDeviceResults.length} free device{freeDeviceResults.length !== 1 ? "s" : ""} on {freeDevicePlan}
+              </div>
+
+              <div className="max-h-[calc(100vh-300px)] space-y-2 overflow-y-auto pr-1">
+                {freeDeviceResults.map(({ brand, model, storage }, i) => (
+                  <button
+                    key={`free-${brand}-${model.model}-${storage.storage}-${i}`}
+                    onClick={() => navigateToDevice(brand, model, storage.storage, "upfront")}
+                    className="w-full rounded-xl border border-white/8 bg-[#181c1f] p-3 text-left transition hover:border-white/15 hover:bg-[#1e2225]"
+                  >
+                    <div className="text-xs font-semibold text-white">{model.model}</div>
+                    <div className="mt-0.5 text-[10px] text-slate-500">{brand} · {storage.storage}</div>
+                    {storage.promo && (
+                      <div className="mt-1 text-[10px] text-amber-400/80">{storage.promo}</div>
+                    )}
+                  </button>
+                ))}
+                {freeDeviceResults.length === 0 && (
+                  <div className="rounded-xl border border-white/8 p-4 text-center text-sm text-slate-500">
+                    No free devices on {freeDevicePlan}
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : budgetMode ? (
             /* Budget Filter Mode */
             <div className="flex flex-col gap-3">
               <div className="flex items-center justify-between">
@@ -616,12 +702,20 @@ export default function Page() {
                     <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
                       ① Brand
                     </div>
-                    <button
-                      onClick={() => setBudgetMode(true)}
-                      className="rounded-lg border border-white/10 bg-[#1e2225] px-2 py-1 text-[10px] font-medium text-slate-400 transition hover:border-[#00D46A]/30 hover:text-[#00D46A]"
-                    >
-                      💰 Budget
-                    </button>
+                    <div className="flex gap-1.5">
+                      <button
+                        onClick={() => setFreeDeviceMode(true)}
+                        className="rounded-lg border border-white/10 bg-[#1e2225] px-2 py-1 text-[10px] font-medium text-slate-400 transition hover:border-[#00D46A]/30 hover:text-[#00D46A]"
+                      >
+                        🎁 Free
+                      </button>
+                      <button
+                        onClick={() => setBudgetMode(true)}
+                        className="rounded-lg border border-white/10 bg-[#1e2225] px-2 py-1 text-[10px] font-medium text-slate-400 transition hover:border-[#00D46A]/30 hover:text-[#00D46A]"
+                      >
+                        💰 Budget
+                      </button>
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-1">
@@ -735,6 +829,12 @@ export default function Page() {
               <InfoChip text={`RRP: ${formatMoney(activeStorage.rrp)}`} />
               <InfoChip text="Region: ECEM" />
             </div>
+            {activeStorage.promo && (
+              <div className="mt-3 flex items-start gap-2 rounded-xl border border-amber-400/20 bg-amber-400/8 px-3 py-2">
+                <span className="mt-0.5 text-sm">🔥</span>
+                <p className="text-xs font-medium text-amber-300">{activeStorage.promo}</p>
+              </div>
+            )}
           </div>
 
           <div className="rounded-2xl border border-white/8 bg-[#111417] p-4">
