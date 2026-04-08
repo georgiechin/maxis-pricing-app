@@ -1514,7 +1514,7 @@ export default function Page() {
                             <div className="text-[10px] text-slate-500">
                               +RM{extraVsBase}/mth more than {baseline.plan}
                               {breakEven && breakEven <= 24
-                                ? ` · worth it in ${breakEven}M`
+                                ? ` · worth it in ${breakEven} months`
                                 : ""}
                             </div>
                           </div>
