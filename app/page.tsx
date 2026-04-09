@@ -23,7 +23,7 @@ const hotlinkTabs: { key: PricingMode; label: string; short: string }[] = [
 
 const mpOrder = ["MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
 const mpOrderZero = ["MP48", "MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
-const hpOrder = ["HP65", "HP75"];
+const hpOrder = ["HP45", "HP65", "HP75"];
 
 function formatMoney(value: number | string | null | undefined) {
   if (value === null || value === undefined || value === "" || value === "NA") {
@@ -158,7 +158,7 @@ export default function Page() {
     const storage = model.storages.find((s) => s.storage === storageName) || model.storages[0];
     const table = (region === "HOTLINK" ? storage.regions.HOTLINK : storage.regions.ECEM)?.[mode];
     if (!table) return region === "HOTLINK" ? "HP75" : "MP69";
-    const preferredOrder = region === "HOTLINK" ? ["HP75", "HP65"] : ["MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
+    const preferredOrder = region === "HOTLINK" ? ["HP75", "HP65", "HP45"] : ["MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
     for (const plan of preferredOrder) {
       const row = table[plan];
       if (!row) continue;
@@ -274,20 +274,38 @@ export default function Page() {
   }, [freeDeviceMode, freeDevicePlan]);
 
   // ── By Plan results ────────────────────────────────────────────────────────
-  type ByPlanResult = { brand: string; model: CatalogModel; storage: CatalogStorage; devicePrice: number; isFree: boolean };
+  type ByPlanResult = { brand: string; model: CatalogModel; storage: CatalogStorage; devicePrice: number; isFree: boolean; isHotlinkResult?: boolean; contractTerm?: string };
   const byPlanResults = useMemo((): ByPlanResult[] => {
     if (!byPlanMode) return [];
+    const isHP = byPlanSelected.startsWith("HP");
     const results: ByPlanResult[] = [];
     for (const brand of catalog) {
       for (const model of brand.models) {
         for (const storage of model.storages) {
-          const row = storage.regions.ECEM?.upfront?.[byPlanSelected];
-          if (!row) continue;
-          const dp = (row as { devicePrice?: number | string }).devicePrice;
-          if (dp === undefined || dp === "NA") continue;
-          const price = Number(dp);
-          if (isNaN(price)) continue;
-          results.push({ brand: brand.brand, model, storage, devicePrice: price, isFree: price === 0 });
+          if (isHP) {
+            // Search Hotlink region — check both 12M and 24M, pick lowest device price
+            let bestPrice = Infinity;
+            let bestTerm = "12M";
+            for (const [mode, term] of [["hotlink12", "12M"], ["hotlink24", "24M"]] as const) {
+              const row = storage.regions.HOTLINK?.[mode]?.[byPlanSelected];
+              if (!row) continue;
+              const dp = (row as { devicePrice?: number | string }).devicePrice;
+              if (dp === undefined || dp === "NA") continue;
+              const price = Number(dp);
+              if (!isNaN(price) && price < bestPrice) { bestPrice = price; bestTerm = term; }
+            }
+            if (bestPrice !== Infinity) {
+              results.push({ brand: brand.brand, model, storage, devicePrice: bestPrice, isFree: bestPrice === 0, isHotlinkResult: true, contractTerm: bestTerm });
+            }
+          } else {
+            const row = storage.regions.ECEM?.upfront?.[byPlanSelected];
+            if (!row) continue;
+            const dp = (row as { devicePrice?: number | string }).devicePrice;
+            if (dp === undefined || dp === "NA") continue;
+            const price = Number(dp);
+            if (isNaN(price)) continue;
+            results.push({ brand: brand.brand, model, storage, devicePrice: price, isFree: price === 0 });
+          }
         }
       }
     }
@@ -406,7 +424,7 @@ export default function Page() {
     const storage = model.storages.find(s => s.storage === targetStorage) || model.storages[0];
     // Auto-detect region: if device has no ECEM, use HOTLINK
     const targetRegion = storage.regions.ECEM ? "ECEM" : "HOTLINK";
-    const targetTab = tab || (targetRegion === "HOTLINK" ? "hotlink24" : selectedTab);
+    const targetTab = tab || (targetRegion === "HOTLINK" ? "hotlink12" : selectedTab);
     setSelectedRegion(targetRegion);
     setSelectedBrand(brand);
     setSelectedModel(model);
@@ -443,7 +461,7 @@ export default function Page() {
     const nextModel = nextBrand.models[0];
     const nextStorage = nextModel.storages[0];
     const targetRegion = nextStorage.regions.ECEM ? "ECEM" : "HOTLINK";
-    const targetTab: PricingMode = targetRegion === "HOTLINK" ? "hotlink24" : "upfront";
+    const targetTab: PricingMode = targetRegion === "HOTLINK" ? "hotlink12" : "upfront";
 
     setSelectedBrand(nextBrand.brand);
     setSelectedModel(nextModel);
@@ -462,7 +480,7 @@ export default function Page() {
     const nextStorage = model.storages[0].storage;
     const storage = model.storages[0];
     const targetRegion = storage.regions.ECEM ? "ECEM" : "HOTLINK";
-    const targetTab: PricingMode = targetRegion === "HOTLINK" ? "hotlink24" : "upfront";
+    const targetTab: PricingMode = targetRegion === "HOTLINK" ? "hotlink12" : "upfront";
     setSelectedRegion(targetRegion);
     setSelectedModel(model);
     setSelectedStorage(nextStorage);
@@ -867,9 +885,27 @@ export default function Page() {
                 </button>
               </div>
               <div>
-                <label className="mb-1.5 block text-xs text-slate-400">Customer is on which plan?</label>
+                <label className="mb-1.5 block text-xs text-slate-400">Maxis Postpaid</label>
                 <div className="grid grid-cols-4 gap-1.5">
                   {["MP69","MP89","MP99","MP109","MP139","MP169","MP199"].map((plan) => (
+                    <button
+                      key={plan}
+                      onClick={() => setByPlanSelected(plan)}
+                      className={`rounded-xl border px-1 py-2 text-[10px] font-medium transition ${
+                        byPlanSelected === plan
+                          ? "border-[#00D46A] bg-[#00D46A] text-black"
+                          : "border-white/8 bg-transparent text-slate-400 hover:text-white"
+                      }`}
+                    >
+                      {plan}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label className="mb-1.5 block text-xs text-slate-400">Hotlink Postpaid</label>
+                <div className="grid grid-cols-3 gap-1.5">
+                  {["HP45","HP65","HP75"].map((plan) => (
                     <button
                       key={plan}
                       onClick={() => setByPlanSelected(plan)}
@@ -888,16 +924,18 @@ export default function Page() {
                 {byPlanResults.filter(r => r.isFree).length} free · {byPlanResults.length} total on {byPlanSelected}
               </div>
               <div className="max-h-[calc(100vh-300px)] space-y-2 overflow-y-auto pr-1">
-                {byPlanResults.map(({ brand, model, storage, devicePrice, isFree }, i) => (
+                {byPlanResults.map(({ brand, model, storage, devicePrice, isFree, isHotlinkResult, contractTerm }, i) => (
                   <button
                     key={`byplan-${brand}-${model.model}-${storage.storage}-${i}`}
-                    onClick={() => navigateToDevice(brand, model, storage.storage, "upfront")}
+                    onClick={() => navigateToDevice(brand, model, storage.storage, isHotlinkResult ? (contractTerm === "24M" ? "hotlink24" : "hotlink12") : "upfront")}
                     className="w-full rounded-xl border border-white/8 bg-[#181c1f] p-3 text-left transition hover:border-white/15 hover:bg-[#1e2225]"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0">
                         <div className="truncate text-xs font-semibold text-white">{model.model}</div>
-                        <div className="mt-0.5 text-[10px] text-slate-500">{brand} · {storage.storage}</div>
+                        <div className="mt-0.5 text-[10px] text-slate-500">
+                          {brand} · {storage.storage}{isHotlinkResult && contractTerm ? ` · ${contractTerm}` : ""}
+                        </div>
                       </div>
                       {isFree ? (
                         <span className="flex-shrink-0 text-xs font-bold text-red-400">FREE</span>
@@ -1264,7 +1302,7 @@ export default function Page() {
                   <button
                     key={region}
                     onClick={() => {
-                      const newTab: PricingMode = region === "HOTLINK" ? "hotlink24" : "upfront";
+                      const newTab: PricingMode = region === "HOTLINK" ? "hotlink12" : "upfront";
                       setSelectedRegion(region);
                       setSelectedTab(newTab);
                       setSelectedPlan(getBestDefaultPlan(selectedModel, selectedStorage, newTab, region));

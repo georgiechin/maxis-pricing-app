@@ -56,6 +56,118 @@ export const CATALOG_SOURCE = "GTM 9 Apr 2026";
 export const CATALOG_DATE = "2026-04-09";
 
 export const catalog: CatalogBrand[] = [
+// ── Hotlink Postpaid devices (HP45 / HP65 / HP75) ─────────────────────────
+{
+brand: "Hotlink",
+models: [
+{
+model: "Samsung Galaxy A07 5G",
+aliases: ["samsung", "a07", "a075g", "hotlink"],
+storages: [{
+storage: "8+256GB",
+rrp: 949,
+regions: {
+HOTLINK: {
+hotlink12: {
+HP75: { devicePrice: 279, dap: 0, totalUpfront: 279, monthly: 75 }
+},
+hotlink24: {
+HP75: { devicePrice: 0, dap: 150, totalUpfront: 150, monthly: 68.75 }
+}
+}
+}
+}]
+},
+{
+model: "Samsung Galaxy A07 LTE",
+aliases: ["samsung", "a07", "a07lte", "hotlink"],
+storages: [{
+storage: "8+256GB",
+rrp: 699,
+regions: {
+HOTLINK: {
+hotlink12: {
+HP65: { devicePrice: 79, dap: 30, totalUpfront: 109, monthly: 62.50 }
+}
+}
+}
+}]
+},
+{
+model: "Nubia A76 5G",
+aliases: ["nubia", "a76", "hotlink"],
+storages: [{
+storage: "8+128GB",
+rrp: 899,
+regions: {
+HOTLINK: {
+hotlink12: {
+HP75: { devicePrice: 79, dap: 60, totalUpfront: 139, monthly: 70 }
+},
+hotlink24: {
+HP75: { devicePrice: 0, dap: 120, totalUpfront: 120, monthly: 70 }
+}
+}
+}
+}]
+},
+{
+model: "Honor 500 Smart 5G",
+aliases: ["honor", "honor500", "hotlink"],
+storages: [{
+storage: "8+256GB",
+rrp: 1099,
+regions: {
+HOTLINK: {
+hotlink12: {
+HP75: { devicePrice: 459, dap: 0, totalUpfront: 459, monthly: 75 }
+},
+hotlink24: {
+HP75: { devicePrice: 129, dap: 180, totalUpfront: 309, monthly: 67.50 }
+}
+}
+}
+}]
+},
+{
+model: "Honor Pad X8b LTE",
+aliases: ["honor", "padx8b", "x8b", "hotlink"],
+storages: [{
+storage: "8+256GB",
+rrp: 999,
+regions: {
+HOTLINK: {
+hotlink12: {
+HP75: { devicePrice: 659, dap: 0, totalUpfront: 659, monthly: 75 }
+},
+hotlink24: {
+HP75: { devicePrice: 339, dap: 120, totalUpfront: 459, monthly: 70 }
+}
+}
+}
+}]
+},
+{
+model: "Honor 600 Lite 5G",
+aliases: ["honor", "honor600lite", "hotlink"],
+storages: [{
+storage: "12+256GB",
+rrp: 1399,
+promo: "DAP reduced eff 9 Apr 2026.",
+regions: {
+HOTLINK: {
+hotlink12: {
+HP75: { devicePrice: 699, dap: 0, totalUpfront: 699, monthly: 75 }
+},
+hotlink24: {
+HP75: { devicePrice: 399, dap: 60, totalUpfront: 459, monthly: 72.50 }
+}
+}
+}
+}]
+}
+]
+},
 {
 brand: "Apple",
 models: [
@@ -4002,116 +4114,4 @@ MP199: { monthly: 95, dapLabel: "Check ECC" }
 }
 ]
 },
-// ── Hotlink Postpaid devices (HP75 / HP65) ─────────────────────────────────
-{
-brand: "Hotlink",
-models: [
-{
-model: "Samsung Galaxy A07 5G",
-aliases: ["samsung", "a07", "a075g", "hotlink"],
-storages: [{
-storage: "8+256GB",
-rrp: 949,
-regions: {
-HOTLINK: {
-hotlink12: {
-HP75: { devicePrice: 279, dap: 0, totalUpfront: 279, monthly: 75 }
-},
-hotlink24: {
-HP75: { devicePrice: 0, dap: 150, totalUpfront: 150, monthly: 68.75 }
-}
-}
-}
-}]
-},
-{
-model: "Samsung Galaxy A07 LTE",
-aliases: ["samsung", "a07", "a07lte", "hotlink"],
-storages: [{
-storage: "8+256GB",
-rrp: 699,
-regions: {
-HOTLINK: {
-hotlink12: {
-HP65: { devicePrice: 79, dap: 30, totalUpfront: 109, monthly: 62.50 }
-}
-}
-}
-}]
-},
-{
-model: "Nubia A76 5G",
-aliases: ["nubia", "a76", "hotlink"],
-storages: [{
-storage: "8+128GB",
-rrp: 899,
-regions: {
-HOTLINK: {
-hotlink12: {
-HP75: { devicePrice: 79, dap: 60, totalUpfront: 139, monthly: 70 }
-},
-hotlink24: {
-HP75: { devicePrice: 0, dap: 120, totalUpfront: 120, monthly: 70 }
-}
-}
-}
-}]
-},
-{
-model: "Honor 500 Smart 5G",
-aliases: ["honor", "honor500", "hotlink"],
-storages: [{
-storage: "8+256GB",
-rrp: 1099,
-regions: {
-HOTLINK: {
-hotlink12: {
-HP75: { devicePrice: 459, dap: 0, totalUpfront: 459, monthly: 75 }
-},
-hotlink24: {
-HP75: { devicePrice: 129, dap: 180, totalUpfront: 309, monthly: 67.50 }
-}
-}
-}
-}]
-},
-{
-model: "Honor Pad X8b LTE",
-aliases: ["honor", "padx8b", "x8b", "hotlink"],
-storages: [{
-storage: "8+256GB",
-rrp: 999,
-regions: {
-HOTLINK: {
-hotlink12: {
-HP75: { devicePrice: 659, dap: 0, totalUpfront: 659, monthly: 75 }
-},
-hotlink24: {
-HP75: { devicePrice: 339, dap: 120, totalUpfront: 459, monthly: 70 }
-}
-}
-}
-}]
-},
-{
-model: "Honor 600 Lite 5G",
-aliases: ["honor", "honor600lite", "hotlink"],
-storages: [{
-storage: "12+256GB",
-rrp: 1399,
-promo: "DAP reduced eff 9 Apr 2026.",
-regions: {
-HOTLINK: {
-hotlink12: {
-HP75: { devicePrice: 699, dap: 0, totalUpfront: 699, monthly: 75 }
-},
-hotlink24: {
-HP75: { devicePrice: 399, dap: 60, totalUpfront: 459, monthly: 72.50 }
-}
-}
-}
-}]
-}
-]
-}
 ];
