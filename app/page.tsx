@@ -16,8 +16,14 @@ const pricingTabs: { key: PricingMode; label: string; short: string }[] = [
   { key: "zero36", label: "Zerolution 36M", short: "Zero 36M" },
 ];
 
+const hotlinkTabs: { key: PricingMode; label: string; short: string }[] = [
+  { key: "hotlink12", label: "12 months", short: "12M" },
+  { key: "hotlink24", label: "24 months", short: "24M" },
+];
+
 const mpOrder = ["MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
 const mpOrderZero = ["MP48", "MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
+const hpOrder = ["HP65", "HP75"];
 
 function formatMoney(value: number | string | null | undefined) {
   if (value === null || value === undefined || value === "" || value === "NA") {
@@ -71,6 +77,7 @@ export default function Page() {
   const [selectedStorage, setSelectedStorage] = useState(
     catalog[0].models[0].storages[0].storage
   );
+  const [selectedRegion, setSelectedRegion] = useState<"ECEM" | "HOTLINK">("ECEM");
   const [selectedTab, setSelectedTab] = useState<PricingMode>("upfront");
   const [selectedPlan, setSelectedPlan] = useState("MP69");
   const [toast, setToast] = useState("");
@@ -133,28 +140,29 @@ export default function Page() {
     [selectedModel, selectedStorage]
   );
 
-  const regionPricing = activeStorage.regions.ECEM || null;
+  const hasECEM = !!activeStorage.regions.ECEM;
+  const hasHotlink = !!activeStorage.regions.HOTLINK;
+  const isHotlink = selectedRegion === "HOTLINK";
+  const regionPricing = (isHotlink ? activeStorage.regions.HOTLINK : activeStorage.regions.ECEM) || null;
+  const activeTabs = isHotlink ? hotlinkTabs : pricingTabs;
+  const activePlanOrder = isHotlink ? hpOrder : (selectedTab === "upfront" ? mpOrder : mpOrderZero);
   const currentTable = regionPricing ? regionPricing[selectedTab] : null;
   const selectedRow = currentTable?.[selectedPlan];
 
   const getBestDefaultPlan = (
     model: CatalogModel,
     storageName: string,
-    mode: PricingMode
+    mode: PricingMode,
+    region: "ECEM" | "HOTLINK" = "ECEM"
   ) => {
-    const storage =
-      model.storages.find((s) => s.storage === storageName) || model.storages[0];
-    const table = storage.regions.ECEM?.[mode];
-
-    if (!table) return "MP99";
-
-    const preferredOrder = ["MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
-
+    const storage = model.storages.find((s) => s.storage === storageName) || model.storages[0];
+    const table = (region === "HOTLINK" ? storage.regions.HOTLINK : storage.regions.ECEM)?.[mode];
+    if (!table) return region === "HOTLINK" ? "HP75" : "MP69";
+    const preferredOrder = region === "HOTLINK" ? ["HP75", "HP65"] : ["MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
     for (const plan of preferredOrder) {
       const row = table[plan];
       if (!row) continue;
-
-      if (mode === "upfront") {
+      if (mode === "upfront" || mode === "hotlink12" || mode === "hotlink24") {
         const price = (row as { devicePrice?: number | string }).devicePrice;
         if (price !== undefined && price !== "NA") return plan;
       } else {
@@ -162,8 +170,7 @@ export default function Page() {
         if (monthly !== undefined && monthly !== "NA") return plan;
       }
     }
-
-    return "MP99";
+    return region === "HOTLINK" ? "HP75" : "MP69";
   };
 
   // ── Search results ──────────────────────────────────────────────────────────
@@ -291,6 +298,17 @@ export default function Page() {
   const totalContractCost = useMemo((): string | null => {
     if (!selectedRow) return null;
     const fee = planFee(selectedPlan);
+    // Hotlink: devicePrice (true cost) + monthly × contract months
+    if (selectedTab === "hotlink12" || selectedTab === "hotlink24") {
+      const months = selectedTab === "hotlink12" ? 12 : 24;
+      const dp = (selectedRow as { devicePrice?: number | string }).devicePrice;
+      const mo = (selectedRow as { monthly?: number | string }).monthly;
+      if (dp === undefined || mo === undefined) return null;
+      const d = Number(dp);
+      const m = Number(mo);
+      if (isNaN(d) || isNaN(m)) return null;
+      return `RM${(d + m * months).toLocaleString()} over ${months} months`;
+    }
     if (selectedTab === "upfront") {
       // Use devicePrice (not totalUpfront) — DAP is a deposit that comes back
       const dp = (selectedRow as { devicePrice?: number | string }).devicePrice;
@@ -385,12 +403,16 @@ export default function Page() {
     tab?: PricingMode
   ) => {
     const targetStorage = storageName || model.storages[0].storage;
-    const targetTab = tab || selectedTab;
+    const storage = model.storages.find(s => s.storage === targetStorage) || model.storages[0];
+    // Auto-detect region: if device has no ECEM, use HOTLINK
+    const targetRegion = storage.regions.ECEM ? "ECEM" : "HOTLINK";
+    const targetTab = tab || (targetRegion === "HOTLINK" ? "hotlink24" : selectedTab);
+    setSelectedRegion(targetRegion);
     setSelectedBrand(brand);
     setSelectedModel(model);
     setSelectedStorage(targetStorage);
     setSelectedTab(targetTab);
-    setSelectedPlan(getBestDefaultPlan(model, targetStorage, targetTab));
+    setSelectedPlan(getBestDefaultPlan(model, targetStorage, targetTab, targetRegion));
     setSearchQuery("");
     setBudgetMode(false);
     setByPlanMode(false);
@@ -419,13 +441,16 @@ export default function Page() {
   const chooseBrand = (brand: CatalogBrand["brand"]) => {
     const nextBrand = catalog.find((b) => b.brand === brand) || catalog[0];
     const nextModel = nextBrand.models[0];
-    const nextStorage = nextModel.storages[0].storage;
+    const nextStorage = nextModel.storages[0];
+    const targetRegion = nextStorage.regions.ECEM ? "ECEM" : "HOTLINK";
+    const targetTab: PricingMode = targetRegion === "HOTLINK" ? "hotlink24" : "upfront";
 
     setSelectedBrand(nextBrand.brand);
     setSelectedModel(nextModel);
-    setSelectedStorage(nextStorage);
-    setSelectedTab("upfront");
-    setSelectedPlan(getBestDefaultPlan(nextModel, nextStorage, "upfront"));
+    setSelectedStorage(nextStorage.storage);
+    setSelectedRegion(targetRegion);
+    setSelectedTab(targetTab);
+    setSelectedPlan(getBestDefaultPlan(nextModel, nextStorage.storage, targetTab, targetRegion));
     setSearchQuery("");
     setBudgetMode(false);
     setBrandExpanded(false);
@@ -435,11 +460,14 @@ export default function Page() {
 
   const chooseModel = (model: CatalogModel) => {
     const nextStorage = model.storages[0].storage;
-
+    const storage = model.storages[0];
+    const targetRegion = storage.regions.ECEM ? "ECEM" : "HOTLINK";
+    const targetTab: PricingMode = targetRegion === "HOTLINK" ? "hotlink24" : "upfront";
+    setSelectedRegion(targetRegion);
     setSelectedModel(model);
     setSelectedStorage(nextStorage);
-    setSelectedTab("upfront");
-    setSelectedPlan(getBestDefaultPlan(model, nextStorage, "upfront"));
+    setSelectedTab(targetTab);
+    setSelectedPlan(getBestDefaultPlan(model, nextStorage, targetTab, targetRegion));
     setSearchQuery("");
     setModelExpanded(false);
     setPricingExpanded(true);
@@ -469,7 +497,54 @@ export default function Page() {
     const deviceName = selectedModel.model;
     const promo = activeStorage.promo || "";
     const modeLabel =
-      selectedTab === "upfront" ? "Upfront" : selectedTab === "zero24" ? "Zerolution 24M" : "Zerolution 36M";
+      selectedTab === "upfront" ? "Upfront"
+      : selectedTab === "zero24" ? "Zerolution 24M"
+      : selectedTab === "zero36" ? "Zerolution 36M"
+      : selectedTab === "hotlink12" ? "Hotlink 12M"
+      : "Hotlink 24M";
+
+    if (selectedTab === "hotlink12" || selectedTab === "hotlink24") {
+      const row = selectedRow as { devicePrice?: number | string; dap?: number | string; totalUpfront?: number | string; monthly?: number | string };
+      if (row.devicePrice === undefined) return "";
+      const isFree = Number(row.devicePrice) === 0;
+      const months = selectedTab === "hotlink12" ? 12 : 24;
+
+      if (copyMode === "recommended") {
+        return [
+          `🔥 ${deviceName}`,
+          ``,
+          `📱 Plan: ${selectedPlan} (${modeLabel})`,
+          isFree ? `📦 Device: FREE 🎉` : `📦 Device: ${moneyPlain(row.devicePrice)}`,
+          `💳 DAP: ${moneyPlain(row.dap)} (returned as rebate monthly)`,
+          `🧾 Total today: ${moneyPlain(row.totalUpfront)}`,
+          `💰 Monthly: RM${row.monthly}/month (${months}-month contract)`,
+          promo ? `🎁 ${promo}` : ``,
+          ``,
+          `⚠️ Subject to stock & verification`,
+          ``,
+          `👉 Reply YES to proceed`,
+          `👉 I guide you step by step`,
+        ].filter((l, i, arr) => !(l === "" && arr[i - 1] === "")).join("\n").trim();
+      }
+
+      // aggressive
+      const strongest = isFree
+        ? `✅ FREE device — pay only RM${row.dap} deposit today!`
+        : `📦 Device at ${moneyPlain(row.devicePrice)} only`;
+      return [
+        `🔥 BEST DEAL — ${deviceName}`,
+        ``,
+        strongest,
+        `📱 Plan: ${selectedPlan} | ${modeLabel}`,
+        `💰 RM${row.monthly}/month · ${months}-month contract`,
+        promo ? `🎁 ${promo}` : ``,
+        ``,
+        `⚡ Fast approval for eligible customers`,
+        ``,
+        `👉 Grab it — limited stocks`,
+        `👉 Reply YES and I handle everything`,
+      ].filter((l, i, arr) => !(l === "" && arr[i - 1] === "")).join("\n").trim();
+    }
 
     if (selectedTab === "upfront") {
       const row = selectedRow as {
@@ -1106,7 +1181,7 @@ export default function Page() {
             <div className="mt-4 flex flex-wrap gap-2">
               <InfoChip text={`Storage: ${activeStorage.storage}`} />
               <InfoChip text={`RRP: ${formatMoney(activeStorage.rrp)}`} />
-              <InfoChip text="Region: ECEM" />
+              <InfoChip text={`Region: ${isHotlink ? "Hotlink" : "ECEM"}`} />
               {isHotDeal && (
                 <span className="rounded-full border border-red-400/30 bg-red-400/10 px-3 py-1.5 text-sm font-bold text-red-400">
                   🔥 HOT DEAL
@@ -1182,15 +1257,40 @@ export default function Page() {
               Pricing mode
             </div>
 
-            <div className="grid grid-cols-3 gap-2">
-              {pricingTabs.map((tab) => {
+            {/* Region toggle — only shown when device has both ECEM and Hotlink pricing */}
+            {hasECEM && hasHotlink && (
+              <div className="mb-3 grid grid-cols-2 gap-2">
+                {(["ECEM", "HOTLINK"] as const).map((region) => (
+                  <button
+                    key={region}
+                    onClick={() => {
+                      const newTab: PricingMode = region === "HOTLINK" ? "hotlink24" : "upfront";
+                      setSelectedRegion(region);
+                      setSelectedTab(newTab);
+                      setSelectedPlan(getBestDefaultPlan(selectedModel, selectedStorage, newTab, region));
+                      setPricingExpanded(true);
+                    }}
+                    className={`rounded-xl border px-3 py-2.5 text-xs font-medium transition ${
+                      selectedRegion === region
+                        ? "border-[#00D46A] bg-[#00D46A] text-black"
+                        : "border-white/8 bg-[#181c1f] text-slate-400 hover:border-white/15 hover:text-white"
+                    }`}
+                  >
+                    {region === "ECEM" ? "Maxis Postpaid" : "Hotlink Postpaid"}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            <div className={`grid gap-2 ${activeTabs.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
+              {activeTabs.map((tab) => {
                 const active = tab.key === selectedTab;
                 return (
                   <button
                     key={tab.key}
                     onClick={() => {
                       setSelectedTab(tab.key);
-                      setSelectedPlan(getBestDefaultPlan(selectedModel, selectedStorage, tab.key));
+                      setSelectedPlan(getBestDefaultPlan(selectedModel, selectedStorage, tab.key, selectedRegion));
                       setPricingExpanded(true);
                     }}
                     className={`rounded-xl border px-3 py-3 text-sm font-medium transition ${
@@ -1229,19 +1329,20 @@ export default function Page() {
                   )}
                   <span className="text-xs text-slate-500">·</span>
                   <span className="text-sm text-slate-400">
-                    {pricingTabs.find((t) => t.key === selectedTab)?.label}
+                    {activeTabs.find((t) => t.key === selectedTab)?.label}
                   </span>
                 </div>
                 <div className="mt-1.5 text-base font-bold text-[#00D46A]">
-                  {selectedTab === "upfront"
+                  {(selectedTab === "upfront" || selectedTab === "hotlink12" || selectedTab === "hotlink24")
                     ? (() => {
                         const r = selectedRow as {
                           devicePrice?: number | string;
                           totalUpfront?: number | string;
+                          monthly?: number | string;
                         };
-                        return r.devicePrice !== "NA"
-                          ? `${formatMoney(r.devicePrice)} device · ${formatMoney(r.totalUpfront)} total`
-                          : "NA";
+                        if (r.devicePrice === "NA") return "NA";
+                        const monthlyStr = (selectedTab !== "upfront") ? ` · RM${r.monthly}/mo plan` : "";
+                        return `${formatMoney(r.devicePrice)} device · ${formatMoney(r.totalUpfront)} today${monthlyStr}`;
                       })()
                     : (() => {
                         const r = selectedRow as { monthly?: number | string };
@@ -1269,21 +1370,13 @@ export default function Page() {
             {regionPricing ? (
               <>
                 <div className="grid gap-3 p-3 md:hidden">
-                  {(selectedTab === "upfront" ? mpOrder : mpOrderZero).map((mp) => {
+                  {activePlanOrder.map((mp) => {
                     const row = currentTable?.[mp];
                     const active = mp === selectedPlan;
 
-                    const isUpfront =
-                      selectedTab === "upfront" &&
-                      row &&
-                      (row as { devicePrice?: number | string }).devicePrice !== undefined &&
-                      (row as { devicePrice?: number | string }).devicePrice !== "NA";
-
-                    const isMonthly =
-                      selectedTab !== "upfront" &&
-                      row &&
-                      (row as { monthly?: number | string }).monthly !== undefined &&
-                      (row as { monthly?: number | string }).monthly !== "NA";
+                    const isUpfrontMode = selectedTab === "upfront" || selectedTab === "hotlink12" || selectedTab === "hotlink24";
+                    const isUpfront = isUpfrontMode && row && (row as { devicePrice?: number | string }).devicePrice !== undefined && (row as { devicePrice?: number | string }).devicePrice !== "NA";
+                    const isMonthly = !isUpfrontMode && row && (row as { monthly?: number | string }).monthly !== undefined && (row as { monthly?: number | string }).monthly !== "NA";
 
                     return (
                       <button
@@ -1298,13 +1391,13 @@ export default function Page() {
                         <div className="mb-4 flex items-center justify-between gap-3">
                           <div className="flex items-center gap-2">
                             <div className="text-2xl font-bold text-white">{mp}</div>
-                            {mp === "MP48" && (
+                            {mp === "MP48" && !isHotlink && (
                               <span className="rounded-full bg-blue-500/20 px-2 py-0.5 text-xs text-blue-300">Shareline</span>
                             )}
-                            {selectedTab === "upfront" && row && Number((row as { devicePrice?: number | string }).devicePrice) === 0 && (
+                            {isUpfrontMode && row && Number((row as { devicePrice?: number | string }).devicePrice) === 0 && (
                               <span className="rounded-full bg-red-400/15 px-2 py-0.5 text-xs font-bold text-red-400">🔥 FREE</span>
                             )}
-                            {selectedTab !== "upfront" && row && Number((row as { monthly?: number | string }).monthly) === 0 && (
+                            {!isUpfrontMode && row && Number((row as { monthly?: number | string }).monthly) === 0 && (
                               <span className="rounded-full bg-red-400/15 px-2 py-0.5 text-xs font-bold text-red-400">🔥 FREE</span>
                             )}
                           </div>
@@ -1315,7 +1408,7 @@ export default function Page() {
                           )}
                         </div>
 
-                        {selectedTab === "upfront" ? (
+                        {isUpfrontMode ? (
                           <div className="space-y-3">
                             <StackValue
                               label="Device Price / Upfront"
@@ -1328,7 +1421,7 @@ export default function Page() {
                               }
                             />
                             <StackValue
-                              label="DAP / ECC"
+                              label={isHotlink ? "DAP (deposit)" : "DAP / ECC"}
                               value={
                                 isUpfront
                                   ? "dapLabel" in (row || {}) &&
@@ -1348,6 +1441,12 @@ export default function Page() {
                                   : "NA"
                               }
                             />
+                            {isHotlink && isUpfront && (
+                              <StackValue
+                                label="Monthly (effective)"
+                                value={`RM${(row as { monthly?: number | string }).monthly}/mo`}
+                              />
+                            )}
                           </div>
                         ) : (
                           <div className="space-y-3">
@@ -1395,17 +1494,22 @@ export default function Page() {
                         <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">
                           Plan
                         </th>
-                        {selectedTab === "upfront" ? (
+                        {(selectedTab === "upfront" || selectedTab === "hotlink12" || selectedTab === "hotlink24") ? (
                           <>
                             <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">
                               Device Price
                             </th>
                             <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">
-                              DAP / ECC
+                              {isHotlink ? "DAP" : "DAP / ECC"}
                             </th>
                             <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">
                               Total Upfront
                             </th>
+                            {isHotlink && (
+                              <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+                                Monthly
+                              </th>
+                            )}
                           </>
                         ) : (
                           <>
@@ -1423,9 +1527,10 @@ export default function Page() {
                       </tr>
                     </thead>
                     <tbody>
-                      {(selectedTab === "upfront" ? mpOrder : mpOrderZero).map((mp) => {
+                      {activePlanOrder.map((mp) => {
                         const row = currentTable?.[mp];
                         const active = mp === selectedPlan;
+                        const isUpfrontMode = selectedTab === "upfront" || selectedTab === "hotlink12" || selectedTab === "hotlink24";
 
                         const upfrontMissing =
                           !row ||
@@ -1447,12 +1552,12 @@ export default function Page() {
                           >
                             <td className="px-4 py-3 text-sm font-bold text-white">
                               <span>{mp}</span>
-                              {mp === "MP48" && (
+                              {mp === "MP48" && !isHotlink && (
                                 <span className="ml-2 rounded-full bg-blue-500/20 px-2 py-0.5 text-xs font-normal text-blue-300">Shareline</span>
                               )}
                             </td>
 
-                            {selectedTab === "upfront" ? (
+                            {isUpfrontMode ? (
                               <>
                                 <td className="px-4 py-3 text-sm">
                                   {upfrontMissing ? (
@@ -1480,6 +1585,11 @@ export default function Page() {
                                         (row as { totalUpfront?: number | string }).totalUpfront
                                       )}
                                 </td>
+                                {isHotlink && (
+                                  <td className="px-4 py-3 text-sm text-slate-300">
+                                    {!upfrontMissing ? `RM${(row as {monthly?: number|string}).monthly}/mo` : "NA"}
+                                  </td>
+                                )}
                               </>
                             ) : (
                               <>
@@ -1518,7 +1628,7 @@ export default function Page() {
               </>
             ) : (
               <div className="p-4 text-sm text-amber-300">
-                No ECEM pricing available for this configuration.
+                No pricing available for this configuration.
               </div>
             )}
           </div>
@@ -1615,7 +1725,7 @@ export default function Page() {
               <SelectionRow label="Storage" value={activeStorage.storage} />
               <SelectionRow
                 label="Mode"
-                value={pricingTabs.find((t) => t.key === selectedTab)?.label || selectedTab}
+                value={activeTabs.find((t) => t.key === selectedTab)?.label || selectedTab}
               />
               <SelectionRow label="Plan" value={selectedPlan} />
             </div>
@@ -1718,7 +1828,7 @@ export default function Page() {
               {selectedModel.model}
             </div>
             <div className="truncate text-xs text-slate-400">
-              {selectedPlan} · {activeStorage.storage} · {pricingTabs.find((t) => t.key === selectedTab)?.short}
+              {selectedPlan} · {activeStorage.storage} · {activeTabs.find((t) => t.key === selectedTab)?.short}
             </div>
           </div>
           <button
