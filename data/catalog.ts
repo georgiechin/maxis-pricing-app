@@ -1673,49 +1673,6 @@ MP199: { monthly: 185, dapLabel: "Check ECC" }
 brand: "Honor",
 models: [
 {
-model: "Honor 400 Smart 5G",
-aliases: ["honor", "honor400smart"],
-storages: [
-{
-storage: "Default",
-rrp: 1099,
-regions: {
-ECEM: {
-upfront: {
-MP69: { devicePrice: 0, dap: 160, totalUpfront: 160 },
-MP89: { devicePrice: 0, dap: 160, totalUpfront: 160 },
-MP99: { devicePrice: 0, dap: 160, totalUpfront: 160 },
-MP109: { devicePrice: 0, dap: 160, totalUpfront: 160 },
-MP139: { devicePrice: 0, dap: 160, totalUpfront: 160 },
-MP169: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP199: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" }
-},
-zero24: {
-MP48: { monthly: 45, dapLabel: "NA" },
-MP69: { monthly: "NA", dapLabel: "Check ECC" },
-MP89: { monthly: "NA", dapLabel: "Check ECC" },
-MP99: { monthly: "NA", dapLabel: "Check ECC" },
-MP109: { monthly: "NA", dapLabel: "Check ECC" },
-MP139: { monthly: "NA", dapLabel: "Check ECC" },
-MP169: { monthly: "NA", dapLabel: "Check ECC" },
-MP199: { monthly: "NA", dapLabel: "Check ECC" }
-},
-zero36: {
-MP48: { monthly: "NA", dapLabel: "NA" },
-MP69: { monthly: "NA", dapLabel: "Check ECC" },
-MP89: { monthly: "NA", dapLabel: "Check ECC" },
-MP99: { monthly: "NA", dapLabel: "Check ECC" },
-MP109: { monthly: "NA", dapLabel: "Check ECC" },
-MP139: { monthly: "NA", dapLabel: "Check ECC" },
-MP169: { monthly: "NA", dapLabel: "Check ECC" },
-MP199: { monthly: "NA", dapLabel: "Check ECC" }
-}
-}
-}
-}
-]
-},
-{
 model: "Honor 400 Lite 5G",
 aliases: ["honor", "honor400lite"],
 storages: [
@@ -2343,49 +2300,6 @@ MP199: { monthly: "NA", dapLabel: "NA" }
 brand: "Oppo",
 models: [
 {
-model: "Oppo A6T 5G",
-aliases: ["oppo", "a6t"],
-storages: [
-{
-storage: "Default",
-rrp: 1099,
-regions: {
-ECEM: {
-upfront: {
-MP69: { devicePrice: 0, dap: 180, totalUpfront: 180 },
-MP89: { devicePrice: 0, dap: 180, totalUpfront: 180 },
-MP99: { devicePrice: 0, dap: 180, totalUpfront: 180 },
-MP109: { devicePrice: 0, dap: 180, totalUpfront: 180 },
-MP139: { devicePrice: 0, dap: 180, totalUpfront: 180 },
-MP169: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP199: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" }
-},
-zero24: {
-MP48: { monthly: 45, dapLabel: "NA" },
-MP69: { monthly: "NA", dapLabel: "NA" },
-MP89: { monthly: "NA", dapLabel: "NA" },
-MP99: { monthly: "NA", dapLabel: "NA" },
-MP109: { monthly: "NA", dapLabel: "NA" },
-MP139: { monthly: "NA", dapLabel: "NA" },
-MP169: { monthly: "NA", dapLabel: "NA" },
-MP199: { monthly: "NA", dapLabel: "NA" }
-},
-zero36: {
-MP48: { monthly: "NA", dapLabel: "NA" },
-MP69: { monthly: "NA", dapLabel: "NA" },
-MP89: { monthly: "NA", dapLabel: "NA" },
-MP99: { monthly: "NA", dapLabel: "NA" },
-MP109: { monthly: "NA", dapLabel: "NA" },
-MP139: { monthly: "NA", dapLabel: "NA" },
-MP169: { monthly: "NA", dapLabel: "NA" },
-MP199: { monthly: "NA", dapLabel: "NA" }
-}
-}
-}
-}
-]
-},
-{
 model: "Oppo Reno 15F 5G",
 aliases: ["oppo", "reno15f"],
 storages: [
@@ -2671,49 +2585,6 @@ MP48: { monthly: 49, dapLabel: "NA" },
 MP69: { monthly: 49, dapLabel: "Check ECC" },
 MP89: { monthly: "NA", dapLabel: "NA" },
 MP99: { monthly: 7, dapLabel: "Check ECC" },
-MP109: { monthly: "NA", dapLabel: "NA" },
-MP139: { monthly: "NA", dapLabel: "NA" },
-MP169: { monthly: "NA", dapLabel: "NA" },
-MP199: { monthly: "NA", dapLabel: "NA" }
-},
-zero36: {
-MP48: { monthly: "NA", dapLabel: "NA" },
-MP69: { monthly: "NA", dapLabel: "NA" },
-MP89: { monthly: "NA", dapLabel: "NA" },
-MP99: { monthly: "NA", dapLabel: "NA" },
-MP109: { monthly: "NA", dapLabel: "NA" },
-MP139: { monthly: "NA", dapLabel: "NA" },
-MP169: { monthly: "NA", dapLabel: "NA" },
-MP199: { monthly: "NA", dapLabel: "NA" }
-}
-}
-}
-}
-]
-},
-{
-model: "Realme 15T 5G",
-aliases: ["realme", "15t"],
-storages: [
-{
-storage: "Default",
-rrp: 1299,
-regions: {
-ECEM: {
-upfront: {
-MP69: { devicePrice: 399, dap: 0, totalUpfront: 399 },
-MP89: { devicePrice: 399, dap: 0, totalUpfront: 399 },
-MP99: { devicePrice: 0, dap: 400, totalUpfront: 400 },
-MP109: { devicePrice: 0, dap: 400, totalUpfront: 400 },
-MP139: { devicePrice: 0, dap: 400, totalUpfront: 400 },
-MP169: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP199: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" }
-},
-zero24: {
-MP48: { monthly: 54, dapLabel: "NA" },
-MP69: { monthly: "NA", dapLabel: "NA" },
-MP89: { monthly: "NA", dapLabel: "NA" },
-MP99: { monthly: "NA", dapLabel: "NA" },
 MP109: { monthly: "NA", dapLabel: "NA" },
 MP139: { monthly: "NA", dapLabel: "NA" },
 MP169: { monthly: "NA", dapLabel: "NA" },
@@ -3721,92 +3592,6 @@ MP199: { monthly: 70, dapLabel: "Check ECC" }
 ]
 },
 {
-model: "Vivo Y29t 5G",
-aliases: ["vivo", "y29t"],
-storages: [
-{
-storage: "8+256GB",
-rrp: 1099,
-regions: {
-ECEM: {
-upfront: {
-MP69: { devicePrice: 0, dap: 120, totalUpfront: 120 },
-MP89: { devicePrice: 0, dap: 120, totalUpfront: 120 },
-MP99: { devicePrice: 0, dap: 120, totalUpfront: 120 },
-MP109: { devicePrice: 0, dap: 120, totalUpfront: 120 },
-MP139: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP169: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP199: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" }
-},
-zero24: {
-MP48: { monthly: 45, dapLabel: "NA" },
-MP69: { monthly: 45, dapLabel: "Check ECC" },
-MP89: { monthly: "NA", dapLabel: "NA" },
-MP99: { monthly: "NA", dapLabel: "NA" },
-MP109: { monthly: "NA", dapLabel: "NA" },
-MP139: { monthly: "NA", dapLabel: "NA" },
-MP169: { monthly: "NA", dapLabel: "NA" },
-MP199: { monthly: "NA", dapLabel: "NA" }
-},
-zero36: {
-MP48: { monthly: "NA", dapLabel: "NA" },
-MP69: { monthly: "NA", dapLabel: "NA" },
-MP89: { monthly: "NA", dapLabel: "NA" },
-MP99: { monthly: "NA", dapLabel: "NA" },
-MP109: { monthly: "NA", dapLabel: "NA" },
-MP139: { monthly: "NA", dapLabel: "NA" },
-MP169: { monthly: "NA", dapLabel: "NA" },
-MP199: { monthly: "NA", dapLabel: "NA" }
-}
-}
-}
-}
-]
-},
-{
-model: "Vivo Y31 5G",
-aliases: ["vivo", "y31"],
-storages: [
-{
-storage: "Default",
-rrp: 1399,
-regions: {
-ECEM: {
-upfront: {
-MP69: { devicePrice: 299, dap: 60, totalUpfront: 359 },
-MP89: { devicePrice: 299, dap: 60, totalUpfront: 359 },
-MP99: { devicePrice: 0, dap: 360, totalUpfront: 360 },
-MP109: { devicePrice: 0, dap: 360, totalUpfront: 360 },
-MP139: { devicePrice: 0, dap: 360, totalUpfront: 360 },
-MP169: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP199: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" }
-},
-zero24: {
-MP48: { monthly: 58, dapLabel: "NA" },
-MP69: { monthly: 58, dapLabel: "Check ECC" },
-MP89: { monthly: "NA", dapLabel: "NA" },
-MP99: { monthly: "NA", dapLabel: "NA" },
-MP109: { monthly: "NA", dapLabel: "NA" },
-MP139: { monthly: "NA", dapLabel: "NA" },
-MP169: { monthly: "NA", dapLabel: "NA" },
-MP199: { monthly: "NA", dapLabel: "NA" }
-},
-zero36: {
-MP48: { monthly: "NA", dapLabel: "NA" },
-MP69: { monthly: "NA", dapLabel: "NA" },
-MP89: { monthly: "NA", dapLabel: "NA" },
-MP99: { monthly: "NA", dapLabel: "NA" },
-MP109: { monthly: "NA", dapLabel: "NA" },
-MP139: { monthly: "NA", dapLabel: "NA" },
-MP169: { monthly: "NA", dapLabel: "NA" },
-MP199: { monthly: "NA", dapLabel: "NA" }
-}
-}
-}
-}
-]
-},
-{
 model: "Vivo X Fold 5 5G",
 aliases: ["vivo", "xfold5"],
 storages: [
@@ -3854,92 +3639,6 @@ MP199: { monthly: 135, dapLabel: "Check ECC" }
 {
 brand: "Xiaomi",
 models: [
-{
-model: "Redmi 15C 5G",
-aliases: ["xiaomi", "redmi15c"],
-storages: [
-{
-storage: "Default",
-rrp: 1099,
-regions: {
-ECEM: {
-upfront: {
-MP69: { devicePrice: 0, dap: 360, totalUpfront: 360 },
-MP89: { devicePrice: 0, dap: 360, totalUpfront: 360 },
-MP99: { devicePrice: 0, dap: 360, totalUpfront: 360 },
-MP109: { devicePrice: 0, dap: 360, totalUpfront: 360 },
-MP139: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP169: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP199: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" }
-},
-zero24: {
-MP48: { monthly: 45, dapLabel: "NA" },
-MP69: { monthly: 45, dapLabel: "Check ECC" },
-MP89: { monthly: "NA", dapLabel: "NA" },
-MP99: { monthly: "NA", dapLabel: "NA" },
-MP109: { monthly: "NA", dapLabel: "NA" },
-MP139: { monthly: "NA", dapLabel: "NA" },
-MP169: { monthly: "NA", dapLabel: "NA" },
-MP199: { monthly: "NA", dapLabel: "NA" }
-},
-zero36: {
-MP48: { monthly: "NA", dapLabel: "NA" },
-MP69: { monthly: "NA", dapLabel: "NA" },
-MP89: { monthly: "NA", dapLabel: "NA" },
-MP99: { monthly: "NA", dapLabel: "NA" },
-MP109: { monthly: "NA", dapLabel: "NA" },
-MP139: { monthly: "NA", dapLabel: "NA" },
-MP169: { monthly: "NA", dapLabel: "NA" },
-MP199: { monthly: "NA", dapLabel: "NA" }
-}
-}
-}
-}
-]
-},
-{
-model: "Redmi Note 15 5G",
-aliases: ["xiaomi", "redminote15"],
-storages: [
-{
-storage: "Default",
-rrp: 1299,
-regions: {
-ECEM: {
-upfront: {
-MP69: { devicePrice: 299, dap: 200, totalUpfront: 499 },
-MP89: { devicePrice: 299, dap: 200, totalUpfront: 499 },
-MP99: { devicePrice: 0, dap: 480, totalUpfront: 480 },
-MP109: { devicePrice: 0, dap: 480, totalUpfront: 480 },
-MP139: { devicePrice: 0, dap: 480, totalUpfront: 480 },
-MP169: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP199: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" }
-},
-zero24: {
-MP48: { monthly: 54, dapLabel: "NA" },
-MP69: { monthly: 54, dapLabel: "Check ECC" },
-MP89: { monthly: "NA", dapLabel: "NA" },
-MP99: { monthly: "NA", dapLabel: "NA" },
-MP109: { monthly: "NA", dapLabel: "NA" },
-MP139: { monthly: "NA", dapLabel: "NA" },
-MP169: { monthly: "NA", dapLabel: "NA" },
-MP199: { monthly: "NA", dapLabel: "NA" }
-},
-zero36: {
-MP48: { monthly: "NA", dapLabel: "NA" },
-MP69: { monthly: "NA", dapLabel: "NA" },
-MP89: { monthly: "NA", dapLabel: "NA" },
-MP99: { monthly: "NA", dapLabel: "NA" },
-MP109: { monthly: "NA", dapLabel: "NA" },
-MP139: { monthly: "NA", dapLabel: "NA" },
-MP169: { monthly: "NA", dapLabel: "NA" },
-MP199: { monthly: "NA", dapLabel: "NA" }
-}
-}
-}
-}
-]
-},
 {
 model: "Redmi Note 15 Pro 5G",
 aliases: ["xiaomi", "redminote15pro"],
