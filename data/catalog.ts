@@ -1807,6 +1807,57 @@ MP199: { monthly: "NA", dapLabel: "Check ECC" }
 ]
 },
 {
+model: "Honor 500 Smart 5G",
+aliases: ["honor", "honor500"],
+storages: [
+{
+storage: "8+256GB",
+rrp: 1099,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP139: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP169: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP199: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" }
+},
+zero24: {
+MP48: { monthly: "NA", dapLabel: "NA" },
+MP69: { monthly: "NA", dapLabel: "NA" },
+MP89: { monthly: "NA", dapLabel: "NA" },
+MP99: { monthly: "NA", dapLabel: "NA" },
+MP109: { monthly: "NA", dapLabel: "NA" },
+MP139: { monthly: "NA", dapLabel: "NA" },
+MP169: { monthly: "NA", dapLabel: "NA" },
+MP199: { monthly: "NA", dapLabel: "NA" }
+},
+zero36: {
+MP48: { monthly: "NA", dapLabel: "NA" },
+MP69: { monthly: "NA", dapLabel: "NA" },
+MP89: { monthly: "NA", dapLabel: "NA" },
+MP99: { monthly: "NA", dapLabel: "NA" },
+MP109: { monthly: "NA", dapLabel: "NA" },
+MP139: { monthly: "NA", dapLabel: "NA" },
+MP169: { monthly: "NA", dapLabel: "NA" },
+MP199: { monthly: "NA", dapLabel: "NA" }
+}
+},
+HOTLINK: {
+hotlink12: {
+HP75: { devicePrice: 459, dap: 0, totalUpfront: 459, monthly: 75 }
+},
+hotlink24: {
+HP75: { devicePrice: 129, dap: 180, totalUpfront: 309, monthly: 67.50 }
+}
+}
+}
+}
+]
+},
+{
 model: "Honor 600 Lite 5G",
 aliases: ["honor", "honor600lite"],
 storages: [
