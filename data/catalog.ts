@@ -2729,6 +2729,132 @@ MP199: { monthly: 80, dapLabel: "Check ECC" }
 }
 }
 ]
+},
+{
+model: "Oppo Find X9s 5G",
+aliases: ["oppo", "findx9s"],
+storages: [
+{
+storage: "512GB",
+rrp: 3899,
+promo: "FREE gifts worth RM697 (Enco Air 4 + 1yr Extended Warranty + accessories). FREE 3 months Maxis Device Care Plus.",
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 2699, dap: 0, totalUpfront: 2699 },
+MP139: { devicePrice: 2499, dap: 120, totalUpfront: 2619 },
+MP169: { devicePrice: 2199, dap: 420, totalUpfront: 2619 },
+MP199: { devicePrice: 1899, dap: 720, totalUpfront: 2619 }
+},
+zero24: {
+MP48: { monthly: 162, dapLabel: "NA" },
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 130, dapLabel: "Check ECC" },
+MP109: { monthly: 130, dapLabel: "Check ECC" },
+MP139: { monthly: 120, dapLabel: "Check ECC" },
+MP169: { monthly: 105, dapLabel: "Check ECC" },
+MP199: { monthly: 85, dapLabel: "Check ECC" }
+},
+zero36: {
+MP48: { monthly: 108, dapLabel: "NA" },
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 90, dapLabel: "Check ECC" },
+MP109: { monthly: 90, dapLabel: "Check ECC" },
+MP139: { monthly: 80, dapLabel: "Check ECC" },
+MP169: { monthly: 70, dapLabel: "Check ECC" },
+MP199: { monthly: 55, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
+model: "Oppo Find X9 Ultra 5G",
+aliases: ["oppo", "findx9ultra"],
+storages: [
+{
+storage: "512GB",
+rrp: 6799,
+promo: "FREE gifts worth RM1,786 (Ultra Energy Accessory + 1yr Extended Warranty + accessories). FREE 3 months Maxis Device Care Plus.",
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 5199, dap: 0, totalUpfront: 5199 },
+MP139: { devicePrice: 4999, dap: 180, totalUpfront: 5179 },
+MP169: { devicePrice: 4699, dap: 480, totalUpfront: 5179 },
+MP199: { devicePrice: 4399, dap: 750, totalUpfront: 5149 }
+},
+zero24: {
+MP48: { monthly: 283, dapLabel: "NA" },
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 250, dapLabel: "Check ECC" },
+MP109: { monthly: 250, dapLabel: "Check ECC" },
+MP139: { monthly: 235, dapLabel: "Check ECC" },
+MP169: { monthly: 222, dapLabel: "Check ECC" },
+MP199: { monthly: 205, dapLabel: "Check ECC" }
+},
+zero36: {
+MP48: { monthly: 188, dapLabel: "NA" },
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 170, dapLabel: "Check ECC" },
+MP109: { monthly: 170, dapLabel: "Check ECC" },
+MP139: { monthly: 155, dapLabel: "Check ECC" },
+MP169: { monthly: 145, dapLabel: "Check ECC" },
+MP199: { monthly: 130, dapLabel: "Check ECC" }
+}
+}
+}
+},
+{
+storage: "1TB",
+rrp: 7799,
+promo: "Pre-order promo (until 8 May): 1TB at 512GB price. FREE gifts worth RM2,435 (Oppo Watch S + Enco Air 4 + accessories). FREE 3 months Maxis Device Care Plus.",
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 6199, dap: 0, totalUpfront: 6199 },
+MP139: { devicePrice: 5999, dap: 180, totalUpfront: 6179 },
+MP169: { devicePrice: 5699, dap: 480, totalUpfront: 6179 },
+MP199: { devicePrice: 5399, dap: 750, totalUpfront: 6149 }
+},
+zero24: {
+MP48: { monthly: 324, dapLabel: "NA" },
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 300, dapLabel: "Check ECC" },
+MP109: { monthly: 300, dapLabel: "Check ECC" },
+MP139: { monthly: 285, dapLabel: "Check ECC" },
+MP169: { monthly: 270, dapLabel: "Check ECC" },
+MP199: { monthly: 250, dapLabel: "Check ECC" }
+},
+zero36: {
+MP48: { monthly: 216, dapLabel: "NA" },
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 205, dapLabel: "Check ECC" },
+MP109: { monthly: 205, dapLabel: "Check ECC" },
+MP139: { monthly: 195, dapLabel: "Check ECC" },
+MP169: { monthly: 180, dapLabel: "Check ECC" },
+MP199: { monthly: 160, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
 }
 ]
 },
