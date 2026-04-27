@@ -70,6 +70,15 @@ type BudgetResult = {
   stretch: boolean; // true = slightly above budget (upsell)
 };
 
+type UpsellItem = { brand: string; model: CatalogModel; storage: CatalogStorage; devicePrice: number; isFree: boolean };
+type UpsellTier = {
+  plan: string;
+  extraMonthly: number;
+  newFree: UpsellItem[];
+  newOther: UpsellItem[];
+  savingsHighlight: { item: UpsellItem; saving: number; wasPrice: number }[];
+};
+
 
 export default function Page() {
   const [selectedBrand, setSelectedBrand] = useState<CatalogBrand["brand"]>(catalog[0].brand);
@@ -116,6 +125,11 @@ export default function Page() {
   // By Plan filter
   const [byPlanMode, setByPlanMode] = useState(false);
   const [byPlanSelected, setByPlanSelected] = useState("MP99");
+
+  // Upsell Advisor
+  const [upsellMode, setUpsellMode] = useState(false);
+  const [upsellBasePlan, setUpsellBasePlan] = useState("MP99");
+  const [expandedUpsellTier, setExpandedUpsellTier] = useState<string | null>(null);
 
   // Compare mode
   type CompareDevice = { brand: string; model: CatalogModel; storage: CatalogStorage };
@@ -327,6 +341,108 @@ export default function Page() {
     return results.sort((a, b) => a.devicePrice - b.devicePrice);
   }, [byPlanMode, byPlanSelected]);
 
+  // ── By Plan upgrade tips (next 2 plan tiers) ────────────────────────────────
+  const byPlanUpgradeTips = useMemo(() => {
+    if (!byPlanMode || byPlanSelected.startsWith("HP")) return [];
+    const idx = mpOrder.indexOf(byPlanSelected);
+    const nextPlans = mpOrder.slice(idx + 1, idx + 3);
+    return nextPlans.map(plan => {
+      let becomeFreeCount = 0; let newDeviceCount = 0; let newFreeCount = 0;
+      for (const brand of catalog) {
+        for (const model of brand.models) {
+          for (const storage of model.storages) {
+            const dp = (storage.regions.ECEM?.upfront?.[plan] as { devicePrice?: number | string } | undefined)?.devicePrice;
+            if (dp === undefined || dp === "NA") continue;
+            const thisPrice = Number(dp);
+            if (isNaN(thisPrice)) continue;
+            const baseDp = (storage.regions.ECEM?.upfront?.[byPlanSelected] as { devicePrice?: number | string } | undefined)?.devicePrice;
+            if (baseDp === undefined || baseDp === "NA") {
+              newDeviceCount++;
+              if (thisPrice === 0) newFreeCount++;
+            } else if (thisPrice === 0 && Number(baseDp) > 0) {
+              becomeFreeCount++;
+            }
+          }
+        }
+      }
+      return { plan, extra: planFee(plan) - planFee(byPlanSelected), becomeFreeCount, newFreeCount, newDeviceCount };
+    });
+  }, [byPlanMode, byPlanSelected]);
+
+  // ── Upsell Advisor data ─────────────────────────────────────────────────────
+  const upsellData = useMemo((): { currentDevices: UpsellItem[]; tiers: UpsellTier[] } | null => {
+    if (!upsellMode) return null;
+    const basePlanIdx = mpOrder.indexOf(upsellBasePlan);
+    if (basePlanIdx < 0) return null;
+
+    // Build base-plan price map
+    const baseMap = new Map<string, number>();
+    for (const brand of catalog) {
+      for (const model of brand.models) {
+        for (const storage of model.storages) {
+          const dp = (storage.regions.ECEM?.upfront?.[upsellBasePlan] as { devicePrice?: number | string } | undefined)?.devicePrice;
+          if (dp === undefined || dp === "NA") continue;
+          const price = Number(dp);
+          if (!isNaN(price)) baseMap.set(`${brand.brand}|${model.model}|${storage.storage}`, price);
+        }
+      }
+    }
+
+    // Current devices at base plan (sorted cheapest first)
+    const currentDevices: UpsellItem[] = [];
+    for (const brand of catalog) {
+      for (const model of brand.models) {
+        for (const storage of model.storages) {
+          const key = `${brand.brand}|${model.model}|${storage.storage}`;
+          const price = baseMap.get(key);
+          if (price !== undefined) currentDevices.push({ brand: brand.brand, model, storage, devicePrice: price, isFree: price === 0 });
+        }
+      }
+    }
+    currentDevices.sort((a, b) => a.devicePrice - b.devicePrice);
+
+    // Build incremental upgrade tiers
+    const introducedKeys = new Set<string>(baseMap.keys());
+    const tiers: UpsellTier[] = [];
+
+    for (let i = basePlanIdx + 1; i < mpOrder.length; i++) {
+      const plan = mpOrder[i];
+      const extraMonthly = planFee(plan) - planFee(upsellBasePlan);
+      const newFree: UpsellItem[] = [];
+      const newOther: UpsellItem[] = [];
+      const savingsHighlight: { item: UpsellItem; saving: number; wasPrice: number }[] = [];
+
+      for (const brand of catalog) {
+        for (const model of brand.models) {
+          for (const storage of model.storages) {
+            const dp = (storage.regions.ECEM?.upfront?.[plan] as { devicePrice?: number | string } | undefined)?.devicePrice;
+            if (dp === undefined || dp === "NA") continue;
+            const newPrice = Number(dp);
+            if (isNaN(newPrice)) continue;
+            const key = `${brand.brand}|${model.model}|${storage.storage}`;
+            const basePrice = baseMap.get(key);
+            if (!introducedKeys.has(key)) {
+              introducedKeys.add(key);
+              const item: UpsellItem = { brand: brand.brand, model, storage, devicePrice: newPrice, isFree: newPrice === 0 };
+              if (newPrice === 0) newFree.push(item);
+              else newOther.push(item);
+            } else if (basePrice !== undefined && newPrice < basePrice && (basePrice - newPrice >= 100 || newPrice === 0)) {
+              savingsHighlight.push({ item: { brand: brand.brand, model, storage, devicePrice: newPrice, isFree: newPrice === 0 }, saving: basePrice - newPrice, wasPrice: basePrice });
+            }
+          }
+        }
+      }
+
+      savingsHighlight.sort((a, b) => b.saving - a.saving);
+      newFree.sort((a, b) => a.storage.rrp - b.storage.rrp);
+      newOther.sort((a, b) => a.devicePrice - b.devicePrice);
+
+      tiers.push({ plan, extraMonthly, newFree, newOther, savingsHighlight });
+    }
+
+    return { currentDevices, tiers };
+  }, [upsellMode, upsellBasePlan]);
+
   // ── Total contract cost ─────────────────────────────────────────────────────
   const totalContractCost = useMemo((): string | null => {
     if (!selectedRow) return null;
@@ -449,6 +565,7 @@ export default function Page() {
     setSearchQuery("");
     setBudgetMode(false);
     setByPlanMode(false);
+    setUpsellMode(false);
     setBrandExpanded(false);
     setModelExpanded(false);
     setPricingExpanded(true);
@@ -519,6 +636,8 @@ export default function Page() {
     setSearchQuery("");
     setBudgetMode(false);
     setBudgetMax("");
+    setByPlanMode(false);
+    setUpsellMode(false);
     setBrandExpanded(true);
     setModelExpanded(true);
     setPricingExpanded(true);
@@ -957,7 +1076,32 @@ export default function Page() {
               <div className="text-xs text-slate-500">
                 {byPlanResults.filter(r => r.isFree).length} free · {byPlanResults.length} total on {byPlanSelected}
               </div>
-              <div className="max-h-[calc(100vh-300px)] space-y-2 overflow-y-auto pr-1">
+
+              {/* Upgrade tips — next 2 plan tiers */}
+              {byPlanUpgradeTips.length > 0 && (
+                <div className="rounded-xl border border-blue-400/20 bg-blue-400/5 p-2.5">
+                  <div className="mb-1.5 text-[10px] font-semibold text-blue-300">💡 Upsell tips</div>
+                  {byPlanUpgradeTips.map(t => (
+                    <button
+                      key={t.plan}
+                      onClick={() => setByPlanSelected(t.plan)}
+                      className="flex w-full items-center justify-between py-1 text-left hover:opacity-80"
+                    >
+                      <span className="text-[11px] font-medium text-blue-200">{t.plan} <span className="text-blue-400/60">+RM{t.extra}/mo</span></span>
+                      <span className="text-[10px]">
+                        {(t.becomeFreeCount + t.newFreeCount) > 0 && (
+                          <span className="mr-1.5 font-bold text-red-400">🔥 {t.becomeFreeCount + t.newFreeCount} FREE</span>
+                        )}
+                        {t.newDeviceCount > 0 && (
+                          <span className="text-slate-400">+{t.newDeviceCount} new</span>
+                        )}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              <div className="max-h-[calc(100vh-340px)] space-y-2 overflow-y-auto pr-1">
                 {byPlanResults.map(({ brand, model, storage, devicePrice, isFree, isHotlinkResult, contractTerm }, i) => (
                   <button
                     key={`byplan-${brand}-${model.model}-${storage.storage}-${i}`}
@@ -989,6 +1133,182 @@ export default function Page() {
                 )}
               </div>
             </div>
+          ) : upsellMode ? (
+            /* Upsell Advisor Mode */
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center justify-between">
+                <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#00D46A]">
+                  🔼 Upsell Advisor
+                </div>
+                <button
+                  onClick={() => setUpsellMode(false)}
+                  className="text-xs text-slate-500 transition hover:text-white"
+                >
+                  ✕ Close
+                </button>
+              </div>
+
+              <div>
+                <label className="mb-1.5 block text-xs text-slate-400">Customer&apos;s current plan</label>
+                <div className="grid grid-cols-4 gap-1.5">
+                  {mpOrder.filter(p => p !== "MP199").map((plan) => (
+                    <button
+                      key={plan}
+                      onClick={() => { setUpsellBasePlan(plan); setExpandedUpsellTier(null); }}
+                      className={`rounded-xl border px-1 py-2 text-[10px] font-medium transition ${
+                        upsellBasePlan === plan
+                          ? "border-[#00D46A] bg-[#00D46A] text-black"
+                          : "border-white/8 bg-transparent text-slate-400 hover:text-white"
+                      }`}
+                    >
+                      {plan}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {upsellData && (
+                <div className="text-xs text-slate-500">
+                  <span className="text-[#00D46A]">{upsellData.currentDevices.filter(d => d.isFree).length} FREE</span>
+                  {" · "}{upsellData.currentDevices.length} devices on {upsellBasePlan}
+                </div>
+              )}
+
+              <div className="max-h-[calc(100vh-280px)] space-y-2 overflow-y-auto pr-1">
+                {/* Current plan summary */}
+                {upsellData && (
+                  <div className="rounded-xl border border-white/8 bg-[#181c1f] p-3">
+                    <div className="mb-1.5 text-[10px] font-semibold text-slate-400">📱 On {upsellBasePlan} now</div>
+                    <div className="flex flex-wrap gap-1">
+                      {upsellData.currentDevices.filter(d => d.isFree).slice(0, 4).map((d, i) => (
+                        <button
+                          key={i}
+                          onClick={() => navigateToDevice(d.brand, d.model, d.storage.storage, "upfront")}
+                          className="rounded-lg border border-[#00D46A]/25 bg-[#00D46A]/8 px-2 py-1 text-[10px] font-medium text-[#00D46A] hover:bg-[#00D46A]/15"
+                        >
+                          🔥 {d.model.model.replace(/^(Samsung Galaxy |Galaxy |Google |Honor |Huawei |Oppo |Realme |Vivo |Xiaomi |Redmi )/, "")}
+                        </button>
+                      ))}
+                      {upsellData.currentDevices.filter(d => d.isFree).length > 4 && (
+                        <span className="px-1 text-[10px] text-slate-500">+{upsellData.currentDevices.filter(d => d.isFree).length - 4} more FREE</span>
+                      )}
+                    </div>
+                    {upsellData.currentDevices.filter(d => d.isFree).length === 0 && (
+                      <div className="text-[10px] text-slate-500">No free devices — suggest upgrading ↓</div>
+                    )}
+                  </div>
+                )}
+
+                {/* Upgrade tiers */}
+                {upsellData?.tiers.map(tier => {
+                  const isExpanded = expandedUpsellTier === tier.plan;
+                  const totalNew = tier.newFree.length + tier.newOther.length;
+                  const topSaving = tier.savingsHighlight[0];
+                  const hasHighlight = tier.newFree.length > 0 || topSaving;
+
+                  return (
+                    <div
+                      key={tier.plan}
+                      className={`overflow-hidden rounded-xl border transition ${
+                        tier.newFree.length > 0 ? "border-red-400/25 bg-red-400/5" : hasHighlight ? "border-amber-400/20 bg-amber-400/5" : "border-white/8 bg-[#181c1f]"
+                      }`}
+                    >
+                      {/* Tier header — always visible */}
+                      <button
+                        className="w-full p-3 text-left"
+                        onClick={() => setExpandedUpsellTier(isExpanded ? null : tier.plan)}
+                      >
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-baseline gap-2">
+                            <span className="text-sm font-bold text-white">{tier.plan}</span>
+                            <span className="text-[10px] text-slate-500">+RM{tier.extraMonthly}/mo</span>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            {tier.newFree.length > 0 && (
+                              <span className="rounded-full bg-red-400/15 px-2 py-0.5 text-[10px] font-bold text-red-400">
+                                🔥 {tier.newFree.length} FREE
+                              </span>
+                            )}
+                            {totalNew > 0 && tier.newFree.length === 0 && (
+                              <span className="text-[10px] text-slate-400">+{totalNew} new</span>
+                            )}
+                            <span className="text-[10px] text-slate-600">{isExpanded ? "▲" : "▼"}</span>
+                          </div>
+                        </div>
+                        {/* Teaser line (collapsed) */}
+                        {!isExpanded && (
+                          <div className="mt-1 space-y-0.5">
+                            {tier.newFree[0] && (
+                              <div className="text-[10px] text-red-400/80 truncate">🔥 {tier.newFree[0].model.model} FREE</div>
+                            )}
+                            {topSaving && !tier.newFree[0] && (
+                              <div className="text-[10px] text-amber-300/80 truncate">💸 {topSaving.item.model.model} saves RM{topSaving.saving}</div>
+                            )}
+                            {tier.newOther[0] && !tier.newFree[0] && !topSaving && (
+                              <div className="text-[10px] text-slate-400 truncate">+ {tier.newOther[0].model.model}</div>
+                            )}
+                          </div>
+                        )}
+                      </button>
+
+                      {/* Expanded content */}
+                      {isExpanded && (
+                        <div className="border-t border-white/8 space-y-1.5 p-3 pt-2">
+                          {/* NEW FREE devices */}
+                          {tier.newFree.map((item, i) => (
+                            <button
+                              key={`free-${i}`}
+                              onClick={() => navigateToDevice(item.brand, item.model, item.storage.storage, "upfront")}
+                              className="flex w-full items-center justify-between rounded-lg border border-red-400/25 bg-red-400/8 px-3 py-2.5 text-left hover:bg-red-400/15"
+                            >
+                              <div className="min-w-0">
+                                <div className="truncate text-xs font-semibold text-white">{item.model.model}</div>
+                                <div className="text-[10px] text-slate-500">{item.brand} · {item.storage.storage}</div>
+                              </div>
+                              <span className="ml-2 flex-shrink-0 text-xs font-bold text-red-400">FREE 🔥</span>
+                            </button>
+                          ))}
+                          {/* Savings highlights */}
+                          {tier.savingsHighlight.map((s, i) => (
+                            <button
+                              key={`save-${i}`}
+                              onClick={() => navigateToDevice(s.item.brand, s.item.model, s.item.storage.storage, "upfront")}
+                              className="flex w-full items-center justify-between rounded-lg border border-amber-400/15 bg-amber-400/5 px-3 py-2.5 text-left hover:bg-amber-400/10"
+                            >
+                              <div className="min-w-0">
+                                <div className="truncate text-xs font-semibold text-white">{s.item.model.model}</div>
+                                <div className="text-[10px] text-slate-500">
+                                  was RM{s.wasPrice} → {s.item.isFree ? "FREE" : `RM${s.item.devicePrice}`}
+                                </div>
+                              </div>
+                              <span className="ml-2 flex-shrink-0 text-xs font-bold text-amber-300">-RM{s.saving}</span>
+                            </button>
+                          ))}
+                          {/* New other devices */}
+                          {tier.newOther.map((item, i) => (
+                            <button
+                              key={`new-${i}`}
+                              onClick={() => navigateToDevice(item.brand, item.model, item.storage.storage, "upfront")}
+                              className="flex w-full items-center justify-between rounded-lg border border-white/8 bg-[#111417] px-3 py-2.5 text-left hover:bg-[#1e2225]"
+                            >
+                              <div className="min-w-0">
+                                <div className="truncate text-xs font-semibold text-white">{item.model.model}</div>
+                                <div className="text-[10px] text-slate-500">{item.brand} · {item.storage.storage}</div>
+                              </div>
+                              <span className="ml-2 flex-shrink-0 text-xs font-semibold text-[#00D46A]">RM{item.devicePrice}</span>
+                            </button>
+                          ))}
+                          {tier.newFree.length === 0 && tier.savingsHighlight.length === 0 && tier.newOther.length === 0 && (
+                            <div className="text-[10px] text-slate-500">No new unlocks at {tier.plan}</div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
           ) : budgetMode ? (
             /* Budget Filter Mode */
             <div className="flex flex-col gap-3">
@@ -1095,10 +1415,11 @@ export default function Page() {
                   </div>
 
                   {/* Filter shortcuts */}
-                  <div className="mb-3 grid grid-cols-3 gap-1.5">
+                  <div className="mb-3 grid grid-cols-2 gap-1.5">
                     {[
-                      { label: "🎁 Free", onClick: () => setFreeDeviceMode(true) },
+                      { label: "🎁 Free Device", onClick: () => setFreeDeviceMode(true) },
                       { label: "📋 By Plan", onClick: () => setByPlanMode(true) },
+                      { label: "🔼 Upsell Advisor", onClick: () => { setUpsellMode(true); setExpandedUpsellTier(null); } },
                       { label: "💰 Budget", onClick: () => setBudgetMode(true) },
                     ].map(({ label, onClick }) => (
                       <button

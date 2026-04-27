@@ -79,21 +79,6 @@ HP75: { devicePrice: 0, dap: 200, totalUpfront: 200, monthly: 66.67 }
 }]
 },
 {
-model: "Samsung Galaxy A07 LTE",
-aliases: ["samsung", "a07", "a07lte", "hotlink"],
-storages: [{
-storage: "8+256GB",
-rrp: 699,
-regions: {
-HOTLINK: {
-hotlink12: {
-HP65: { devicePrice: 79, dap: 30, totalUpfront: 109, monthly: 62.50 }
-}
-}
-}
-}]
-},
-{
 model: "Nubia A76 5G",
 aliases: ["nubia", "a76", "hotlink"],
 storages: [{
@@ -262,49 +247,6 @@ HP75: { devicePrice: 99, dap: 180, totalUpfront: 279, monthly: 67.50 }
 {
 brand: "Apple",
 models: [
-{
-model: "iPhone 15",
-aliases: ["iphone", "ip15"],
-storages: [
-{
-storage: "128GB",
-rrp: 2999,
-regions: {
-ECEM: {
-upfront: {
-MP69: { devicePrice: 2072, dap: 480, totalUpfront: 2552 },
-MP89: { devicePrice: 2024, dap: 480, totalUpfront: 2504 },
-MP99: { devicePrice: 1928, dap: 600, totalUpfront: 2528 },
-MP109: { devicePrice: 1880, dap: 600, totalUpfront: 2480 },
-MP139: { devicePrice: 1736, dap: 720, totalUpfront: 2456 },
-MP169: { devicePrice: 1592, dap: 840, totalUpfront: 2432 },
-MP199: { devicePrice: 1448, dap: 960, totalUpfront: 2408 }
-},
-zero24: {
-MP48: { monthly: 110, dapLabel: "NA" },
-MP69: { monthly: 99, dapLabel: "Check ECC" },
-MP89: { monthly: 99, dapLabel: "Check ECC" },
-MP99: { monthly: 99, dapLabel: "Check ECC" },
-MP109: { monthly: 99, dapLabel: "Check ECC" },
-MP139: { monthly: 85, dapLabel: "Check ECC" },
-MP169: { monthly: 82, dapLabel: "Check ECC" },
-MP199: { monthly: 79, dapLabel: "Check ECC" }
-},
-zero36: {
-MP48: { monthly: 74, dapLabel: "NA" },
-MP69: { monthly: 66, dapLabel: "Check ECC" },
-MP89: { monthly: 66, dapLabel: "Check ECC" },
-MP99: { monthly: 66, dapLabel: "Check ECC" },
-MP109: { monthly: 66, dapLabel: "Check ECC" },
-MP139: { monthly: 52, dapLabel: "Check ECC" },
-MP169: { monthly: 49, dapLabel: "Check ECC" },
-MP199: { monthly: 46, dapLabel: "Check ECC" }
-}
-}
-}
-}
-]
-},
 {
 model: "iPhone 16e",
 aliases: ["iphone", "ip16e"],
@@ -2032,49 +1974,6 @@ MP109: { monthly: 160, dapLabel: "Check ECC" },
 MP139: { monthly: 150, dapLabel: "Check ECC" },
 MP169: { monthly: 140, dapLabel: "Check ECC" },
 MP199: { monthly: 120, dapLabel: "Check ECC" }
-}
-}
-}
-}
-]
-},
-{
-model: "Honor Magic7 Pro 5G",
-aliases: ["honor", "magic7pro"],
-storages: [
-{
-storage: "Default",
-rrp: 5199,
-regions: {
-ECEM: {
-upfront: {
-MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP109: { devicePrice: 2899, dap: 640, totalUpfront: 3539 },
-MP139: { devicePrice: 2699, dap: 840, totalUpfront: 3539 },
-MP169: { devicePrice: 2499, dap: 1040, totalUpfront: 3539 },
-MP199: { devicePrice: 2199, dap: 1340, totalUpfront: 3539 }
-},
-zero24: {
-MP48: { monthly: "NA", dapLabel: "NA" },
-MP69: { monthly: "NA", dapLabel: "Check ECC" },
-MP89: { monthly: "NA", dapLabel: "Check ECC" },
-MP99: { monthly: "NA", dapLabel: "Check ECC" },
-MP109: { monthly: "NA", dapLabel: "Check ECC" },
-MP139: { monthly: "NA", dapLabel: "Check ECC" },
-MP169: { monthly: "NA", dapLabel: "Check ECC" },
-MP199: { monthly: "NA", dapLabel: "Check ECC" }
-},
-zero36: {
-MP48: { monthly: "NA", dapLabel: "NA" },
-MP69: { monthly: "NA", dapLabel: "Check ECC" },
-MP89: { monthly: "NA", dapLabel: "Check ECC" },
-MP99: { monthly: "NA", dapLabel: "Check ECC" },
-MP109: { monthly: "NA", dapLabel: "Check ECC" },
-MP139: { monthly: "NA", dapLabel: "Check ECC" },
-MP169: { monthly: "NA", dapLabel: "Check ECC" },
-MP199: { monthly: "NA", dapLabel: "Check ECC" }
 }
 }
 }
