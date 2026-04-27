@@ -131,6 +131,9 @@ export default function Page() {
   const [upsellBasePlan, setUpsellBasePlan] = useState("MP99");
   const [expandedUpsellTier, setExpandedUpsellTier] = useState<string | null>(null);
 
+  // Context breadcrumb — tracks where user navigated from so main area can show context
+  const [lastModeContext, setLastModeContext] = useState<{ mode: string; plan: string; label: string } | null>(null);
+
   // Compare mode
   type CompareDevice = { brand: string; model: CatalogModel; storage: CatalogStorage };
   const [compareA, setCompareA] = useState<CompareDevice | null>(null);
@@ -549,23 +552,28 @@ export default function Page() {
     brand: string,
     model: CatalogModel,
     storageName?: string,
-    tab?: PricingMode
+    tab?: PricingMode,
+    targetPlan?: string,         // explicit plan to show (from By Plan / Budget / Free Device)
+    modeContext?: { mode: string; plan: string; label: string } | null  // breadcrumb context
   ) => {
     const targetStorage = storageName || model.storages[0].storage;
     const storage = model.storages.find(s => s.storage === targetStorage) || model.storages[0];
     // Auto-detect region: if device has no ECEM, use HOTLINK
     const targetRegion = storage.regions.ECEM ? "ECEM" : "HOTLINK";
     const targetTab = tab || (targetRegion === "HOTLINK" ? "hotlink12" : selectedTab);
+    // Use explicit plan if provided; fall back to auto-detect
+    const resolvedPlan = targetPlan || getBestDefaultPlan(model, targetStorage, targetTab, targetRegion);
     setSelectedRegion(targetRegion);
     setSelectedBrand(brand);
     setSelectedModel(model);
     setSelectedStorage(targetStorage);
     setSelectedTab(targetTab);
-    setSelectedPlan(getBestDefaultPlan(model, targetStorage, targetTab, targetRegion));
+    setSelectedPlan(resolvedPlan);
     setSearchQuery("");
     setBudgetMode(false);
     setByPlanMode(false);
     setUpsellMode(false);
+    setLastModeContext(modeContext !== undefined ? modeContext : null);
     setBrandExpanded(false);
     setModelExpanded(false);
     setPricingExpanded(true);
@@ -638,6 +646,7 @@ export default function Page() {
     setBudgetMax("");
     setByPlanMode(false);
     setUpsellMode(false);
+    setLastModeContext(null);
     setBrandExpanded(true);
     setModelExpanded(true);
     setPricingExpanded(true);
@@ -1003,7 +1012,7 @@ export default function Page() {
                 {freeDeviceResults.map(({ brand, model, storage, isHotlink, contractTerm, hotlinkTab }, i) => (
                   <button
                     key={`free-${brand}-${model.model}-${storage.storage}-${i}`}
-                    onClick={() => navigateToDevice(brand, model, storage.storage, isHotlink ? (hotlinkTab ?? "hotlink24") : "upfront")}
+                    onClick={() => navigateToDevice(brand, model, storage.storage, isHotlink ? (hotlinkTab ?? "hotlink24") : "upfront", freeDevicePlan, { mode: "Free Device", plan: freeDevicePlan, label: `🎁 FREE on ${freeDevicePlan}` })}
                     className="w-full rounded-xl border border-white/8 bg-[#181c1f] p-3 text-left transition hover:border-white/15 hover:bg-[#1e2225]"
                   >
                     <div className="text-xs font-semibold text-white">{model.model}</div>
@@ -1105,7 +1114,7 @@ export default function Page() {
                 {byPlanResults.map(({ brand, model, storage, devicePrice, isFree, isHotlinkResult, contractTerm }, i) => (
                   <button
                     key={`byplan-${brand}-${model.model}-${storage.storage}-${i}`}
-                    onClick={() => navigateToDevice(brand, model, storage.storage, isHotlinkResult ? (contractTerm === "24M" ? "hotlink24" : "hotlink12") : "upfront")}
+                    onClick={() => navigateToDevice(brand, model, storage.storage, isHotlinkResult ? (contractTerm === "24M" ? "hotlink24" : "hotlink12") : "upfront", byPlanSelected, { mode: "By Plan", plan: byPlanSelected, label: `📋 ${byPlanSelected} By Plan` })}
                     className="w-full rounded-xl border border-white/8 bg-[#181c1f] p-3 text-left transition hover:border-white/15 hover:bg-[#1e2225]"
                   >
                     <div className="flex items-start justify-between gap-2">
@@ -1183,7 +1192,7 @@ export default function Page() {
                       {upsellData.currentDevices.filter(d => d.isFree).slice(0, 4).map((d, i) => (
                         <button
                           key={i}
-                          onClick={() => navigateToDevice(d.brand, d.model, d.storage.storage, "upfront")}
+                          onClick={() => navigateToDevice(d.brand, d.model, d.storage.storage, "upfront", upsellBasePlan, { mode: "Upsell", plan: upsellBasePlan, label: `📱 ${upsellBasePlan} current plan` })}
                           className="rounded-lg border border-[#00D46A]/25 bg-[#00D46A]/8 px-2 py-1 text-[10px] font-medium text-[#00D46A] hover:bg-[#00D46A]/15"
                         >
                           🔥 {d.model.model.replace(/^(Samsung Galaxy |Galaxy |Google |Honor |Huawei |Oppo |Realme |Vivo |Xiaomi |Redmi )/, "")}
@@ -1258,7 +1267,7 @@ export default function Page() {
                           {tier.newFree.map((item, i) => (
                             <button
                               key={`free-${i}`}
-                              onClick={() => navigateToDevice(item.brand, item.model, item.storage.storage, "upfront")}
+                              onClick={() => navigateToDevice(item.brand, item.model, item.storage.storage, "upfront", tier.plan, { mode: "Upsell", plan: tier.plan, label: `🔼 ${tier.plan} (upgrade from ${upsellBasePlan})` })}
                               className="flex w-full items-center justify-between rounded-lg border border-red-400/25 bg-red-400/8 px-3 py-2.5 text-left hover:bg-red-400/15"
                             >
                               <div className="min-w-0">
@@ -1272,7 +1281,7 @@ export default function Page() {
                           {tier.savingsHighlight.map((s, i) => (
                             <button
                               key={`save-${i}`}
-                              onClick={() => navigateToDevice(s.item.brand, s.item.model, s.item.storage.storage, "upfront")}
+                              onClick={() => navigateToDevice(s.item.brand, s.item.model, s.item.storage.storage, "upfront", tier.plan, { mode: "Upsell", plan: tier.plan, label: `🔼 ${tier.plan} · saves RM${s.saving}` })}
                               className="flex w-full items-center justify-between rounded-lg border border-amber-400/15 bg-amber-400/5 px-3 py-2.5 text-left hover:bg-amber-400/10"
                             >
                               <div className="min-w-0">
@@ -1288,7 +1297,7 @@ export default function Page() {
                           {tier.newOther.map((item, i) => (
                             <button
                               key={`new-${i}`}
-                              onClick={() => navigateToDevice(item.brand, item.model, item.storage.storage, "upfront")}
+                              onClick={() => navigateToDevice(item.brand, item.model, item.storage.storage, "upfront", tier.plan, { mode: "Upsell", plan: tier.plan, label: `🔼 ${tier.plan} (upgrade from ${upsellBasePlan})` })}
                               className="flex w-full items-center justify-between rounded-lg border border-white/8 bg-[#111417] px-3 py-2.5 text-left hover:bg-[#1e2225]"
                             >
                               <div className="min-w-0">
@@ -1369,7 +1378,7 @@ export default function Page() {
                     result={result}
                     budgetTab={budgetTab}
                     onSelect={() =>
-                      navigateToDevice(result.brand, result.model, result.storage.storage, budgetTab)
+                      navigateToDevice(result.brand, result.model, result.storage.storage, budgetTab, result.bestPlan, { mode: "Budget", plan: result.bestPlan, label: `💰 ${result.bestPlan} · RM${result.bestMonthly} ${budgetTab === "upfront" ? "total" : "/mo"}` })
                     }
                   />
                 ))}
@@ -1390,7 +1399,7 @@ export default function Page() {
                         result={result}
                         budgetTab={budgetTab}
                         onSelect={() =>
-                          navigateToDevice(result.brand, result.model, result.storage.storage, budgetTab)
+                          navigateToDevice(result.brand, result.model, result.storage.storage, budgetTab, result.bestPlan, { mode: "Budget", plan: result.bestPlan, label: `✨ ${result.bestPlan} · RM${result.bestMonthly} ${budgetTab === "upfront" ? "total" : "/mo"} (stretch)` })
                         }
                       />
                     ))}
@@ -1466,6 +1475,23 @@ export default function Page() {
                     <span className="text-sm font-semibold text-white">{selectedBrand}</span>
                     <span className="text-[10px] font-medium text-[#00D46A]/70">change ↕</span>
                   </button>
+                  {/* Shortcuts always accessible even when brand is collapsed */}
+                  <div className="mt-2 grid grid-cols-2 gap-1.5">
+                    {[
+                      { label: "🎁 Free Device", onClick: () => setFreeDeviceMode(true) },
+                      { label: "📋 By Plan", onClick: () => setByPlanMode(true) },
+                      { label: "🔼 Upsell", onClick: () => { setUpsellMode(true); setExpandedUpsellTier(null); } },
+                      { label: "💰 Budget", onClick: () => setBudgetMode(true) },
+                    ].map(({ label, onClick }) => (
+                      <button
+                        key={label}
+                        onClick={onClick}
+                        className="rounded-lg border border-white/10 bg-[#1e2225] py-1.5 text-[10px] font-medium text-slate-400 transition hover:border-[#00D46A]/30 hover:text-[#00D46A]"
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
                 </section>
               )}
 
@@ -1563,6 +1589,24 @@ export default function Page() {
 
         {/* ── MAIN CONTENT ────────────────────────────────────────────────── */}
         <section className="space-y-4 p-3 pb-32 lg:row-start-2 lg:overflow-y-auto lg:max-h-[calc(100vh-57px)] lg:p-5 lg:pb-5">
+
+          {/* Context breadcrumb — shows which mode/plan led to this device */}
+          {lastModeContext && (
+            <div className="flex items-center justify-between rounded-xl border border-[#00D46A]/20 bg-[#00D46A]/6 px-3 py-2">
+              <div className="flex items-center gap-2 text-xs text-[#00D46A]/90">
+                <span className="font-semibold">{lastModeContext.label}</span>
+                <span className="text-[#00D46A]/40">·</span>
+                <span className="text-[#00D46A]/60">Pricing shown for this plan</span>
+              </div>
+              <button
+                onClick={() => setLastModeContext(null)}
+                className="text-[10px] text-[#00D46A]/40 hover:text-[#00D46A]/80 transition"
+              >
+                ✕
+              </button>
+            </div>
+          )}
+
           <div className="rounded-2xl border border-white/8 bg-[#111417] p-5">
             <div className="mb-2 text-[11px] font-medium uppercase tracking-[0.12em] text-slate-500">
               {selectedBrand}

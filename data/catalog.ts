@@ -79,6 +79,21 @@ HP75: { devicePrice: 0, dap: 200, totalUpfront: 200, monthly: 66.67 }
 }]
 },
 {
+model: "Samsung Galaxy A07 LTE",
+aliases: ["samsung", "a07", "a07lte", "hotlink"],
+storages: [{
+storage: "8+256GB",
+rrp: 699,
+regions: {
+HOTLINK: {
+hotlink12: {
+HP65: { devicePrice: 79, dap: 30, totalUpfront: 109, monthly: 62.50 }
+}
+}
+}
+}]
+},
+{
 model: "Nubia A76 5G",
 aliases: ["nubia", "a76", "hotlink"],
 storages: [{
