@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   catalog,
   CATALOG_SOURCE,
-  LATEST_UPDATES,
   type CatalogBrand,
   type CatalogModel,
   type CatalogStorage,
@@ -913,36 +912,7 @@ export default function Page() {
             </div>
           </div>
 
-          {/* Row 2: What's New strip */}
-          <div className="mt-3 flex items-start gap-2 overflow-x-auto pb-0.5 scrollbar-none">
-            <span className="flex-shrink-0 rounded-md bg-white/8 px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-slate-400">
-              What&apos;s New
-            </span>
-            {LATEST_UPDATES.map((u, i) => (
-              <div
-                key={i}
-                className={`flex flex-shrink-0 items-start gap-1.5 rounded-lg border px-2.5 py-1.5 ${
-                  u.type === "upcoming"
-                    ? "border-blue-400/20 bg-blue-400/6 text-blue-300"
-                    : u.type === "alert"
-                    ? "border-amber-400/20 bg-amber-400/6 text-amber-300"
-                    : "border-[#00D46A]/20 bg-[#00D46A]/6 text-[#00D46A]"
-                }`}
-              >
-                <div className="min-w-0">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-[9px] font-bold opacity-60">{u.date}</span>
-                    <span className="text-[10px] font-semibold leading-tight">{u.text}</span>
-                  </div>
-                  {u.subtext && (
-                    <div className="mt-0.5 text-[9px] opacity-60 leading-tight max-w-[260px]">{u.subtext}</div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Row 3: search — mobile only, full width */}
+          {/* Row 2: search — mobile only, full width */}
           <div className="relative mt-3 sm:hidden">
             <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">
               🔍
