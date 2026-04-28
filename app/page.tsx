@@ -153,6 +153,21 @@ export default function Page() {
     [selectedBrand]
   );
 
+  // Models for the current brand, plus any Hotlink-exclusive devices from the same manufacturer
+  // (e.g. clicking "Realme" also shows Realme C85 which lives under the Hotlink brand)
+  const activeBrandModels = useMemo((): { model: CatalogModel; sourceBrand: string }[] => {
+    const own = activeBrand.models.map((m) => ({ model: m, sourceBrand: selectedBrand }));
+    if (selectedBrand === "Hotlink") return own;
+    const hotlinkBrand = catalog.find((b) => b.brand === "Hotlink");
+    if (!hotlinkBrand) return own;
+    const brandKey = selectedBrand.toLowerCase();
+    const ownNames = new Set(activeBrand.models.map((m) => m.model));
+    const extra = hotlinkBrand.models
+      .filter((m) => m.aliases.some((a) => a === brandKey) && !ownNames.has(m.model))
+      .map((m) => ({ model: m, sourceBrand: "Hotlink" }));
+    return [...own, ...extra];
+  }, [activeBrand, selectedBrand]);
+
   const activeStorage = useMemo(
     () =>
       selectedModel.storages.find((s) => s.storage === selectedStorage) ||
@@ -619,11 +634,12 @@ export default function Page() {
     setPricingExpanded(true);
   };
 
-  const chooseModel = (model: CatalogModel) => {
+  const chooseModel = (model: CatalogModel, sourceBrand?: string) => {
     const nextStorage = model.storages[0].storage;
     const storage = model.storages[0];
     const targetRegion = storage.regions.ECEM ? "ECEM" : "HOTLINK";
     const targetTab: PricingMode = targetRegion === "HOTLINK" ? "hotlink12" : "upfront";
+    if (sourceBrand && sourceBrand !== selectedBrand) setSelectedBrand(sourceBrand);
     setSelectedRegion(targetRegion);
     setSelectedModel(model);
     setSelectedStorage(nextStorage);
@@ -1522,14 +1538,14 @@ export default function Page() {
 
                   <div className="max-h-[420px] space-y-2 overflow-y-auto pr-1">
                     {/* Favourites first */}
-                    {activeBrand.models.some(m => favourites.includes(m.model)) && (
+                    {activeBrandModels.some(({ model: m }) => favourites.includes(m.model)) && (
                       <>
-                        {activeBrand.models.filter(m => favourites.includes(m.model)).map((model) => {
+                        {activeBrandModels.filter(({ model: m }) => favourites.includes(m.model)).map(({ model, sourceBrand }) => {
                           const active = model.model === selectedModel.model;
                           return (
                             <div key={`fav-${model.model}`} className="flex items-stretch gap-1.5">
                               <button
-                                onClick={() => chooseModel(model)}
+                                onClick={() => chooseModel(model, sourceBrand)}
                                 className={`flex-1 rounded-xl border px-3 py-3 text-left transition ${
                                   active ? "border-[#00D46A]/40 bg-[#00D46A]/10" : "border-white/8 bg-transparent hover:border-white/15 hover:bg-[#181c1f]"
                                 }`}
@@ -1538,6 +1554,7 @@ export default function Page() {
                                   <span className="text-[10px] text-amber-400">⭐</span>
                                   <span className="text-sm font-medium text-white">{model.model}</span>
                                   {model.eol && <span className="text-[9px] font-bold text-red-400">EOL</span>}
+                                  {sourceBrand === "Hotlink" && <span className="text-[9px] font-bold text-[#00D46A]/60">Hotlink</span>}
                                 </div>
                                 <div className="mt-1 text-xs text-slate-500">{model.storages.map(s => s.storage).join(" · ")}</div>
                               </button>
@@ -1553,12 +1570,12 @@ export default function Page() {
                       </>
                     )}
                     {/* All models */}
-                    {activeBrand.models.filter(m => !favourites.includes(m.model)).map((model) => {
+                    {activeBrandModels.filter(({ model: m }) => !favourites.includes(m.model)).map(({ model, sourceBrand }) => {
                       const active = model.model === selectedModel.model;
                       return (
                         <div key={model.model} className="flex items-stretch gap-1.5">
                           <button
-                            onClick={() => chooseModel(model)}
+                            onClick={() => chooseModel(model, sourceBrand)}
                             className={`flex-1 rounded-xl border px-3 py-3 text-left transition ${
                               active ? "border-[#00D46A]/40 bg-[#00D46A]/10" : "border-white/8 bg-transparent hover:border-white/15 hover:bg-[#181c1f]"
                             }`}
@@ -1566,6 +1583,7 @@ export default function Page() {
                             <div className="flex items-center gap-1.5">
                               <span className="text-sm font-medium text-white">{model.model}</span>
                               {model.eol && <span className="text-[9px] font-bold text-red-400">EOL</span>}
+                              {sourceBrand === "Hotlink" && <span className="text-[9px] font-bold text-[#00D46A]/60">Hotlink</span>}
                             </div>
                             <div className="mt-1 text-xs text-slate-500">{model.storages.map(s => s.storage).join(" · ")}</div>
                           </button>
