@@ -55,6 +55,36 @@ export type CatalogBrand = {
 export const CATALOG_SOURCE = "GTM 23 Apr 2026";
 export const CATALOG_DATE = "2026-04-09";
 
+// Latest updates — shown at top of app so staff stay informed without reading emails
+// Keep most recent first. Update whenever a new GTM/email changes the catalog.
+export type AppUpdate = {
+  date: string;        // display date e.g. "23 Apr"
+  type: "new" | "change" | "alert" | "upcoming";
+  text: string;
+  subtext?: string;    // optional detail line
+};
+
+export const LATEST_UPDATES: AppUpdate[] = [
+  {
+    date: "30 Apr",
+    type: "upcoming",
+    text: "🔜 Oppo A6t 5G launching on HP75 tomorrow",
+    subtext: "12M RM459 · 24M RM99 device + RM180 DAP",
+  },
+  {
+    date: "23 Apr",
+    type: "new",
+    text: "🆕 5 new Hotlink devices live",
+    subtext: "Realme C85 4G & Nubia V80 Max 4G (HP65+75) · Vivo Y11 5G (HP75) · Vivo Y11d 4G (HP65) · Samsung A07 5G HP75 24M DAP now RM200",
+  },
+  {
+    date: "13 Apr",
+    type: "alert",
+    text: "⚠️ Samsung A07 LTE: 15W charger no longer in box",
+    subtext: "Free 1-year warranty promo still valid until 30 Jun 2026",
+  },
+];
+
 export const catalog: CatalogBrand[] = [
 // ── Hotlink Postpaid devices (HP45 / HP65 / HP75) ─────────────────────────
 {
