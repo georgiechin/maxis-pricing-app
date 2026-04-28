@@ -141,6 +141,9 @@ export default function Page() {
   const [compareB, setCompareB] = useState<CompareDevice | null>(null);
   const [showCompare, setShowCompare] = useState(false);
 
+  // Customer card overlay
+  const [showCustomerCard, setShowCustomerCard] = useState(false);
+
   // Sidebar collapse state
   const [brandExpanded, setBrandExpanded] = useState(true);
   const [modelExpanded, setModelExpanded] = useState(true);
@@ -648,6 +651,7 @@ export default function Page() {
     setByPlanMode(false);
     setUpsellMode(false);
     setLastModeContext(null);
+    setShowCustomerCard(false);
     setBrandExpanded(true);
     setModelExpanded(true);
     setPricingExpanded(true);
@@ -2207,6 +2211,17 @@ export default function Page() {
               />
               <SelectionRow label="Plan" value={selectedPlan} />
             </div>
+
+            {/* Customer View button */}
+            {selectedRow && (
+              <button
+                onClick={() => setShowCustomerCard(true)}
+                className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-blue-400/30 bg-blue-400/10 px-4 py-3 text-sm font-semibold text-blue-300 transition hover:border-blue-400/50 hover:bg-blue-400/15"
+              >
+                <span>👥</span>
+                <span>Show Customer</span>
+              </button>
+            )}
           </section>
 
           {/* Value Tip */}
@@ -2369,6 +2384,125 @@ export default function Page() {
                   </div>
                 );
               })}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Customer Card Overlay ───────────────────────────────────────── */}
+      {showCustomerCard && selectedRow && (
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#080f18] p-6">
+          {/* Back button */}
+          <button
+            onClick={() => setShowCustomerCard(false)}
+            className="absolute left-5 top-5 flex items-center gap-1.5 rounded-xl border border-white/12 bg-white/6 px-4 py-2.5 text-sm font-medium text-slate-300 transition hover:bg-white/10 hover:text-white"
+          >
+            ← Staff View
+          </button>
+
+          <div className="w-full max-w-sm">
+            {/* Brand */}
+            <div className="mb-1 text-center text-xs font-semibold uppercase tracking-widest text-slate-500">
+              {selectedBrand}
+            </div>
+
+            {/* Device name */}
+            <h1 className="mb-1 text-center text-3xl font-black leading-tight text-white sm:text-4xl">
+              {selectedModel.model}
+            </h1>
+
+            {/* Storage */}
+            <div className="mb-5 text-center text-base text-slate-400">{activeStorage.storage}</div>
+
+            {/* Plan pill */}
+            <div className="mx-auto mb-7 w-fit rounded-full border border-[#00D46A]/40 bg-[#00D46A]/12 px-5 py-2 text-sm font-semibold text-[#00D46A]">
+              {isHotlink ? "Hotlink Postpaid" : "Maxis Postpaid"} · {selectedPlan} · {activeTabs.find((t) => t.key === selectedTab)?.label}
+            </div>
+
+            {/* ── Upfront / Hotlink pricing ── */}
+            {(selectedTab === "upfront" || selectedTab === "hotlink12" || selectedTab === "hotlink24") && (() => {
+              const r = selectedRow as { devicePrice?: number | string; dap?: number | string; dapLabel?: string; totalUpfront?: number | string; monthly?: number | string };
+              const isFree = Number(r.devicePrice) === 0;
+              return (
+                <div className="space-y-3">
+                  {/* Device price — hero number */}
+                  <div className={`rounded-2xl border p-6 text-center ${isFree ? "border-red-400/30 bg-red-400/8" : "border-white/10 bg-white/4"}`}>
+                    <div className="mb-1 text-sm text-slate-400">Device Price</div>
+                    <div className={`text-6xl font-black tracking-tight ${isFree ? "text-red-400" : "text-white"}`}>
+                      {isFree ? "FREE" : formatMoney(r.devicePrice)}
+                    </div>
+                    {isFree && <div className="mt-1 text-xs text-red-400/70">🎉 No device cost</div>}
+                  </div>
+
+                  {/* DAP + Total row */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="rounded-2xl border border-white/10 bg-white/4 p-4 text-center">
+                      <div className="mb-1 text-xs text-slate-400">DAP Deposit</div>
+                      <div className="text-2xl font-bold text-white">{r.dapLabel || formatMoney(r.dap)}</div>
+                      <div className="mt-0.5 text-[10px] text-slate-500">returned monthly</div>
+                    </div>
+                    <div className="rounded-2xl border border-[#00D46A]/30 bg-[#00D46A]/8 p-4 text-center">
+                      <div className="mb-1 text-xs text-slate-400">Pay Today</div>
+                      <div className="text-2xl font-bold text-[#00D46A]">{formatMoney(r.totalUpfront)}</div>
+                    </div>
+                  </div>
+
+                  {/* Monthly for Hotlink */}
+                  {isHotlink && (
+                    <div className="rounded-2xl border border-white/10 bg-white/4 p-4 text-center">
+                      <div className="mb-1 text-sm text-slate-400">Monthly</div>
+                      <div className="text-3xl font-bold text-white">
+                        RM{r.monthly}<span className="ml-1 text-base font-normal text-slate-400">/month</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
+
+            {/* ── Zerolution pricing ── */}
+            {(selectedTab === "zero24" || selectedTab === "zero36") && (() => {
+              const r = selectedRow as { monthly?: number | string };
+              const monthly = Number(r.monthly);
+              const total = planFee(selectedPlan) + monthly;
+              const months = selectedTab === "zero24" ? 24 : 36;
+              const isFreeDevice = monthly === 0;
+              return (
+                <div className="space-y-3">
+                  {/* Total/month — hero number */}
+                  <div className="rounded-2xl border border-[#00D46A]/30 bg-[#00D46A]/8 p-6 text-center">
+                    <div className="mb-1 text-sm text-slate-400">Total per month</div>
+                    <div className="text-6xl font-black tracking-tight text-[#00D46A]">RM{total}</div>
+                    <div className="mt-1 text-xs text-slate-400">{months}-month contract · no upfront</div>
+                  </div>
+
+                  {/* Breakdown */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="rounded-2xl border border-white/10 bg-white/4 p-4 text-center">
+                      <div className="mb-1 text-xs text-slate-400">Plan fee</div>
+                      <div className="text-xl font-bold text-white">RM{planFee(selectedPlan)}</div>
+                    </div>
+                    <div className={`rounded-2xl border p-4 text-center ${isFreeDevice ? "border-red-400/30 bg-red-400/8" : "border-white/10 bg-white/4"}`}>
+                      <div className="mb-1 text-xs text-slate-400">Device instalment</div>
+                      <div className={`text-xl font-bold ${isFreeDevice ? "text-red-400" : "text-white"}`}>
+                        {isFreeDevice ? "FREE" : `RM${monthly}`}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Promo */}
+            {activeStorage.promo && (
+              <div className="mt-4 rounded-xl border border-amber-400/25 bg-amber-400/8 px-4 py-3 text-center text-sm font-medium text-amber-300">
+                🎁 {activeStorage.promo}
+              </div>
+            )}
+
+            {/* Disclaimer */}
+            <div className="mt-6 text-center text-[11px] text-slate-600">
+              Subject to stock availability & credit verification
             </div>
           </div>
         </div>
