@@ -66,22 +66,22 @@ export type AppUpdate = {
 
 export const LATEST_UPDATES: AppUpdate[] = [
   {
-    date: "30 Apr",
-    type: "upcoming",
-    text: "🔜 Oppo A6t 5G launching on HP75 tomorrow",
-    subtext: "12M RM459 · 24M RM99 device + RM180 DAP",
+    date: "24 Apr",
+    type: "new",
+    text: "📱 Oppo Find X9s & X9 Ultra Demo Program",
+    subtext: "Demo units available in-store · Program period: 23 Apr – 8 Aug '26",
   },
   {
     date: "23 Apr",
-    type: "new",
-    text: "🆕 5 new Hotlink devices live",
-    subtext: "Realme C85 4G & Nubia V80 Max 4G (HP65+75) · Vivo Y11 5G (HP75) · Vivo Y11d 4G (HP65) · Samsung A07 5G HP75 24M DAP now RM200",
+    type: "alert",
+    text: "🔔 DealerNet Check-in Module live from 27 Apr",
+    subtext: "New MEP Outbound check-in module — brief your team & ensure dealer access",
   },
   {
     date: "13 Apr",
     type: "alert",
-    text: "⚠️ Samsung A07 LTE: 15W charger no longer in box",
-    subtext: "Free 1-year warranty promo still valid until 30 Jun 2026",
+    text: "⚠️ Samsung A07 LTE: Travel adapter removed from box",
+    subtext: "DTP revised for A07 LTE & A07 5G eff. 13 Apr · 1-yr warranty promo valid til 30 Jun",
   },
 ];
 
