@@ -2825,49 +2825,6 @@ MP199: { monthly: 160, dapLabel: "Check ECC" }
 brand: "Realme",
 models: [
 {
-model: "Realme 14 5G",
-aliases: ["realme", "14"],
-storages: [
-{
-storage: "Default",
-rrp: 1199,
-regions: {
-ECEM: {
-upfront: {
-MP69: { devicePrice: 0, dap: 0, totalUpfront: 0 },
-MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP109: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP139: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP169: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP199: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" }
-},
-zero24: {
-MP48: { monthly: 49, dapLabel: "NA" },
-MP69: { monthly: 49, dapLabel: "Check ECC" },
-MP89: { monthly: "NA", dapLabel: "NA" },
-MP99: { monthly: 7, dapLabel: "Check ECC" },
-MP109: { monthly: "NA", dapLabel: "NA" },
-MP139: { monthly: "NA", dapLabel: "NA" },
-MP169: { monthly: "NA", dapLabel: "NA" },
-MP199: { monthly: "NA", dapLabel: "NA" }
-},
-zero36: {
-MP48: { monthly: "NA", dapLabel: "NA" },
-MP69: { monthly: "NA", dapLabel: "NA" },
-MP89: { monthly: "NA", dapLabel: "NA" },
-MP99: { monthly: "NA", dapLabel: "NA" },
-MP109: { monthly: "NA", dapLabel: "NA" },
-MP139: { monthly: "NA", dapLabel: "NA" },
-MP169: { monthly: "NA", dapLabel: "NA" },
-MP199: { monthly: "NA", dapLabel: "NA" }
-}
-}
-}
-}
-]
-},
-{
 model: "Realme 15 Pro 5G",
 aliases: ["realme", "15pro"],
 storages: [
