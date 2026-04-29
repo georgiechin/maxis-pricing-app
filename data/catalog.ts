@@ -1,4 +1,4 @@
-export type PricingMode = "upfront" | "zero24" | "zero36" | "hotlink12" | "hotlink24";
+export type PricingMode = "upfront" | "upfront36" | "zero24" | "zero36" | "hotlink12" | "hotlink24";
 export type RegionKey = "ECEM" | "HOTLINK";
 
 type UpfrontRow = {
@@ -22,7 +22,8 @@ export type HotlinkRow = {
 };
 
 export type StoragePricing = {
-  upfront?: Record<string, UpfrontRow>;
+  upfront?: Record<string, UpfrontRow>;    // Upfront 24M
+  upfront36?: Record<string, UpfrontRow>; // Upfront 36M
   zero24?: Record<string, ZeroRow>;
   zero36?: Record<string, ZeroRow>;
   hotlink12?: Record<string, HotlinkRow>;  // HP65/HP75 on 12-month
