@@ -11,7 +11,8 @@ import {
 } from "../data/catalog";
 
 const pricingTabs: { key: PricingMode; label: string; short: string }[] = [
-  { key: "upfront", label: "Upfront", short: "Upfront" },
+  { key: "upfront", label: "Upfront 24M", short: "Up 24M" },
+  { key: "upfront36", label: "Upfront 36M", short: "Up 36M" },
   { key: "zero24", label: "Zerolution 24M", short: "Zero 24M" },
   { key: "zero36", label: "Zerolution 36M", short: "Zero 36M" },
 ];
@@ -50,7 +51,7 @@ function planFee(plan: string): number {
 type EccStatus = "none" | "required" | "high";
 
 function getEccStatus(tab: PricingMode, plan: string, row: unknown): EccStatus {
-  if (tab === "upfront") return "none";
+  if (tab === "upfront" || tab === "upfront36") return "none";
   if (plan === "MP48") return "none";
   const dapLabel = (row as { dapLabel?: string }).dapLabel;
   if (!dapLabel || dapLabel === "NA") return "none";
@@ -180,7 +181,7 @@ export default function Page() {
   const isHotlink = selectedRegion === "HOTLINK";
   const regionPricing = (isHotlink ? activeStorage.regions.HOTLINK : activeStorage.regions.ECEM) || null;
   const activeTabs = isHotlink ? hotlinkTabs : pricingTabs;
-  const activePlanOrder = isHotlink ? hpOrder : (selectedTab === "upfront" ? mpOrder : mpOrderZero);
+  const activePlanOrder = isHotlink ? hpOrder : (selectedTab === "upfront" || selectedTab === "upfront36" ? mpOrder : mpOrderZero);
   const currentTable = regionPricing ? regionPricing[selectedTab] : null;
   const selectedRow = currentTable?.[selectedPlan];
 
@@ -197,7 +198,7 @@ export default function Page() {
     for (const plan of preferredOrder) {
       const row = table[plan];
       if (!row) continue;
-      if (mode === "upfront" || mode === "hotlink12" || mode === "hotlink24") {
+      if (mode === "upfront" || mode === "upfront36" || mode === "hotlink12" || mode === "hotlink24") {
         const price = (row as { devicePrice?: number | string }).devicePrice;
         if (price !== undefined && price !== "NA") return plan;
       } else {
@@ -479,13 +480,14 @@ export default function Page() {
       if (isNaN(d) || isNaN(m)) return null;
       return `RM${(d + m * months).toLocaleString()} over ${months} months`;
     }
-    if (selectedTab === "upfront") {
+    if (selectedTab === "upfront" || selectedTab === "upfront36") {
       // Use devicePrice (not totalUpfront) — DAP is a deposit that comes back
       const dp = (selectedRow as { devicePrice?: number | string }).devicePrice;
       if (dp === undefined || dp === "NA") return null;
       const d = Number(dp);
       if (isNaN(d)) return null;
-      return `RM${(d + fee * 24).toLocaleString()} over 24 months (excl. DAP deposit)`;
+      const months = selectedTab === "upfront36" ? 36 : 24;
+      return `RM${(d + fee * months).toLocaleString()} over ${months} months (excl. DAP deposit)`;
     }
     const months = selectedTab === "zero24" ? 24 : 36;
     const monthly = (selectedRow as { monthly?: number | string }).monthly;
@@ -504,7 +506,7 @@ export default function Page() {
   // ── Hot deal detection ──────────────────────────────────────────────────────
   const isHotDeal = useMemo(() => {
     if (activeStorage.promo) return true;
-    if (selectedTab === "upfront" && selectedRow) {
+    if ((selectedTab === "upfront" || selectedTab === "upfront36") && selectedRow) {
       const d = (selectedRow as { devicePrice?: number | string }).devicePrice;
       if (d !== undefined && d !== "NA" && Number(d) === 0) return true;
     }
@@ -515,7 +517,7 @@ export default function Page() {
   // ── Upgrade ladder (upfront mode only) ─────────────────────────────────────
   type LadderRow = { plan: string; planCost: number; devicePrice: number; cashToday: number; isFree: boolean };
   const upgradeLadder = useMemo((): LadderRow[] => {
-    if (!currentTable || selectedTab !== "upfront") return [];
+    if (!currentTable || (selectedTab !== "upfront" && selectedTab !== "upfront36")) return [];
     const rows: LadderRow[] = [];
     for (const plan of mpOrder) {
       const row = currentTable[plan];
@@ -678,7 +680,8 @@ export default function Page() {
     const deviceName = selectedModel.model;
     const promo = activeStorage.promo || "";
     const modeLabel =
-      selectedTab === "upfront" ? "Upfront"
+      selectedTab === "upfront" ? "Upfront 24M"
+      : selectedTab === "upfront36" ? "Upfront 36M"
       : selectedTab === "zero24" ? "Zerolution 24M"
       : selectedTab === "zero36" ? "Zerolution 36M"
       : selectedTab === "hotlink12" ? "Hotlink 12M"
@@ -727,7 +730,7 @@ export default function Page() {
       ].filter((l, i, arr) => !(l === "" && arr[i - 1] === "")).join("\n").trim();
     }
 
-    if (selectedTab === "upfront") {
+    if (selectedTab === "upfront" || selectedTab === "upfront36") {
       const row = selectedRow as {
         devicePrice?: number | string;
         dap?: number | string;
@@ -1803,7 +1806,7 @@ export default function Page() {
                   </span>
                 </div>
                 <div className="mt-1.5 text-base font-bold text-[#00D46A]">
-                  {(selectedTab === "upfront" || selectedTab === "hotlink12" || selectedTab === "hotlink24")
+                  {(selectedTab === "upfront" || selectedTab === "upfront36" || selectedTab === "hotlink12" || selectedTab === "hotlink24")
                     ? (() => {
                         const r = selectedRow as {
                           devicePrice?: number | string;
@@ -1844,7 +1847,7 @@ export default function Page() {
                     const row = currentTable?.[mp];
                     const active = mp === selectedPlan;
 
-                    const isUpfrontMode = selectedTab === "upfront" || selectedTab === "hotlink12" || selectedTab === "hotlink24";
+                    const isUpfrontMode = selectedTab === "upfront" || selectedTab === "upfront36" || selectedTab === "hotlink12" || selectedTab === "hotlink24";
                     const isUpfront = isUpfrontMode && row && (row as { devicePrice?: number | string }).devicePrice !== undefined && (row as { devicePrice?: number | string }).devicePrice !== "NA";
                     const isMonthly = !isUpfrontMode && row && (row as { monthly?: number | string }).monthly !== undefined && (row as { monthly?: number | string }).monthly !== "NA";
 
@@ -1964,7 +1967,7 @@ export default function Page() {
                         <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">
                           Plan
                         </th>
-                        {(selectedTab === "upfront" || selectedTab === "hotlink12" || selectedTab === "hotlink24") ? (
+                        {(selectedTab === "upfront" || selectedTab === "upfront36" || selectedTab === "hotlink12" || selectedTab === "hotlink24") ? (
                           <>
                             <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">
                               Device Price
@@ -2000,7 +2003,7 @@ export default function Page() {
                       {activePlanOrder.map((mp) => {
                         const row = currentTable?.[mp];
                         const active = mp === selectedPlan;
-                        const isUpfrontMode = selectedTab === "upfront" || selectedTab === "hotlink12" || selectedTab === "hotlink24";
+                        const isUpfrontMode = selectedTab === "upfront" || selectedTab === "upfront36" || selectedTab === "hotlink12" || selectedTab === "hotlink24";
 
                         const upfrontMissing =
                           !row ||
@@ -2247,7 +2250,7 @@ export default function Page() {
                 <span>{eccStatus === "none" ? "✅" : eccStatus === "high" ? "🔴" : "⚠️"}</span>
                 <span>
                   {eccStatus === "none"
-                    ? selectedTab === "upfront"
+                    ? (selectedTab === "upfront" || selectedTab === "upfront36")
                       ? "Upfront — no monthly ECC"
                       : "No ECC required"
                     : eccStatus === "high"
@@ -2351,7 +2354,7 @@ export default function Page() {
                     <div className="truncate text-sm font-semibold text-white">{dev.model.model}</div>
                     <div className="mb-3 text-[10px] text-slate-500">{dev.storage.storage} · {selectedPlan} · {selectedTab}</div>
                     {row ? (
-                      selectedTab === "upfront" ? (
+                      (selectedTab === "upfront" || selectedTab === "upfront36") ? (
                         <>
                           <div className="flex justify-between text-xs"><span className="text-slate-400">Device</span><span className="font-semibold text-white">{formatMoney((row as {devicePrice?: number|string}).devicePrice)}</span></div>
                           <div className="flex justify-between text-xs"><span className="text-slate-400">DAP</span><span className="text-slate-300">{(row as {dapLabel?: string}).dapLabel || formatMoney((row as {dap?: number|string}).dap)}</span></div>
@@ -2408,7 +2411,7 @@ export default function Page() {
             </div>
 
             {/* ── Upfront / Hotlink pricing ── */}
-            {(selectedTab === "upfront" || selectedTab === "hotlink12" || selectedTab === "hotlink24") && (() => {
+            {(selectedTab === "upfront" || selectedTab === "upfront36" || selectedTab === "hotlink12" || selectedTab === "hotlink24") && (() => {
               const r = selectedRow as { devicePrice?: number | string; dap?: number | string; dapLabel?: string; totalUpfront?: number | string; monthly?: number | string };
               const isFree = Number(r.devicePrice) === 0;
               return (
