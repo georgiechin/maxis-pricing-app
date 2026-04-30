@@ -69,7 +69,13 @@ export const LATEST_UPDATES: AppUpdate[] = [
   {
     date: "7 May",
     type: "new",
-    text: "📱 New: Realme C100 5G added",
+    text: "📱 New on Hotlink: Nubia Neo 5 5G & Realme C100 5G",
+    subtext: "HP75 only · Neo 5: RM659/RM479 · C100: RM399/RM200",
+  },
+  {
+    date: "7 May",
+    type: "new",
+    text: "📱 New: Realme C100 5G added (Maxis Postpaid)",
     subtext: "RRP RM1,099 · Available on Upfront, Zero24 & Zero36",
   },
   {
@@ -210,7 +216,7 @@ HP65: { devicePrice: 459, dap: 0, totalUpfront: 459, monthly: 65 },
 HP75: { devicePrice: 399, dap: 0, totalUpfront: 399, monthly: 75 }
 },
 hotlink24: {
-HP65: { devicePrice: 99, dap: 180, totalUpfront: 279, monthly: 50 },
+HP65: { devicePrice: 99, dap: 180, totalUpfront: 279, monthly: 57.50 },
 HP75: { devicePrice: 49, dap: 150, totalUpfront: 199, monthly: 68.75 }
 }
 }
@@ -230,7 +236,7 @@ HP65: { devicePrice: 459, dap: 0, totalUpfront: 459, monthly: 65 },
 HP75: { devicePrice: 399, dap: 0, totalUpfront: 399, monthly: 75 }
 },
 hotlink24: {
-HP65: { devicePrice: 99, dap: 180, totalUpfront: 279, monthly: 50 },
+HP65: { devicePrice: 99, dap: 180, totalUpfront: 279, monthly: 57.50 },
 HP75: { devicePrice: 49, dap: 150, totalUpfront: 199, monthly: 68.75 }
 }
 }
@@ -241,7 +247,7 @@ HP75: { devicePrice: 49, dap: 150, totalUpfront: 199, monthly: 68.75 }
 model: "Vivo Y11d 4G",
 aliases: ["vivo", "y11d", "hotlink"],
 storages: [{
-storage: "4+64GB",
+storage: "4+128GB",
 rrp: 549,
 regions: {
 HOTLINK: {
@@ -283,6 +289,42 @@ HP75: { devicePrice: 459, dap: 0, totalUpfront: 459, monthly: 75 }
 },
 hotlink24: {
 HP75: { devicePrice: 99, dap: 180, totalUpfront: 279, monthly: 67.50 }
+}
+}
+}
+}]
+},
+{
+model: "Realme C100 5G",
+aliases: ["realme", "c100", "hotlink"],
+storages: [{
+storage: "4+256GB",
+rrp: 1099,
+regions: {
+HOTLINK: {
+hotlink12: {
+HP75: { devicePrice: 399, dap: 0, totalUpfront: 399, monthly: 75 }
+},
+hotlink24: {
+HP75: { devicePrice: 0, dap: 200, totalUpfront: 200, monthly: 66.67 }
+}
+}
+}
+}]
+},
+{
+model: "Nubia Neo 5 5G",
+aliases: ["nubia", "neo5", "hotlink"],
+storages: [{
+storage: "8+256GB",
+rrp: 1299,
+regions: {
+HOTLINK: {
+hotlink12: {
+HP75: { devicePrice: 659, dap: 0, totalUpfront: 659, monthly: 75 }
+},
+hotlink24: {
+HP75: { devicePrice: 299, dap: 180, totalUpfront: 479, monthly: 67.50 }
 }
 }
 }
