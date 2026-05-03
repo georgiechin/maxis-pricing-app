@@ -26,6 +26,64 @@ const mpOrder = ["MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
 const mpOrderZero = ["MP48", "MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
 const hpOrder = ["HP45", "HP65", "HP75"];
 
+function getDefaultRegion(storage: CatalogStorage): "ECEM" | "HOTLINK" {
+  return storage.regions.ECEM ? "ECEM" : "HOTLINK";
+}
+
+function getDefaultTab(region: "ECEM" | "HOTLINK"): PricingMode {
+  return region === "HOTLINK" ? "hotlink12" : "upfront";
+}
+
+function isTabAvailable(storage: CatalogStorage, region: "ECEM" | "HOTLINK", tab: PricingMode) {
+  const pricing = region === "HOTLINK" ? storage.regions.HOTLINK : storage.regions.ECEM;
+  return !!pricing?.[tab];
+}
+
+function getBestPlanForStorage(
+  storage: CatalogStorage,
+  mode: PricingMode,
+  region: "ECEM" | "HOTLINK" = "ECEM"
+) {
+  const table = (region === "HOTLINK" ? storage.regions.HOTLINK : storage.regions.ECEM)?.[mode];
+  if (!table) return region === "HOTLINK" ? "HP75" : "MP69";
+  const preferredOrder = region === "HOTLINK" ? ["HP75", "HP65", "HP45"] : ["MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
+  for (const plan of preferredOrder) {
+    const row = table[plan];
+    if (!row) continue;
+    if (mode === "upfront" || mode === "upfront36" || mode === "hotlink12" || mode === "hotlink24") {
+      const price = (row as { devicePrice?: number | string }).devicePrice;
+      if (price !== undefined && price !== "NA") return plan;
+    } else {
+      const monthly = (row as { monthly?: number | string }).monthly;
+      if (monthly !== undefined && monthly !== "NA") return plan;
+    }
+  }
+  return region === "HOTLINK" ? "HP75" : "MP69";
+}
+
+function getDefaultSelectionForStorage(
+  model: CatalogModel,
+  storageName: string,
+  preferredTab?: PricingMode,
+  preferredRegion?: "ECEM" | "HOTLINK"
+) {
+  const storage = model.storages.find((s) => s.storage === storageName) || model.storages[0];
+  const region =
+    preferredRegion && storage.regions[preferredRegion]
+      ? preferredRegion
+      : getDefaultRegion(storage);
+  const tab =
+    preferredTab && isTabAvailable(storage, region, preferredTab)
+      ? preferredTab
+      : getDefaultTab(region);
+  return {
+    storage,
+    region,
+    tab,
+    plan: getBestPlanForStorage(storage, tab, region),
+  };
+}
+
 function formatMoney(value: number | string | null | undefined) {
   if (value === null || value === undefined || value === "" || value === "NA") {
     return "NA";
@@ -82,14 +140,17 @@ type UpsellTier = {
 
 
 export default function Page() {
-  const [selectedBrand, setSelectedBrand] = useState<CatalogBrand["brand"]>(catalog[0].brand);
-  const [selectedModel, setSelectedModel] = useState<CatalogModel>(catalog[0].models[0]);
-  const [selectedStorage, setSelectedStorage] = useState(
-    catalog[0].models[0].storages[0].storage
-  );
-  const [selectedRegion, setSelectedRegion] = useState<"ECEM" | "HOTLINK">("ECEM");
-  const [selectedTab, setSelectedTab] = useState<PricingMode>("upfront");
-  const [selectedPlan, setSelectedPlan] = useState("MP69");
+  const initialBrand = catalog[0];
+  const initialModel = initialBrand.models[0];
+  const initialStorage = initialModel.storages[0];
+  const initialSelection = getDefaultSelectionForStorage(initialModel, initialStorage.storage);
+
+  const [selectedBrand, setSelectedBrand] = useState<CatalogBrand["brand"]>(initialBrand.brand);
+  const [selectedModel, setSelectedModel] = useState<CatalogModel>(initialModel);
+  const [selectedStorage, setSelectedStorage] = useState(initialStorage.storage);
+  const [selectedRegion, setSelectedRegion] = useState<"ECEM" | "HOTLINK">(initialSelection.region);
+  const [selectedTab, setSelectedTab] = useState<PricingMode>(initialSelection.tab);
+  const [selectedPlan, setSelectedPlan] = useState(initialSelection.plan);
   const [toast, setToast] = useState("");
 
   // Search state
@@ -192,21 +253,7 @@ export default function Page() {
     region: "ECEM" | "HOTLINK" = "ECEM"
   ) => {
     const storage = model.storages.find((s) => s.storage === storageName) || model.storages[0];
-    const table = (region === "HOTLINK" ? storage.regions.HOTLINK : storage.regions.ECEM)?.[mode];
-    if (!table) return region === "HOTLINK" ? "HP75" : "MP69";
-    const preferredOrder = region === "HOTLINK" ? ["HP75", "HP65", "HP45"] : ["MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
-    for (const plan of preferredOrder) {
-      const row = table[plan];
-      if (!row) continue;
-      if (mode === "upfront" || mode === "upfront36" || mode === "hotlink12" || mode === "hotlink24") {
-        const price = (row as { devicePrice?: number | string }).devicePrice;
-        if (price !== undefined && price !== "NA") return plan;
-      } else {
-        const monthly = (row as { monthly?: number | string }).monthly;
-        if (monthly !== undefined && monthly !== "NA") return plan;
-      }
-    }
-    return region === "HOTLINK" ? "HP75" : "MP69";
+    return getBestPlanForStorage(storage, mode, region);
   };
 
   // ── Search results ──────────────────────────────────────────────────────────
@@ -534,7 +581,7 @@ export default function Page() {
   }, [currentTable, selectedTab]);
 
   // Value tip — show next plan where device price drops meaningfully
-  const valueTip = useMemo((): { plan: string; message: string } | null => {
+  const valueTip: { plan: string; message: string } | null = (() => {
     if (upgradeLadder.length < 2) return null;
     const currentIdx = upgradeLadder.findIndex((r) => r.plan === selectedPlan);
     if (currentIdx < 0) return null;
@@ -564,7 +611,7 @@ export default function Page() {
       }
     }
     return null;
-  }, [upgradeLadder, selectedPlan]);
+  })();
 
 
   // ── Navigation helpers ──────────────────────────────────────────────────────
@@ -577,17 +624,14 @@ export default function Page() {
     modeContext?: { mode: string; plan: string; label: string } | null  // breadcrumb context
   ) => {
     const targetStorage = storageName || model.storages[0].storage;
-    const storage = model.storages.find(s => s.storage === targetStorage) || model.storages[0];
-    // Auto-detect region: if device has no ECEM, use HOTLINK
-    const targetRegion = storage.regions.ECEM ? "ECEM" : "HOTLINK";
-    const targetTab = tab || (targetRegion === "HOTLINK" ? "hotlink12" : selectedTab);
+    const selection = getDefaultSelectionForStorage(model, targetStorage, tab || selectedTab);
     // Use explicit plan if provided; fall back to auto-detect
-    const resolvedPlan = targetPlan || getBestDefaultPlan(model, targetStorage, targetTab, targetRegion);
-    setSelectedRegion(targetRegion);
+    const resolvedPlan = targetPlan || selection.plan;
+    setSelectedRegion(selection.region);
     setSelectedBrand(brand);
     setSelectedModel(model);
     setSelectedStorage(targetStorage);
-    setSelectedTab(targetTab);
+    setSelectedTab(selection.tab);
     setSelectedPlan(resolvedPlan);
     setSearchQuery("");
     setBudgetMode(false);
@@ -656,12 +700,14 @@ export default function Page() {
     const firstBrand = catalog[0];
     const firstModel = firstBrand.models[0];
     const firstStorage = firstModel.storages[0].storage;
+    const selection = getDefaultSelectionForStorage(firstModel, firstStorage);
 
     setSelectedBrand(firstBrand.brand);
     setSelectedModel(firstModel);
     setSelectedStorage(firstStorage);
-    setSelectedTab("upfront");
-    setSelectedPlan(getBestDefaultPlan(firstModel, firstStorage, "upfront"));
+    setSelectedRegion(selection.region);
+    setSelectedTab(selection.tab);
+    setSelectedPlan(selection.plan);
     setSearchQuery("");
     setBudgetMode(false);
     setBudgetMax("");
@@ -1704,8 +1750,11 @@ export default function Page() {
                   <button
                     key={storage.storage}
                     onClick={() => {
+                      const selection = getDefaultSelectionForStorage(selectedModel, storage.storage, selectedTab, selectedRegion);
                       setSelectedStorage(storage.storage);
-                      setSelectedPlan(getBestDefaultPlan(selectedModel, storage.storage, selectedTab));
+                      setSelectedRegion(selection.region);
+                      setSelectedTab(selection.tab);
+                      setSelectedPlan(selection.plan);
                       setPricingExpanded(true);
                     }}
                     className={`rounded-xl border px-4 py-2 text-sm font-medium transition ${
