@@ -1,0 +1,6 @@
+# Files/folders excluded from Vercel deploy bundle.
+# Keep this in sync with anything that's repo-only (dev tools, scripts, docs).
+scripts/
+*.py
+*.md
+!README.md

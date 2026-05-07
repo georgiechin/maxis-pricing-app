@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Maxis ECEM Device Pricing Browser",
+  title: "Maxis Device Pricing",
   description:
-    "Mobile-friendly internal pricing browser for Maxis ECEM staff. Search devices, select plan pricing, and copy customer-ready quotes fast.",
+    "Internal pricing browser for Maxis store staff. Search devices across ECEM, Rest of Malaysia, and Hotlink — see plan pricing and copy customer-ready quotes fast.",
   applicationName: "Maxis Pricing App",
 };
 
