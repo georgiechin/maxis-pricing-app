@@ -88,7 +88,7 @@ function formatMoney(value: number | string | null | undefined) {
   if (value === null || value === undefined || value === "" || value === "NA") {
     return "NA";
   }
-  if (Number(value) === 0 || Number(value) === 1) return "FREE";
+  if (Number(value) === 0) return "FREE";
   return `RM ${Number(value).toLocaleString()}`;
 }
 
@@ -96,13 +96,17 @@ function moneyPlain(value: number | string | null | undefined) {
   if (value === null || value === undefined || value === "" || value === "NA") {
     return "NA";
   }
-  if (Number(value) === 0 || Number(value) === 1) return "FREE";
+  if (Number(value) === 0) return "FREE";
   return `RM${Number(value).toLocaleString()}`;
 }
 
-// Extract numeric fee from plan name: "MP139" → 139
+// Extract numeric fee from plan name. Handles all 3 plan families used in this catalog:
+//   "MP139"  → 139   (Maxis Postpaid: number == monthly fee)
+//   "HP75"   → 75    (Hotlink Postpaid: number == monthly fee)
+//   "MFP399" → 399   (Maxis Family Plan: number == monthly fee)
+// Used both for monthly-fee math (Postpaid) and for plan-tier ordering (all families).
 function planFee(plan: string): number {
-  const n = parseInt(plan.replace("MP", ""), 10);
+  const n = parseInt(plan.replace(/^(MFP|MP|HP)/, ""), 10);
   return isNaN(n) ? 0 : n;
 }
 
