@@ -68,6 +68,12 @@ export type AppUpdate = {
 export const LATEST_UPDATES: AppUpdate[] = [
   {
     date: "7 May",
+    type: "alert",
+    text: "🚚 Delivery cut-offs: 27–28 May Hari Raya Haji & public holidays til 4 Jun",
+    subtext: "Kelantan/Terengganu/Sarawak/Sabah regions have extended resume dates — check logistics schedule",
+  },
+  {
+    date: "7 May",
     type: "new",
     text: "📱 New on Hotlink: Nubia Neo 5 5G & Realme C100 5G",
     subtext: "HP75 only · Neo 5: RM659/RM479 · C100: RM399/RM200",
