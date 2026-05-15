@@ -53,8 +53,8 @@ export type CatalogBrand = {
 };
 
 // Pricing source — update this whenever a new GTM is applied
-export const CATALOG_SOURCE = "GTM 7 May 2026";
-export const CATALOG_DATE = "2026-05-07";
+export const CATALOG_SOURCE = "GTM 14 May 2026";
+export const CATALOG_DATE = "2026-05-14";
 
 // Latest updates — shown at top of app so staff stay informed without reading emails
 // Keep most recent first. Update whenever a new GTM/email changes the catalog.
@@ -66,6 +66,30 @@ export type AppUpdate = {
 };
 
 export const LATEST_UPDATES: AppUpdate[] = [
+  {
+    date: "14 May",
+    type: "new",
+    text: "📱 New: Realme 16 Pro+ 5G (ECEM)",
+    subtext: "RRP RM2,699 · Upfront, Zero24 & Zero36 pricing live",
+  },
+  {
+    date: "14 May",
+    type: "change",
+    text: "🔄 Pixel 10a/10 Pro/10 Pro XL: Device prices slashed",
+    subtext: "Upfront & Zerolution monthly all DOWN effective 14 May",
+  },
+  {
+    date: "14 May",
+    type: "change",
+    text: "🔄 Samsung repriced: A07 5G, S25 FE, Tab S10 Lite, Tab S11, Tab S11 Ultra, Fold7, Flip7",
+    subtext: "Mix of RRP & device price changes + Zerolution added to Tab S11 lineup",
+  },
+  {
+    date: "14 May",
+    type: "change",
+    text: "🔄 Hotlink: A07 LTE repriced + 24M added · Honor Pad X8b repriced",
+    subtext: "A07 LTE RRP RM899 · X8b RRP RM1,199 · check updated device fees",
+  },
   {
     date: "7 May",
     type: "new",
@@ -102,7 +126,7 @@ model: "Samsung Galaxy A07 5G",
 aliases: ["samsung", "a07", "a075g", "hotlink"],
 storages: [{
 storage: "8+256GB",
-rrp: 949,
+rrp: 1029,
 regions: {
 HOTLINK: {
 hotlink12: {
@@ -120,11 +144,14 @@ model: "Samsung Galaxy A07 LTE",
 aliases: ["samsung", "a07", "a07lte", "hotlink"],
 storages: [{
 storage: "8+256GB",
-rrp: 699,
+rrp: 899,
 regions: {
 HOTLINK: {
 hotlink12: {
-HP65: { devicePrice: 79, dap: 30, totalUpfront: 109, monthly: 62.50 }
+HP65: { devicePrice: 199, dap: 0, totalUpfront: 199, monthly: 65 }
+},
+hotlink24: {
+HP65: { devicePrice: 0, dap: 180, totalUpfront: 180, monthly: 57.50 }
 }
 }
 }
@@ -171,14 +198,14 @@ model: "Honor Pad X8b LTE",
 aliases: ["honor", "padx8b", "x8b", "hotlink"],
 storages: [{
 storage: "8+256GB",
-rrp: 999,
+rrp: 1199,
 regions: {
 HOTLINK: {
 hotlink12: {
-HP75: { devicePrice: 659, dap: 0, totalUpfront: 659, monthly: 75 }
+HP75: { devicePrice: 829, dap: 0, totalUpfront: 829, monthly: 75 }
 },
 hotlink24: {
-HP75: { devicePrice: 339, dap: 120, totalUpfront: 459, monthly: 70 }
+HP75: { devicePrice: 499, dap: 60, totalUpfront: 559, monthly: 72.50 }
 }
 }
 }
@@ -1481,30 +1508,30 @@ upfront: {
 MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
 MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
 MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP109: { devicePrice: 1699, dap: 240, totalUpfront: 1939 },
-MP139: { devicePrice: 1399, dap: 540, totalUpfront: 1939 },
-MP169: { devicePrice: 999, dap: 940, totalUpfront: 1939 },
-MP199: { devicePrice: 399, dap: 1540, totalUpfront: 1939 }
+MP109: { devicePrice: 1299, dap: 480, totalUpfront: 1779 },
+MP139: { devicePrice: 899, dap: 840, totalUpfront: 1739 },
+MP169: { devicePrice: 499, dap: 1240, totalUpfront: 1739 },
+MP199: { devicePrice: 0, dap: 1740, totalUpfront: 1740 }
 },
 zero24: {
 MP48: { monthly: 116, dapLabel: "NA" },
 MP69: { monthly: "NA", dapLabel: "Check ECC" },
 MP89: { monthly: "NA", dapLabel: "Check ECC" },
-MP99: { monthly: 90, dapLabel: "Check ECC" },
-MP109: { monthly: 90, dapLabel: "Check ECC" },
-MP139: { monthly: 80, dapLabel: "Check ECC" },
-MP169: { monthly: 65, dapLabel: "Check ECC" },
-MP199: { monthly: 50, dapLabel: "Check ECC" }
+MP99: { monthly: 80, dapLabel: "Check ECC" },
+MP109: { monthly: 80, dapLabel: "Check ECC" },
+MP139: { monthly: 70, dapLabel: "Check ECC" },
+MP169: { monthly: 55, dapLabel: "Check ECC" },
+MP199: { monthly: 40, dapLabel: "Check ECC" }
 },
 zero36: {
 MP48: { monthly: 77, dapLabel: "NA" },
 MP69: { monthly: "NA", dapLabel: "Check ECC" },
 MP89: { monthly: "NA", dapLabel: "Check ECC" },
-MP99: { monthly: 60, dapLabel: "Check ECC" },
-MP109: { monthly: 60, dapLabel: "Check ECC" },
-MP139: { monthly: 50, dapLabel: "Check ECC" },
-MP169: { monthly: 40, dapLabel: "Check ECC" },
-MP199: { monthly: 30, dapLabel: "Check ECC" }
+MP99: { monthly: 55, dapLabel: "Check ECC" },
+MP109: { monthly: 55, dapLabel: "Check ECC" },
+MP139: { monthly: 45, dapLabel: "Check ECC" },
+MP169: { monthly: 35, dapLabel: "Check ECC" },
+MP199: { monthly: 20, dapLabel: "Check ECC" }
 }
 }
 }
@@ -1524,30 +1551,30 @@ upfront: {
 MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
 MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
 MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP109: { devicePrice: 4399, dap: 120, totalUpfront: 4519 },
-MP139: { devicePrice: 4199, dap: 320, totalUpfront: 4519 },
-MP169: { devicePrice: 3899, dap: 600, totalUpfront: 4499 },
-MP199: { devicePrice: 3599, dap: 900, totalUpfront: 4499 }
+MP109: { devicePrice: 3799, dap: 180, totalUpfront: 3979 },
+MP139: { devicePrice: 3599, dap: 360, totalUpfront: 3959 },
+MP169: { devicePrice: 3399, dap: 560, totalUpfront: 3959 },
+MP199: { devicePrice: 3099, dap: 860, totalUpfront: 3959 }
 },
 zero24: {
 MP48: { monthly: 229, dapLabel: "NA" },
 MP69: { monthly: "NA", dapLabel: "Check ECC" },
 MP89: { monthly: "NA", dapLabel: "Check ECC" },
-MP99: { monthly: 205, dapLabel: "Check ECC" },
-MP109: { monthly: 205, dapLabel: "Check ECC" },
-MP139: { monthly: 195, dapLabel: "Check ECC" },
-MP169: { monthly: 185, dapLabel: "Check ECC" },
-MP199: { monthly: 165, dapLabel: "Check ECC" }
+MP99: { monthly: 190, dapLabel: "Check ECC" },
+MP109: { monthly: 190, dapLabel: "Check ECC" },
+MP139: { monthly: 180, dapLabel: "Check ECC" },
+MP169: { monthly: 165, dapLabel: "Check ECC" },
+MP199: { monthly: 145, dapLabel: "Check ECC" }
 },
 zero36: {
 MP48: { monthly: 152, dapLabel: "NA" },
 MP69: { monthly: "NA", dapLabel: "Check ECC" },
 MP89: { monthly: "NA", dapLabel: "Check ECC" },
-MP99: { monthly: 135, dapLabel: "Check ECC" },
-MP109: { monthly: 135, dapLabel: "Check ECC" },
-MP139: { monthly: 130, dapLabel: "Check ECC" },
-MP169: { monthly: 120, dapLabel: "Check ECC" },
-MP199: { monthly: 100, dapLabel: "Check ECC" }
+MP99: { monthly: 130, dapLabel: "Check ECC" },
+MP109: { monthly: 130, dapLabel: "Check ECC" },
+MP139: { monthly: 120, dapLabel: "Check ECC" },
+MP169: { monthly: 110, dapLabel: "Check ECC" },
+MP199: { monthly: 90, dapLabel: "Check ECC" }
 }
 }
 }
@@ -1641,30 +1668,30 @@ upfront: {
 MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
 MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
 MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP109: { devicePrice: 4699, dap: 120, totalUpfront: 4819 },
-MP139: { devicePrice: 4499, dap: 320, totalUpfront: 4819 },
-MP169: { devicePrice: 4199, dap: 600, totalUpfront: 4799 },
-MP199: { devicePrice: 3899, dap: 900, totalUpfront: 4799 }
+MP109: { devicePrice: 4199, dap: 120, totalUpfront: 4319 },
+MP139: { devicePrice: 3999, dap: 300, totalUpfront: 4299 },
+MP169: { devicePrice: 3699, dap: 600, totalUpfront: 4299 },
+MP199: { devicePrice: 3399, dap: 900, totalUpfront: 4299 }
 },
 zero24: {
 MP48: { monthly: 249, dapLabel: "NA" },
 MP69: { monthly: "NA", dapLabel: "Check ECC" },
 MP89: { monthly: "NA", dapLabel: "Check ECC" },
-MP99: { monthly: 225, dapLabel: "Check ECC" },
-MP109: { monthly: 225, dapLabel: "Check ECC" },
-MP139: { monthly: 215, dapLabel: "Check ECC" },
-MP169: { monthly: 200, dapLabel: "Check ECC" },
-MP199: { monthly: 185, dapLabel: "Check ECC" }
+MP99: { monthly: 200, dapLabel: "Check ECC" },
+MP109: { monthly: 200, dapLabel: "Check ECC" },
+MP139: { monthly: 190, dapLabel: "Check ECC" },
+MP169: { monthly: 180, dapLabel: "Check ECC" },
+MP199: { monthly: 160, dapLabel: "Check ECC" }
 },
 zero36: {
 MP48: { monthly: 166, dapLabel: "NA" },
 MP69: { monthly: "NA", dapLabel: "Check ECC" },
 MP89: { monthly: "NA", dapLabel: "Check ECC" },
-MP99: { monthly: 155, dapLabel: "Check ECC" },
-MP109: { monthly: 155, dapLabel: "Check ECC" },
-MP139: { monthly: 145, dapLabel: "Check ECC" },
-MP169: { monthly: 135, dapLabel: "Check ECC" },
-MP199: { monthly: 115, dapLabel: "Check ECC" }
+MP99: { monthly: 140, dapLabel: "Check ECC" },
+MP109: { monthly: 140, dapLabel: "Check ECC" },
+MP139: { monthly: 130, dapLabel: "Check ECC" },
+MP169: { monthly: 120, dapLabel: "Check ECC" },
+MP199: { monthly: 100, dapLabel: "Check ECC" }
 }
 }
 }
@@ -2910,6 +2937,58 @@ MP199: { monthly: 20, dapLabel: "Check ECC" }
 ]
 },
 {
+model: "Realme 16 Pro+ 5G",
+aliases: ["realme", "16proplus"],
+storages: [
+{
+storage: "Default",
+rrp: 2699,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 1399, dap: 300, totalUpfront: 1699 },
+MP139: { devicePrice: 1099, dap: 600, totalUpfront: 1699 },
+MP169: { devicePrice: 699, dap: 1000, totalUpfront: 1699 },
+MP199: { devicePrice: 99, dap: 1600, totalUpfront: 1699 }
+},
+upfront36: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 999, dap: 700, totalUpfront: 1699 },
+MP109: { devicePrice: 999, dap: 700, totalUpfront: 1699 },
+MP139: { devicePrice: 299, dap: 1400, totalUpfront: 1699 },
+MP169: { devicePrice: 0, dap: 1700, totalUpfront: 1700 },
+MP199: { devicePrice: 0, dap: 1700, totalUpfront: 1700 }
+},
+zero24: {
+MP48: { monthly: 112, dapLabel: "NA" },
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 100, dapLabel: "Check ECC" },
+MP109: { monthly: 100, dapLabel: "Check ECC" },
+MP139: { monthly: 90, dapLabel: "Check ECC" },
+MP169: { monthly: 80, dapLabel: "Check ECC" },
+MP199: { monthly: 60, dapLabel: "Check ECC" }
+},
+zero36: {
+MP48: { monthly: 74, dapLabel: "NA" },
+MP69: { monthly: "NA", dapLabel: "Check ECC" },
+MP89: { monthly: "NA", dapLabel: "Check ECC" },
+MP99: { monthly: 65, dapLabel: "Check ECC" },
+MP109: { monthly: 65, dapLabel: "Check ECC" },
+MP139: { monthly: 60, dapLabel: "Check ECC" },
+MP169: { monthly: 50, dapLabel: "Check ECC" },
+MP199: { monthly: 35, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
 model: "Realme C100 5G",
 aliases: ["realme", "c100"],
 storages: [
@@ -3010,17 +3089,37 @@ model: "Samsung Galaxy A07 5G",
 aliases: ["samsung", "a07", "a075g"],
 storages: [{
 storage: "8+256GB",
-rrp: 949,
+rrp: 1029,
 regions: {
 ECEM: {
 upfront: {
 MP69: { devicePrice: 0, dap: 200, totalUpfront: 200 },
-MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP109: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: 0, dap: 200, totalUpfront: 200 },
+MP99: { devicePrice: 0, dap: 200, totalUpfront: 200 },
+MP109: { devicePrice: 0, dap: 200, totalUpfront: 200 },
 MP139: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
 MP169: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
 MP199: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" }
+},
+zero24: {
+MP48: { monthly: 42, dapLabel: "NA" },
+MP69: { monthly: 35, dapLabel: "Check ECC" },
+MP89: { monthly: 35, dapLabel: "Check ECC" },
+MP99: { monthly: 25, dapLabel: "Check ECC" },
+MP109: { monthly: 25, dapLabel: "Check ECC" },
+MP139: { monthly: 15, dapLabel: "Check ECC" },
+MP169: { monthly: 5, dapLabel: "Check ECC" },
+MP199: { monthly: 0, dapLabel: "Check ECC" }
+},
+zero36: {
+MP48: { monthly: 28, dapLabel: "NA" },
+MP69: { monthly: 25, dapLabel: "Check ECC" },
+MP89: { monthly: 25, dapLabel: "Check ECC" },
+MP99: { monthly: 20, dapLabel: "Check ECC" },
+MP109: { monthly: 20, dapLabel: "Check ECC" },
+MP139: { monthly: 10, dapLabel: "Check ECC" },
+MP169: { monthly: 0, dapLabel: "Check ECC" },
+MP199: { monthly: 0, dapLabel: "Check ECC" }
 }
 }
 }
@@ -3125,11 +3224,20 @@ ECEM: {
 upfront: {
 MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
 MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP99: { devicePrice: 1199, dap: 240, totalUpfront: 1439 },
-MP109: { devicePrice: 1199, dap: 240, totalUpfront: 1439 },
-MP139: { devicePrice: 699, dap: 740, totalUpfront: 1439 },
-MP169: { devicePrice: 199, dap: 1240, totalUpfront: 1439 },
-MP199: { devicePrice: 0, dap: 1440, totalUpfront: 1440 }
+MP99: { devicePrice: 1599, dap: 240, totalUpfront: 1839 },
+MP109: { devicePrice: 1599, dap: 240, totalUpfront: 1839 },
+MP139: { devicePrice: 1099, dap: 740, totalUpfront: 1839 },
+MP169: { devicePrice: 699, dap: 1140, totalUpfront: 1839 },
+MP199: { devicePrice: 199, dap: 1640, totalUpfront: 1839 }
+},
+upfront36: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 1199, dap: 640, totalUpfront: 1839 },
+MP109: { devicePrice: 1199, dap: 640, totalUpfront: 1839 },
+MP139: { devicePrice: 499, dap: 1340, totalUpfront: 1839 },
+MP169: { devicePrice: 0, dap: 1840, totalUpfront: 1840 },
+MP199: { devicePrice: 0, dap: 1840, totalUpfront: 1840 }
 },
 zero24: {
 MP48: { monthly: 129, dapLabel: "NA" },
@@ -3331,35 +3439,35 @@ aliases: ["samsung", "tabs10lite"],
 storages: [
 {
 storage: "Default",
-rrp: 1799,
+rrp: 1949,
 regions: {
 ECEM: {
 upfront: {
 MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
 MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP99: { devicePrice: 699, dap: 360, totalUpfront: 1059 },
-MP109: { devicePrice: 699, dap: 360, totalUpfront: 1059 },
-MP139: { devicePrice: 399, dap: 660, totalUpfront: 1059 },
+MP99: { devicePrice: 799, dap: 240, totalUpfront: 1039 },
+MP109: { devicePrice: 799, dap: 240, totalUpfront: 1039 },
+MP139: { devicePrice: 399, dap: 640, totalUpfront: 1039 },
 MP169: { devicePrice: 0, dap: 1040, totalUpfront: 1040 },
 MP199: { devicePrice: 0, dap: 1040, totalUpfront: 1040 }
 },
 zero24: {
-MP48: { monthly: 74, dapLabel: "NA" },
-MP69: { monthly: 70, dapLabel: "Check ECC" },
-MP89: { monthly: 70, dapLabel: "Check ECC" },
-MP99: { monthly: 65, dapLabel: "Check ECC" },
-MP109: { monthly: 65, dapLabel: "Check ECC" },
+MP48: { monthly: 81, dapLabel: "NA" },
+MP69: { monthly: 75, dapLabel: "Check ECC" },
+MP89: { monthly: 75, dapLabel: "Check ECC" },
+MP99: { monthly: 70, dapLabel: "Check ECC" },
+MP109: { monthly: 70, dapLabel: "Check ECC" },
 MP139: { monthly: 60, dapLabel: "Check ECC" },
-MP169: { monthly: 50, dapLabel: "Check ECC" },
+MP169: { monthly: 45, dapLabel: "Check ECC" },
 MP199: { monthly: 30, dapLabel: "Check ECC" }
 },
 zero36: {
-MP48: { monthly: 49, dapLabel: "NA" },
-MP69: { monthly: 45, dapLabel: "Check ECC" },
-MP89: { monthly: 45, dapLabel: "Check ECC" },
-MP99: { monthly: 40, dapLabel: "Check ECC" },
-MP109: { monthly: 40, dapLabel: "Check ECC" },
-MP139: { monthly: 35, dapLabel: "Check ECC" },
+MP48: { monthly: 54, dapLabel: "NA" },
+MP69: { monthly: 50, dapLabel: "Check ECC" },
+MP89: { monthly: 50, dapLabel: "Check ECC" },
+MP99: { monthly: 45, dapLabel: "Check ECC" },
+MP109: { monthly: 45, dapLabel: "Check ECC" },
+MP139: { monthly: 40, dapLabel: "Check ECC" },
 MP169: { monthly: 30, dapLabel: "Check ECC" },
 MP199: { monthly: 15, dapLabel: "Check ECC" }
 }
@@ -3381,30 +3489,30 @@ upfront: {
 MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
 MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
 MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP109: { devicePrice: 3299, dap: 0, totalUpfront: 3299 },
-MP139: { devicePrice: 3099, dap: 180, totalUpfront: 3279 },
-MP169: { devicePrice: 2799, dap: 480, totalUpfront: 3279 },
-MP199: { devicePrice: 2599, dap: 680, totalUpfront: 3279 }
+MP109: { devicePrice: 3599, dap: 0, totalUpfront: 3599 },
+MP139: { devicePrice: 3399, dap: 120, totalUpfront: 3519 },
+MP169: { devicePrice: 3099, dap: 420, totalUpfront: 3519 },
+MP199: { devicePrice: 2899, dap: 620, totalUpfront: 3519 }
 },
 zero24: {
-MP48: { monthly: "NA", dapLabel: "NA" },
+MP48: { monthly: 183, dapLabel: "NA" },
 MP69: { monthly: "NA", dapLabel: "Check ECC" },
 MP89: { monthly: "NA", dapLabel: "Check ECC" },
-MP99: { monthly: "NA", dapLabel: "Check ECC" },
-MP109: { monthly: "NA", dapLabel: "Check ECC" },
-MP139: { monthly: "NA", dapLabel: "Check ECC" },
-MP169: { monthly: "NA", dapLabel: "Check ECC" },
-MP199: { monthly: "NA", dapLabel: "Check ECC" }
+MP99: { monthly: 170, dapLabel: "Check ECC" },
+MP109: { monthly: 170, dapLabel: "Check ECC" },
+MP139: { monthly: 160, dapLabel: "Check ECC" },
+MP169: { monthly: 150, dapLabel: "Check ECC" },
+MP199: { monthly: 130, dapLabel: "Check ECC" }
 },
 zero36: {
 MP48: { monthly: 122, dapLabel: "NA" },
 MP69: { monthly: "NA", dapLabel: "Check ECC" },
 MP89: { monthly: "NA", dapLabel: "Check ECC" },
-MP99: { monthly: 105, dapLabel: "Check ECC" },
-MP109: { monthly: 105, dapLabel: "Check ECC" },
-MP139: { monthly: 100, dapLabel: "Check ECC" },
-MP169: { monthly: 90, dapLabel: "Check ECC" },
-MP199: { monthly: 70, dapLabel: "Check ECC" }
+MP99: { monthly: 115, dapLabel: "Check ECC" },
+MP109: { monthly: 115, dapLabel: "Check ECC" },
+MP139: { monthly: 105, dapLabel: "Check ECC" },
+MP169: { monthly: 95, dapLabel: "Check ECC" },
+MP199: { monthly: 80, dapLabel: "Check ECC" }
 }
 }
 }
@@ -3424,30 +3532,30 @@ upfront: {
 MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
 MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
 MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP109: { devicePrice: 5099, dap: 0, totalUpfront: 5099 },
-MP139: { devicePrice: 4899, dap: 120, totalUpfront: 5019 },
-MP169: { devicePrice: 4599, dap: 420, totalUpfront: 5019 },
-MP199: { devicePrice: 4299, dap: 720, totalUpfront: 5019 }
+MP109: { devicePrice: 5499, dap: 0, totalUpfront: 5499 },
+MP139: { devicePrice: 5299, dap: 180, totalUpfront: 5479 },
+MP169: { devicePrice: 4999, dap: 480, totalUpfront: 5479 },
+MP199: { devicePrice: 4799, dap: 680, totalUpfront: 5479 }
 },
 zero24: {
-MP48: { monthly: "NA", dapLabel: "NA" },
+MP48: { monthly: 270, dapLabel: "NA" },
 MP69: { monthly: "NA", dapLabel: "Check ECC" },
 MP89: { monthly: "NA", dapLabel: "Check ECC" },
-MP99: { monthly: "NA", dapLabel: "Check ECC" },
-MP109: { monthly: "NA", dapLabel: "Check ECC" },
-MP139: { monthly: "NA", dapLabel: "Check ECC" },
-MP169: { monthly: "NA", dapLabel: "Check ECC" },
-MP199: { monthly: "NA", dapLabel: "Check ECC" }
+MP99: { monthly: 260, dapLabel: "Check ECC" },
+MP109: { monthly: 260, dapLabel: "Check ECC" },
+MP139: { monthly: 250, dapLabel: "Check ECC" },
+MP169: { monthly: 240, dapLabel: "Check ECC" },
+MP199: { monthly: 220, dapLabel: "Check ECC" }
 },
 zero36: {
 MP48: { monthly: 180, dapLabel: "NA" },
 MP69: { monthly: "NA", dapLabel: "Check ECC" },
 MP89: { monthly: "NA", dapLabel: "Check ECC" },
-MP99: { monthly: 160, dapLabel: "Check ECC" },
-MP109: { monthly: 160, dapLabel: "Check ECC" },
-MP139: { monthly: 155, dapLabel: "Check ECC" },
-MP169: { monthly: 145, dapLabel: "Check ECC" },
-MP199: { monthly: 125, dapLabel: "Check ECC" }
+MP99: { monthly: 175, dapLabel: "Check ECC" },
+MP109: { monthly: 175, dapLabel: "Check ECC" },
+MP139: { monthly: 165, dapLabel: "Check ECC" },
+MP169: { monthly: 155, dapLabel: "Check ECC" },
+MP199: { monthly: 140, dapLabel: "Check ECC" }
 }
 }
 }
@@ -3497,7 +3605,7 @@ MP199: { monthly: 60, dapLabel: "Check ECC" }
 },
 {
 storage: "512GB",
-rrp: 5599,
+rrp: 5799,
 regions: {
 ECEM: {
 upfront: {
@@ -3510,7 +3618,7 @@ MP169: { devicePrice: 3199, dap: 420, totalUpfront: 3619 },
 MP199: { devicePrice: 2899, dap: 720, totalUpfront: 3619 }
 },
 zero24: {
-MP48: { monthly: 233, dapLabel: "NA" },
+MP48: { monthly: 241, dapLabel: "NA" },
 MP69: { monthly: 190, dapLabel: "Check ECC" },
 MP89: { monthly: 190, dapLabel: "Check ECC" },
 MP99: { monthly: 180, dapLabel: "Check ECC" },
@@ -3520,7 +3628,7 @@ MP169: { monthly: 155, dapLabel: "Check ECC" },
 MP199: { monthly: 135, dapLabel: "Check ECC" }
 },
 zero36: {
-MP48: { monthly: 155, dapLabel: "NA" },
+MP48: { monthly: 161, dapLabel: "NA" },
 MP69: { monthly: 130, dapLabel: "Check ECC" },
 MP89: { monthly: 130, dapLabel: "Check ECC" },
 MP99: { monthly: 120, dapLabel: "Check ECC" },
@@ -3577,7 +3685,7 @@ MP199: { monthly: 145, dapLabel: "Check ECC" }
 },
 {
 storage: "512GB",
-rrp: 8399,
+rrp: 8599,
 regions: {
 ECEM: {
 upfront: {
@@ -3590,7 +3698,7 @@ MP169: { devicePrice: 5599, dap: 420, totalUpfront: 6019 },
 MP199: { devicePrice: 5299, dap: 720, totalUpfront: 6019 }
 },
 zero24: {
-MP48: { monthly: 349, dapLabel: "NA" },
+MP48: { monthly: 358, dapLabel: "NA" },
 MP69: { monthly: 300, dapLabel: "Check ECC" },
 MP89: { monthly: 300, dapLabel: "Check ECC" },
 MP99: { monthly: 290, dapLabel: "Check ECC" },
@@ -3600,7 +3708,7 @@ MP169: { monthly: 270, dapLabel: "Check ECC" },
 MP199: { monthly: 250, dapLabel: "Check ECC" }
 },
 zero36: {
-MP48: { monthly: 233, dapLabel: "NA" },
+MP48: { monthly: 238, dapLabel: "NA" },
 MP69: { monthly: 205, dapLabel: "Check ECC" },
 MP89: { monthly: 205, dapLabel: "Check ECC" },
 MP99: { monthly: 195, dapLabel: "Check ECC" },
@@ -3614,7 +3722,7 @@ MP199: { monthly: 155, dapLabel: "Check ECC" }
 },
 {
 storage: "1TB",
-rrp: 9899,
+rrp: 10999,
 regions: {
 ECEM: {
 upfront: {
@@ -3622,12 +3730,12 @@ MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
 MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
 MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
 MP109: { devicePrice: 7499, dap: 0, totalUpfront: 7499 },
-MP139: { devicePrice: 7299, dap: 120, totalUpfront: 7419 },
+MP139: { devicePrice: 7199, dap: 240, totalUpfront: 7439 },
 MP169: { devicePrice: 6999, dap: 420, totalUpfront: 7419 },
 MP199: { devicePrice: 6699, dap: 720, totalUpfront: 7419 }
 },
 zero24: {
-MP48: { monthly: 412, dapLabel: "NA" },
+MP48: { monthly: 458, dapLabel: "NA" },
 MP69: { monthly: 365, dapLabel: "Check ECC" },
 MP89: { monthly: 365, dapLabel: "Check ECC" },
 MP99: { monthly: 355, dapLabel: "Check ECC" },
@@ -3637,7 +3745,7 @@ MP169: { monthly: 335, dapLabel: "Check ECC" },
 MP199: { monthly: 310, dapLabel: "Check ECC" }
 },
 zero36: {
-MP48: { monthly: 274, dapLabel: "NA" },
+MP48: { monthly: 305, dapLabel: "NA" },
 MP69: { monthly: 250, dapLabel: "Check ECC" },
 MP89: { monthly: 250, dapLabel: "Check ECC" },
 MP99: { monthly: 240, dapLabel: "Check ECC" },
@@ -3922,9 +4030,18 @@ MP139: { devicePrice: 1799, dap: 1400, totalUpfront: 3199 },
 MP169: { devicePrice: 1399, dap: 2100, totalUpfront: 3499 },
 MP199: { devicePrice: 999, dap: 2600, totalUpfront: 3599 }
 },
+upfront36: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 1899, dap: 720, totalUpfront: 2619 },
+MP109: { devicePrice: 1899, dap: 720, totalUpfront: 2619 },
+MP139: { devicePrice: 1199, dap: 1400, totalUpfront: 2599 },
+MP169: { devicePrice: 499, dap: 2100, totalUpfront: 2599 },
+MP199: { devicePrice: 0, dap: 2600, totalUpfront: 2600 }
+},
 zero24: {
 MP48: { monthly: 162, dapLabel: "NA" },
-MP69: { monthly: 162, dapLabel: "Check ECC" },
+MP69: { monthly: "NA", dapLabel: "NA" },
 MP89: { monthly: "NA", dapLabel: "NA" },
 MP99: { monthly: 135, dapLabel: "Check ECC" },
 MP109: { monthly: 135, dapLabel: "Check ECC" },
@@ -3934,7 +4051,7 @@ MP199: { monthly: 90, dapLabel: "Check ECC" }
 },
 zero36: {
 MP48: { monthly: 108, dapLabel: "NA" },
-MP69: { monthly: 108, dapLabel: "Check ECC" },
+MP69: { monthly: "NA", dapLabel: "NA" },
 MP89: { monthly: "NA", dapLabel: "NA" },
 MP99: { monthly: 90, dapLabel: "Check ECC" },
 MP109: { monthly: 90, dapLabel: "Check ECC" },
@@ -3967,7 +4084,7 @@ MP199: { devicePrice: 2399, dap: 720, totalUpfront: 3119 }
 },
 zero24: {
 MP48: { monthly: 195, dapLabel: "NA" },
-MP69: { monthly: 195, dapLabel: "Check ECC" },
+MP69: { monthly: "NA", dapLabel: "NA" },
 MP89: { monthly: "NA", dapLabel: "NA" },
 MP99: { monthly: 155, dapLabel: "Check ECC" },
 MP109: { monthly: 155, dapLabel: "Check ECC" },
@@ -3977,7 +4094,7 @@ MP199: { monthly: 110, dapLabel: "Check ECC" }
 },
 zero36: {
 MP48: { monthly: 130, dapLabel: "NA" },
-MP69: { monthly: 130, dapLabel: "Check ECC" },
+MP69: { monthly: "NA", dapLabel: "NA" },
 MP89: { monthly: "NA", dapLabel: "NA" },
 MP99: { monthly: 105, dapLabel: "Check ECC" },
 MP109: { monthly: 105, dapLabel: "Check ECC" },
