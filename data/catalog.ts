@@ -3270,6 +3270,58 @@ MP199: { monthly: 15, dapLabel: "Check ECC" }
 ]
 },
 {
+model: "Galaxy A57 5G",
+aliases: ["samsung", "a57"],
+storages: [
+{
+storage: "Default",
+rrp: 2699,
+regions: {
+ECEM: {
+upfront: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP109: { devicePrice: 1299, dap: 300, totalUpfront: 1599 },
+MP139: { devicePrice: 999, dap: 600, totalUpfront: 1599 },
+MP169: { devicePrice: 599, dap: 1000, totalUpfront: 1599 },
+MP199: { devicePrice: 0, dap: 1600, totalUpfront: 1600 }
+},
+upfront36: {
+MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+MP99: { devicePrice: 899, dap: 700, totalUpfront: 1599 },
+MP109: { devicePrice: 899, dap: 700, totalUpfront: 1599 },
+MP139: { devicePrice: 199, dap: 1100, totalUpfront: 1299 },
+MP169: { devicePrice: 0, dap: 1600, totalUpfront: 1600 },
+MP199: { devicePrice: 0, dap: 1600, totalUpfront: 1600 }
+},
+zero24: {
+MP48: { monthly: 112, dapLabel: "NA" },
+MP69: { monthly: "NA", dapLabel: "NA" },
+MP89: { monthly: "NA", dapLabel: "NA" },
+MP99: { monthly: 95, dapLabel: "Check ECC" },
+MP109: { monthly: 95, dapLabel: "Check ECC" },
+MP139: { monthly: 85, dapLabel: "Check ECC" },
+MP169: { monthly: 75, dapLabel: "Check ECC" },
+MP199: { monthly: 55, dapLabel: "Check ECC" }
+},
+zero36: {
+MP48: { monthly: 74, dapLabel: "NA" },
+MP69: { monthly: "NA", dapLabel: "NA" },
+MP89: { monthly: "NA", dapLabel: "NA" },
+MP99: { monthly: 65, dapLabel: "Check ECC" },
+MP109: { monthly: 65, dapLabel: "Check ECC" },
+MP139: { monthly: 60, dapLabel: "Check ECC" },
+MP169: { monthly: 50, dapLabel: "Check ECC" },
+MP199: { monthly: 35, dapLabel: "Check ECC" }
+}
+}
+}
+}
+]
+},
+{
 model: "Galaxy S25 FE 5G",
 aliases: ["samsung", "s25fe"],
 storages: [
@@ -3822,6 +3874,28 @@ MP199: { monthly: 205, dapLabel: "Check ECC" }
 brand: "Vivo",
 models: [
 {
+model: "Vivo Y39 5G",
+aliases: ["vivo", "y39"],
+storages: [{
+storage: "Default",
+rrp: 999,
+regions: {
+ECEM: {
+zero24: {
+MP48: { monthly: 41, dapLabel: "NA" },
+MP69: { monthly: "NA", dapLabel: "NA" },
+MP89: { monthly: "NA", dapLabel: "NA" },
+MP99: { monthly: "NA", dapLabel: "NA" },
+MP109: { monthly: "NA", dapLabel: "NA" },
+MP139: { monthly: "NA", dapLabel: "NA" },
+MP169: { monthly: "NA", dapLabel: "NA" },
+MP199: { monthly: "NA", dapLabel: "NA" }
+}
+}
+}
+}]
+},
+{
 model: "Vivo Y11 5G",
 aliases: ["vivo", "y11"],
 storages: [{
@@ -3841,6 +3915,28 @@ MP199: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" }
 },
 zero24: {
 MP48: { monthly: 45, dapLabel: "NA" },
+MP69: { monthly: "NA", dapLabel: "NA" },
+MP89: { monthly: "NA", dapLabel: "NA" },
+MP99: { monthly: "NA", dapLabel: "NA" },
+MP109: { monthly: "NA", dapLabel: "NA" },
+MP139: { monthly: "NA", dapLabel: "NA" },
+MP169: { monthly: "NA", dapLabel: "NA" },
+MP199: { monthly: "NA", dapLabel: "NA" }
+}
+}
+}
+}]
+},
+{
+model: "Vivo Y31 5G",
+aliases: ["vivo", "y31"],
+storages: [{
+storage: "Default",
+rrp: 1399,
+regions: {
+ECEM: {
+zero24: {
+MP48: { monthly: 58, dapLabel: "NA" },
 MP69: { monthly: "NA", dapLabel: "NA" },
 MP89: { monthly: "NA", dapLabel: "NA" },
 MP99: { monthly: "NA", dapLabel: "NA" },
