@@ -529,7 +529,7 @@ export default function Page() {
       const d = Number(dp);
       const m = Number(mo);
       if (isNaN(d) || isNaN(m)) return null;
-      return `RM${(d + m * months).toLocaleString()} over ${months} months`;
+      return `RM${Math.round(d + m * months).toLocaleString()} over ${months} months`;
     }
     if (selectedTab === "upfront" || selectedTab === "upfront36") {
       // Use devicePrice (not totalUpfront) — DAP is a deposit that comes back
@@ -545,7 +545,7 @@ export default function Page() {
     if (monthly === undefined || monthly === "NA") return null;
     const m = Number(monthly);
     if (isNaN(m)) return null;
-    return `RM${((fee + m) * months).toLocaleString()} over ${months} months`;
+    return `RM${Math.round((fee + m) * months).toLocaleString()} over ${months} months`;
   }, [selectedRow, selectedTab, selectedPlan]);
 
   // ── ECC status for selected row ─────────────────────────────────────────────
@@ -2416,7 +2416,7 @@ export default function Page() {
                       ) : (
                         <>
                           <div className="flex justify-between text-xs"><span className="text-slate-400">Monthly device</span><span className="font-semibold text-white">{formatMoney((row as {monthly?: number|string}).monthly)}</span></div>
-                          <div className="mt-1 flex justify-between text-xs font-semibold"><span className="text-slate-400">Total / month</span><span className="text-[#00D46A]">RM{planFee(selectedPlan) + Number((row as {monthly?: number|string}).monthly)}</span></div>
+                          <div className="mt-1 flex justify-between text-xs font-semibold"><span className="text-slate-400">Total / month</span><span className="text-[#00D46A]">{(()=>{ const m=(row as {monthly?: number|string}).monthly; if(m===undefined||m==='NA')return 'NA'; return `RM${planFee(selectedPlan)+Number(m)}`; })()}</span></div>
                         </>
                       )
                     ) : (
@@ -2507,7 +2507,9 @@ export default function Page() {
             {/* ── Zerolution pricing ── */}
             {(selectedTab === "zero24" || selectedTab === "zero36") && (() => {
               const r = selectedRow as { monthly?: number | string };
+              if (r.monthly === "NA" || r.monthly === undefined) return null;
               const monthly = Number(r.monthly);
+              if (isNaN(monthly)) return null;
               const total = planFee(selectedPlan) + monthly;
               const months = selectedTab === "zero24" ? 24 : 36;
               const isFreeDevice = monthly === 0;
