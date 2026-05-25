@@ -53,8 +53,8 @@ export type CatalogBrand = {
 };
 
 // Pricing source — update this whenever a new GTM is applied
-export const CATALOG_SOURCE = "GTM 7 May 2026";
-export const CATALOG_DATE = "2026-05-07";
+export const CATALOG_SOURCE = "GTM 7 May 2026 + S26 Ultra FOC TV Promo 25 May 2026";
+export const CATALOG_DATE = "2026-05-25";
 
 // Latest updates — shown at top of app so staff stay informed without reading emails
 // Keep most recent first. Update whenever a new GTM/email changes the catalog.
@@ -66,6 +66,12 @@ export type AppUpdate = {
 };
 
 export const LATEST_UPDATES: AppUpdate[] = [
+  {
+    date: "25 May",
+    type: "alert",
+    text: "🎁 FREE 55\" Samsung UHD TV with S26 Ultra on MP139 & above",
+    subtext: "Sign up 25 May – 31 Jul 2026 · TV RRP RM2,899 · Home delivered to billing address · While stocks last",
+  },
   {
     date: "7 May",
     type: "new",
@@ -3251,7 +3257,7 @@ storages: [
 {
 storage: "512GB",
 rrp: 6799,
-      promo: "RM154/mth on MP99 (Zero36). 0% interest. Free DAP from MP109.",
+      promo: "RM154/mth on MP99 (Zero36). 0% interest. Free DAP from MP109. 🎁 FREE 55\" Samsung Crystal UHD TV (RRP RM2,899) with MP139 & above — 25 May to 31 Jul 2026, while stocks last.",
 regions: {
 ECEM: {
 upfront: {
@@ -3289,6 +3295,7 @@ MP199: { monthly: 125, dapLabel: "Check ECC" }
 {
 storage: "1TB",
 rrp: 7999,
+promo: "🎁 FREE 55\" Samsung Crystal UHD TV (RRP RM2,899) with MP139 & above — 25 May to 31 Jul 2026, while stocks last.",
 regions: {
 ECEM: {
 upfront: {
