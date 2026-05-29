@@ -53,8 +53,8 @@ export type CatalogBrand = {
 };
 
 // Pricing source — update this whenever a new GTM is applied
-export const CATALOG_SOURCE = "GTM 7 May 2026";
-export const CATALOG_DATE = "2026-05-07";
+export const CATALOG_SOURCE = "GTM 4 Jun 2026";
+export const CATALOG_DATE = "2026-06-04";
 
 // Latest updates — shown at top of app so staff stay informed without reading emails
 // Keep most recent first. Update whenever a new GTM/email changes the catalog.
@@ -66,6 +66,30 @@ export type AppUpdate = {
 };
 
 export const LATEST_UPDATES: AppUpdate[] = [
+  {
+    date: "4 Jun",
+    type: "new",
+    text: "📱 New on Hotlink HP75: Samsung Galaxy A26 5G",
+    subtext: "RRP RM1,399 · 12M: RM599 upfront · 24M: RM299 + RM120 DAP",
+  },
+  {
+    date: "4 Jun",
+    type: "change",
+    text: "🔄 Honor 600 Lite 5G: RRP up to RM1,499 · HP75 device fee revised",
+    subtext: "12M: RM859 · 24M: RM499 + RM120 DAP",
+  },
+  {
+    date: "4 Jun",
+    type: "change",
+    text: "🔄 Nubia Neo 5 5G: 24M DAP reduced RM180→RM120 on HP75",
+    subtext: "24M: RM299 + RM120 DAP = RM419 upfront",
+  },
+  {
+    date: "4 Jun",
+    type: "change",
+    text: "🔄 Realme C85 4G & Nubia V80 Max 4G: HP75 pricing revised",
+    subtext: "12M device fee reduced · 24M device fee FREE + RM150 DAP",
+  },
   {
     date: "7 May",
     type: "new",
@@ -189,15 +213,15 @@ model: "Honor 600 Lite 5G",
 aliases: ["honor", "honor600lite", "hotlink"],
 storages: [{
 storage: "12+256GB",
-rrp: 1399,
-promo: "DAP reduced eff 9 Apr 2026.",
+rrp: 1499,
+promo: "RRP revised to RM1,499 eff 4 Jun 2026.",
 regions: {
 HOTLINK: {
 hotlink12: {
-HP75: { devicePrice: 699, dap: 0, totalUpfront: 699, monthly: 75 }
+HP75: { devicePrice: 859, dap: 0, totalUpfront: 859, monthly: 75 }
 },
 hotlink24: {
-HP75: { devicePrice: 399, dap: 60, totalUpfront: 459, monthly: 72.50 }
+HP75: { devicePrice: 499, dap: 120, totalUpfront: 619, monthly: 70 }
 }
 }
 }
@@ -213,11 +237,11 @@ regions: {
 HOTLINK: {
 hotlink12: {
 HP65: { devicePrice: 459, dap: 0, totalUpfront: 459, monthly: 65 },
-HP75: { devicePrice: 399, dap: 0, totalUpfront: 399, monthly: 75 }
+HP75: { devicePrice: 329, dap: 0, totalUpfront: 329, monthly: 75 }
 },
 hotlink24: {
 HP65: { devicePrice: 99, dap: 180, totalUpfront: 279, monthly: 57.50 },
-HP75: { devicePrice: 49, dap: 150, totalUpfront: 199, monthly: 68.75 }
+HP75: { devicePrice: 0, dap: 150, totalUpfront: 150, monthly: 68.75 }
 }
 }
 }
@@ -233,11 +257,11 @@ regions: {
 HOTLINK: {
 hotlink12: {
 HP65: { devicePrice: 459, dap: 0, totalUpfront: 459, monthly: 65 },
-HP75: { devicePrice: 399, dap: 0, totalUpfront: 399, monthly: 75 }
+HP75: { devicePrice: 329, dap: 0, totalUpfront: 329, monthly: 75 }
 },
 hotlink24: {
 HP65: { devicePrice: 99, dap: 180, totalUpfront: 279, monthly: 57.50 },
-HP75: { devicePrice: 49, dap: 150, totalUpfront: 199, monthly: 68.75 }
+HP75: { devicePrice: 0, dap: 150, totalUpfront: 150, monthly: 68.75 }
 }
 }
 }
@@ -313,6 +337,24 @@ HP75: { devicePrice: 0, dap: 200, totalUpfront: 200, monthly: 66.67 }
 }]
 },
 {
+model: "Samsung Galaxy A26 5G",
+aliases: ["samsung", "a26", "hotlink"],
+storages: [{
+storage: "8+256GB",
+rrp: 1399,
+regions: {
+HOTLINK: {
+hotlink12: {
+HP75: { devicePrice: 599, dap: 0, totalUpfront: 599, monthly: 75 }
+},
+hotlink24: {
+HP75: { devicePrice: 299, dap: 120, totalUpfront: 419, monthly: 70 }
+}
+}
+}
+}]
+},
+{
 model: "Nubia Neo 5 5G",
 aliases: ["nubia", "neo5", "hotlink"],
 storages: [{
@@ -324,7 +366,7 @@ hotlink12: {
 HP75: { devicePrice: 659, dap: 0, totalUpfront: 659, monthly: 75 }
 },
 hotlink24: {
-HP75: { devicePrice: 299, dap: 180, totalUpfront: 479, monthly: 67.50 }
+HP75: { devicePrice: 299, dap: 120, totalUpfront: 419, monthly: 70 }
 }
 }
 }
@@ -1893,8 +1935,8 @@ aliases: ["honor", "honor600lite"],
 storages: [
 {
 storage: "256GB",
-rrp: 1399,
-      promo: "Price down — RM299 with MP89. Free on MP139.",
+rrp: 1499,
+      promo: "RRP revised to RM1,499 eff 4 Jun 2026.",
 regions: {
 ECEM: {
 upfront: {
