@@ -352,41 +352,41 @@ export default function Page() {
       for (const model of brand.models) {
         for (const storage of model.storages) {
           if (isHotlinkPlan) {
-            // Primary: check HOTLINK for the selected HP plan
             const region = storage.regions.HOTLINK;
-            if (region) {
-              let found = false, contractTerm = "", hotlinkTab: PricingMode = "hotlink12";
-              const t12 = region.hotlink12?.[freeDevicePlan];
-              if (t12 && Number(t12.devicePrice) === 0) { found = true; contractTerm = "12M"; hotlinkTab = "hotlink12"; }
-              const t24 = region.hotlink24?.[freeDevicePlan];
-              if (t24 && Number(t24.devicePrice) === 0) { found = true; contractTerm = contractTerm ? "12M/24M" : "24M"; hotlinkTab = "hotlink24"; }
-              if (found) results.push({ brand: brand.brand, model, storage, isHotlink: true, contractTerm, hotlinkTab });
-            }
-            // Cross-check: also show if free on a Maxis plan
+            if (!region) continue;
+            let found = false, contractTerm = "", hotlinkTab: PricingMode = "hotlink12";
+            const t12 = region.hotlink12?.[freeDevicePlan];
+            if (t12 && Number(t12.devicePrice) === 0) { found = true; contractTerm = "12M"; hotlinkTab = "hotlink12"; }
+            const t24 = region.hotlink24?.[freeDevicePlan];
+            if (t24 && Number(t24.devicePrice) === 0) { found = true; contractTerm = contractTerm ? "12M/24M" : "24M"; hotlinkTab = "hotlink24"; }
+            if (!found) continue;
+            // Only look for cross-plan if this device IS free on the selected HP plan
+            let crossPlanLabel: string | undefined;
             const ecemTable = storage.regions.ECEM?.upfront;
             if (ecemTable) {
               const freeMp = mpPlans.find(p => Number((ecemTable[p] as { devicePrice?: number | string } | undefined)?.devicePrice) === 0);
-              if (freeMp) results.push({ brand: brand.brand, model, storage, isHotlink: false, crossPlanLabel: `Also FREE on ${freeMp} (Maxis)` });
+              if (freeMp) crossPlanLabel = `Also FREE on ${freeMp} (Maxis)`;
             }
+            results.push({ brand: brand.brand, model, storage, isHotlink: true, contractTerm, hotlinkTab, crossPlanLabel });
           } else {
-            // Primary: check ECEM for the selected MP plan
             const table = storage.regions.ECEM?.upfront;
-            if (table) {
-              const row = table[freeDevicePlan];
-              if (row && Number(row.devicePrice) === 0) results.push({ brand: brand.brand, model, storage });
-            }
-            // Cross-check: also show if free on a Hotlink plan
+            if (!table) continue;
+            const row = table[freeDevicePlan];
+            if (!row || Number(row.devicePrice) !== 0) continue;
+            // Only look for cross-plan if this device IS free on the selected MP plan
+            let crossPlanLabel: string | undefined;
             const hlRegion = storage.regions.HOTLINK;
             if (hlRegion) {
               for (const hpPlan of hpPlans) {
-                let found = false, cTerm = "", hTab: PricingMode = "hotlink24";
+                let hpFound = false, cTerm = "";
                 const t12 = hlRegion.hotlink12?.[hpPlan];
-                if (t12 && Number((t12 as { devicePrice?: number | string }).devicePrice) === 0) { found = true; cTerm = "12M"; hTab = "hotlink12"; }
+                if (t12 && Number((t12 as { devicePrice?: number | string }).devicePrice) === 0) { hpFound = true; cTerm = "12M"; }
                 const t24 = hlRegion.hotlink24?.[hpPlan];
-                if (t24 && Number((t24 as { devicePrice?: number | string }).devicePrice) === 0) { found = true; cTerm = cTerm ? "12M/24M" : "24M"; hTab = "hotlink24"; }
-                if (found) { results.push({ brand: brand.brand, model, storage, isHotlink: true, contractTerm: `${hpPlan} ${cTerm}`, hotlinkTab: hTab, crossPlanLabel: `Also FREE on ${hpPlan} (Hotlink)` }); break; }
+                if (t24 && Number((t24 as { devicePrice?: number | string }).devicePrice) === 0) { hpFound = true; cTerm = cTerm ? "12M/24M" : "24M"; }
+                if (hpFound) { crossPlanLabel = `Also FREE on ${hpPlan} ${cTerm} (Hotlink)`; break; }
               }
             }
+            results.push({ brand: brand.brand, model, storage, crossPlanLabel });
           }
         }
       }
@@ -406,7 +406,7 @@ export default function Page() {
       for (const model of brand.models) {
         for (const storage of model.storages) {
           if (isHP) {
-            // Primary: search Hotlink region — check both 12M and 24M, pick lowest device price
+            // Search Hotlink region — check both 12M and 24M, pick lowest device price
             let bestPrice = Infinity, bestTerm = "12M";
             for (const [mode, term] of [["hotlink12", "12M"], ["hotlink24", "24M"]] as const) {
               const row = storage.regions.HOTLINK?.[mode]?.[byPlanSelected];
@@ -416,37 +416,40 @@ export default function Page() {
               const price = Number(dp);
               if (!isNaN(price) && price < bestPrice) { bestPrice = price; bestTerm = term; }
             }
-            if (bestPrice !== Infinity) {
-              results.push({ brand: brand.brand, model, storage, devicePrice: bestPrice, isFree: bestPrice === 0, isHotlinkResult: true, contractTerm: bestTerm });
+            if (bestPrice === Infinity) continue;
+            // Cross-plan: only tag if this device is free on the HP plan AND also free on a Maxis plan
+            let crossPlanLabel: string | undefined;
+            if (bestPrice === 0) {
+              const ecemTable = storage.regions.ECEM?.upfront;
+              if (ecemTable) {
+                const freeMp = mpPlans.find(p => Number((ecemTable[p] as { devicePrice?: number | string } | undefined)?.devicePrice) === 0);
+                if (freeMp) crossPlanLabel = `Also FREE on ${freeMp} (Maxis)`;
+              }
             }
-            // Cross-check: also surface ECEM devices free on any Maxis plan
-            const ecemTable = storage.regions.ECEM?.upfront;
-            if (ecemTable) {
-              const freeMp = mpPlans.find(p => Number((ecemTable[p] as { devicePrice?: number | string } | undefined)?.devicePrice) === 0);
-              if (freeMp) results.push({ brand: brand.brand, model, storage, devicePrice: 0, isFree: true, isHotlinkResult: false, crossPlanLabel: `FREE on ${freeMp} (Maxis)` });
-            }
+            results.push({ brand: brand.brand, model, storage, devicePrice: bestPrice, isFree: bestPrice === 0, isHotlinkResult: true, contractTerm: bestTerm, crossPlanLabel });
           } else {
-            // Primary: check ECEM for the selected MP plan
             const row = storage.regions.ECEM?.upfront?.[byPlanSelected];
-            if (row) {
-              const dp = (row as { devicePrice?: number | string }).devicePrice;
-              if (dp !== undefined && dp !== "NA") {
-                const price = Number(dp);
-                if (!isNaN(price)) results.push({ brand: brand.brand, model, storage, devicePrice: price, isFree: price === 0 });
+            if (!row) continue;
+            const dp = (row as { devicePrice?: number | string }).devicePrice;
+            if (dp === undefined || dp === "NA") continue;
+            const price = Number(dp);
+            if (isNaN(price)) continue;
+            // Cross-plan: only tag if this device is free on the MP plan AND also free on a Hotlink plan
+            let crossPlanLabel: string | undefined;
+            if (price === 0) {
+              const hlRegion = storage.regions.HOTLINK;
+              if (hlRegion) {
+                for (const hpPlan of hpPlans) {
+                  let hpFound = false, cTerm = "";
+                  const t12 = hlRegion.hotlink12?.[hpPlan];
+                  if (t12 && Number((t12 as { devicePrice?: number | string }).devicePrice) === 0) { hpFound = true; cTerm = "12M"; }
+                  const t24 = hlRegion.hotlink24?.[hpPlan];
+                  if (t24 && Number((t24 as { devicePrice?: number | string }).devicePrice) === 0) { hpFound = true; cTerm = cTerm ? "12M/24M" : "24M"; }
+                  if (hpFound) { crossPlanLabel = `Also FREE on ${hpPlan} ${cTerm} (Hotlink)`; break; }
+                }
               }
             }
-            // Cross-check: also surface Hotlink devices free on any HP plan
-            const hlRegion = storage.regions.HOTLINK;
-            if (hlRegion) {
-              for (const hpPlan of hpPlans) {
-                let found = false, cTerm = "";
-                const t12 = hlRegion.hotlink12?.[hpPlan];
-                if (t12 && Number((t12 as { devicePrice?: number | string }).devicePrice) === 0) { found = true; cTerm = "12M"; }
-                const t24 = hlRegion.hotlink24?.[hpPlan];
-                if (t24 && Number((t24 as { devicePrice?: number | string }).devicePrice) === 0) { found = true; cTerm = cTerm ? "12M/24M" : "24M"; }
-                if (found) { results.push({ brand: brand.brand, model, storage, devicePrice: 0, isFree: true, isHotlinkResult: true, contractTerm: cTerm, crossPlanLabel: `FREE on ${hpPlan} (Hotlink)` }); break; }
-              }
-            }
+            results.push({ brand: brand.brand, model, storage, devicePrice: price, isFree: price === 0, crossPlanLabel });
           }
         }
       }
