@@ -1942,14 +1942,6 @@ MP139: { monthly: 15, dapLabel: "Check ECC" },
 MP169: { monthly: 10, dapLabel: "Check ECC" },
 MP199: { monthly: 0, dapLabel: "Check ECC" }
 }
-},
-HOTLINK: {
-hotlink12: {
-HP75: { devicePrice: 459, dap: 0, totalUpfront: 459, monthly: 75 }
-},
-hotlink24: {
-HP75: { devicePrice: 129, dap: 180, totalUpfront: 309, monthly: 67.50 }
-}
 }
 }
 }

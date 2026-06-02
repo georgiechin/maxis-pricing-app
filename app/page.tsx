@@ -357,7 +357,7 @@ export default function Page() {
               if (monthly === undefined || monthly === "NA") continue;
               price = Number(monthly);
             }
-            if (isNaN(price) || price <= 0) continue;
+            if (isNaN(price) || price < 0) continue;
 
             if (price <= max && price < withinPrice) {
               withinPlan = plan;
@@ -835,7 +835,7 @@ export default function Page() {
           isFree ? `📦 Device: FREE 🎉` : `📦 Device: ${moneyPlain(row.devicePrice)}`,
           `💳 DAP: ${moneyPlain(row.dap)} (returned as rebate monthly)`,
           `🧾 Total today: ${moneyPlain(row.totalUpfront)}`,
-          `💰 Monthly: RM${row.monthly}/month (${months}-month contract)`,
+          `💰 Monthly: ${moneyPlain(row.monthly)}/month (${months}-month contract)`,
           promo ? `🎁 ${promo}` : ``,
           ``,
           `⚠️ Subject to stock & verification`,
@@ -847,14 +847,14 @@ export default function Page() {
 
       // aggressive
       const strongest = isFree
-        ? `✅ FREE device — pay only RM${row.dap} deposit today!`
+        ? `✅ FREE device — pay only ${moneyPlain(row.dap)} deposit today!`
         : `📦 Device at ${moneyPlain(row.devicePrice)} only`;
       return [
         `🔥 BEST DEAL — ${deviceName}`,
         ``,
         strongest,
         `📱 Plan: ${selectedPlan} | ${modeLabel}`,
-        `💰 RM${row.monthly}/month · ${months}-month contract`,
+        `💰 ${moneyPlain(row.monthly)}/month · ${months}-month contract`,
         promo ? `🎁 ${promo}` : ``,
         ``,
         `⚡ Fast approval for eligible customers`,
@@ -2503,15 +2503,15 @@ export default function Page() {
             )}
           </section>
 
-          {/* ── Latest Updates banner ──────────────────────────────── */}
+          {/* ── Update History ──────────────────────────────── */}
           {(() => {
-            const recentDates = [...new Set(LATEST_UPDATES.map((u) => u.date))].slice(0, 2);
+            const recentDates = [...new Set(LATEST_UPDATES.map((u) => u.date))].slice(0, 3);
             const visibleUpdates = LATEST_UPDATES.filter((u) => recentDates.includes(u.date));
             return (
               <section>
                 <div className="mb-2 flex items-center justify-between">
                   <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-                    What&apos;s New
+                    📋 Update History
                   </div>
                   <span className="rounded-full bg-[#00D46A]/15 px-2 py-0.5 text-[10px] font-semibold text-[#00D46A]">
                     {visibleUpdates.length} updates
@@ -2972,7 +2972,9 @@ function BudgetCard({
   onSelect: () => void;
 }) {
   const priceLabel =
-    budgetTab === "upfront"
+    result.bestMonthly === 0
+      ? "FREE"
+      : budgetTab === "upfront"
       ? `RM${result.bestMonthly} total`
       : `RM${result.bestMonthly}/mo`;
 
