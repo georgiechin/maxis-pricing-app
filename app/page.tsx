@@ -152,7 +152,11 @@ export default function Page() {
   const [selectedBrand, setSelectedBrand] = useState<CatalogBrand["brand"]>(initialBrand.brand);
   const [selectedModel, setSelectedModel] = useState<CatalogModel>(initialModel);
   const [selectedStorage, setSelectedStorage] = useState(initialStorage.storage);
-  const [selectedRegion, setSelectedRegion] = useState<"ECEM" | "HOTLINK">(initialSelection.region);
+  const [selectedRegion, setSelectedRegion] = useState<"ECEM" | "HOTLINK">(() => {
+    if (typeof window === "undefined") return initialSelection.region;
+    const saved = localStorage.getItem("maxis-region") as "ECEM" | "HOTLINK" | null;
+    return saved || initialSelection.region;
+  });
   const [selectedTab, setSelectedTab] = useState<PricingMode>(initialSelection.tab);
   const [selectedPlan, setSelectedPlan] = useState(initialSelection.plan);
   const [toast, setToast] = useState("");
@@ -171,6 +175,7 @@ export default function Page() {
   // Free Device filter state
   const [freeDeviceMode, setFreeDeviceMode] = useState(false);
   const [freeDevicePlan, setFreeDevicePlan] = useState("MP169");
+  const [freeAllPlans, setFreeAllPlans] = useState(false);
 
   // Copy mode
   const [copyMode, setCopyMode] = useState<CopyMode>("recommended");
@@ -261,17 +266,44 @@ export default function Page() {
   };
 
   // ── Search results ──────────────────────────────────────────────────────────
+  function getHint(model: CatalogModel): string {
+    const s = model.storages[0];
+    const ecem = s.regions.ECEM;
+    if (!ecem) {
+      // Hotlink only
+      const hp75_24 = (s.regions.HOTLINK?.hotlink24 as any)?.HP75;
+      if (hp75_24 && Number(hp75_24.devicePrice) === 0) return "FREE HP75 24M";
+      const hp75_12 = (s.regions.HOTLINK?.hotlink12 as any)?.HP75;
+      if (hp75_12 && Number(hp75_12.devicePrice) === 0) return "FREE HP75 12M";
+      return "";
+    }
+    const plans = ["MP69","MP89","MP99","MP109","MP139","MP169","MP199"] as const;
+    for (const p of plans) {
+      const dp = (ecem.upfront?.[p] as {devicePrice?: number|string}|undefined)?.devicePrice;
+      if (dp === 0 || dp === "0") return `🎁 FREE ${p}`;
+    }
+    let min = Infinity, minP = "";
+    for (const p of plans) {
+      const dp = Number((ecem.upfront?.[p] as {devicePrice?: number|string}|undefined)?.devicePrice);
+      if (!isNaN(dp) && dp < min) { min = dp; minP = p; }
+    }
+    if (min < Infinity) return `from RM${min} on ${minP}`;
+    const mp48 = (ecem.zero24 as any)?.MP48?.monthly;
+    if (mp48 && mp48 !== "NA") return `RM${mp48}/mth zero`;
+    return "";
+  }
+
   const searchResults = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
     if (q.length < 2) return [];
-    const results: { brand: string; model: CatalogModel }[] = [];
+    const results: { brand: string; model: CatalogModel; hint: string }[] = [];
     for (const brand of catalog) {
       for (const model of brand.models) {
         if (
           model.model.toLowerCase().includes(q) ||
           (model.aliases && model.aliases.some((a) => a.toLowerCase().includes(q)))
         ) {
-          results.push({ brand: brand.brand, model });
+          results.push({ brand: brand.brand, model, hint: getHint(model) });
           if (results.length >= 8) return results;
         }
       }
@@ -342,51 +374,32 @@ export default function Page() {
   }, [budgetMode, budgetMax, budgetTab]);
 
   // ── Free Device phones ──────────────────────────────────────────────────────
-  const freeDeviceResults = useMemo((): { brand: string; model: CatalogModel; storage: CatalogStorage; isHotlink?: boolean; contractTerm?: string; hotlinkTab?: PricingMode; crossPlanLabel?: string }[] => {
+  const freeDeviceResults = useMemo((): { brand: string; model: CatalogModel; storage: CatalogStorage; isHotlink?: boolean; contractTerm?: string; hotlinkTab?: PricingMode }[] => {
     if (!freeDeviceMode) return [];
-    const results: { brand: string; model: CatalogModel; storage: CatalogStorage; isHotlink?: boolean; contractTerm?: string; hotlinkTab?: PricingMode; crossPlanLabel?: string }[] = [];
+    const results: { brand: string; model: CatalogModel; storage: CatalogStorage; isHotlink?: boolean; contractTerm?: string; hotlinkTab?: PricingMode }[] = [];
     const isHotlinkPlan = freeDevicePlan.startsWith("HP");
-    const mpPlans = ["MP69","MP89","MP99","MP109","MP139","MP169","MP199"] as const;
-    const hpPlans = ["HP75","HP65","HP45"] as const;
     for (const brand of catalog) {
       for (const model of brand.models) {
         for (const storage of model.storages) {
           if (isHotlinkPlan) {
+            // Search both hotlink12 and hotlink24 for free devices
             const region = storage.regions.HOTLINK;
             if (!region) continue;
-            let found = false, contractTerm = "", hotlinkTab: PricingMode = "hotlink12";
+            let found = false;
+            let contractTerm = "";
+            let hotlinkTab: PricingMode = "hotlink12";
             const t12 = region.hotlink12?.[freeDevicePlan];
             if (t12 && Number(t12.devicePrice) === 0) { found = true; contractTerm = "12M"; hotlinkTab = "hotlink12"; }
             const t24 = region.hotlink24?.[freeDevicePlan];
             if (t24 && Number(t24.devicePrice) === 0) { found = true; contractTerm = contractTerm ? "12M/24M" : "24M"; hotlinkTab = "hotlink24"; }
-            if (!found) continue;
-            // Only look for cross-plan if this device IS free on the selected HP plan
-            let crossPlanLabel: string | undefined;
-            const ecemTable = storage.regions.ECEM?.upfront;
-            if (ecemTable) {
-              const freeMp = mpPlans.find(p => Number((ecemTable[p] as { devicePrice?: number | string } | undefined)?.devicePrice) === 0);
-              if (freeMp) crossPlanLabel = `Also FREE on ${freeMp} (Maxis)`;
-            }
-            results.push({ brand: brand.brand, model, storage, isHotlink: true, contractTerm, hotlinkTab, crossPlanLabel });
+            if (found) results.push({ brand: brand.brand, model, storage, isHotlink: true, contractTerm, hotlinkTab });
           } else {
             const table = storage.regions.ECEM?.upfront;
             if (!table) continue;
             const row = table[freeDevicePlan];
-            if (!row || Number(row.devicePrice) !== 0) continue;
-            // Only look for cross-plan if this device IS free on the selected MP plan
-            let crossPlanLabel: string | undefined;
-            const hlRegion = storage.regions.HOTLINK;
-            if (hlRegion) {
-              for (const hpPlan of hpPlans) {
-                let hpFound = false, cTerm = "";
-                const t12 = hlRegion.hotlink12?.[hpPlan];
-                if (t12 && Number((t12 as { devicePrice?: number | string }).devicePrice) === 0) { hpFound = true; cTerm = "12M"; }
-                const t24 = hlRegion.hotlink24?.[hpPlan];
-                if (t24 && Number((t24 as { devicePrice?: number | string }).devicePrice) === 0) { hpFound = true; cTerm = cTerm ? "12M/24M" : "24M"; }
-                if (hpFound) { crossPlanLabel = `Also FREE on ${hpPlan} ${cTerm} (Hotlink)`; break; }
-              }
+            if (row && Number(row.devicePrice) === 0) {
+              results.push({ brand: brand.brand, model, storage });
             }
-            results.push({ brand: brand.brand, model, storage, crossPlanLabel });
           }
         }
       }
@@ -394,20 +407,53 @@ export default function Page() {
     return results;
   }, [freeDeviceMode, freeDevicePlan]);
 
+  // ── All free results (any plan) ────────────────────────────────────────────
+  const allFreeResults = useMemo(() => {
+    if (!freeDeviceMode || !freeAllPlans) return [];
+    const mpPlans = ["MP69","MP89","MP99","MP109","MP139","MP169","MP199"] as const;
+    const hpPlans = ["HP75","HP65","HP45"] as const;
+    const seen = new Set<string>();
+    const results: { brand: string; model: CatalogModel; storage: CatalogStorage; planLabel: string; isHotlink: boolean }[] = [];
+    for (const brand of catalog) {
+      for (const model of brand.models) {
+        for (const storage of model.storages) {
+          const key = `${brand.brand}-${model.model}-${storage.storage}`;
+          if (seen.has(key)) continue;
+          // ECEM
+          for (const plan of mpPlans) {
+            const dp = (storage.regions.ECEM?.upfront?.[plan] as {devicePrice?: number|string}|undefined)?.devicePrice;
+            if (dp === 0 || dp === "0") { seen.add(key); results.push({ brand: brand.brand, model, storage, planLabel: plan, isHotlink: false }); break; }
+          }
+          if (seen.has(key)) continue;
+          // Hotlink
+          for (const hp of hpPlans) {
+            const t24 = (storage.regions.HOTLINK?.hotlink24 as any)?.[hp];
+            const t12 = (storage.regions.HOTLINK?.hotlink12 as any)?.[hp];
+            if ((t24 && Number(t24.devicePrice) === 0) || (t12 && Number(t12.devicePrice) === 0)) {
+              seen.add(key);
+              results.push({ brand: brand.brand, model, storage, planLabel: hp, isHotlink: true });
+              break;
+            }
+          }
+        }
+      }
+    }
+    return results;
+  }, [freeDeviceMode, freeAllPlans]);
+
   // ── By Plan results ────────────────────────────────────────────────────────
-  type ByPlanResult = { brand: string; model: CatalogModel; storage: CatalogStorage; devicePrice: number; isFree: boolean; isHotlinkResult?: boolean; contractTerm?: string; crossPlanLabel?: string };
+  type ByPlanResult = { brand: string; model: CatalogModel; storage: CatalogStorage; devicePrice: number; isFree: boolean; isHotlinkResult?: boolean; contractTerm?: string };
   const byPlanResults = useMemo((): ByPlanResult[] => {
     if (!byPlanMode) return [];
     const isHP = byPlanSelected.startsWith("HP");
     const results: ByPlanResult[] = [];
-    const mpPlans = ["MP69","MP89","MP99","MP109","MP139","MP169","MP199"] as const;
-    const hpPlans = ["HP75","HP65","HP45"] as const;
     for (const brand of catalog) {
       for (const model of brand.models) {
         for (const storage of model.storages) {
           if (isHP) {
             // Search Hotlink region — check both 12M and 24M, pick lowest device price
-            let bestPrice = Infinity, bestTerm = "12M";
+            let bestPrice = Infinity;
+            let bestTerm = "12M";
             for (const [mode, term] of [["hotlink12", "12M"], ["hotlink24", "24M"]] as const) {
               const row = storage.regions.HOTLINK?.[mode]?.[byPlanSelected];
               if (!row) continue;
@@ -416,17 +462,9 @@ export default function Page() {
               const price = Number(dp);
               if (!isNaN(price) && price < bestPrice) { bestPrice = price; bestTerm = term; }
             }
-            if (bestPrice === Infinity) continue;
-            // Cross-plan: only tag if this device is free on the HP plan AND also free on a Maxis plan
-            let crossPlanLabel: string | undefined;
-            if (bestPrice === 0) {
-              const ecemTable = storage.regions.ECEM?.upfront;
-              if (ecemTable) {
-                const freeMp = mpPlans.find(p => Number((ecemTable[p] as { devicePrice?: number | string } | undefined)?.devicePrice) === 0);
-                if (freeMp) crossPlanLabel = `Also FREE on ${freeMp} (Maxis)`;
-              }
+            if (bestPrice !== Infinity) {
+              results.push({ brand: brand.brand, model, storage, devicePrice: bestPrice, isFree: bestPrice === 0, isHotlinkResult: true, contractTerm: bestTerm });
             }
-            results.push({ brand: brand.brand, model, storage, devicePrice: bestPrice, isFree: bestPrice === 0, isHotlinkResult: true, contractTerm: bestTerm, crossPlanLabel });
           } else {
             const row = storage.regions.ECEM?.upfront?.[byPlanSelected];
             if (!row) continue;
@@ -434,22 +472,7 @@ export default function Page() {
             if (dp === undefined || dp === "NA") continue;
             const price = Number(dp);
             if (isNaN(price)) continue;
-            // Cross-plan: only tag if this device is free on the MP plan AND also free on a Hotlink plan
-            let crossPlanLabel: string | undefined;
-            if (price === 0) {
-              const hlRegion = storage.regions.HOTLINK;
-              if (hlRegion) {
-                for (const hpPlan of hpPlans) {
-                  let hpFound = false, cTerm = "";
-                  const t12 = hlRegion.hotlink12?.[hpPlan];
-                  if (t12 && Number((t12 as { devicePrice?: number | string }).devicePrice) === 0) { hpFound = true; cTerm = "12M"; }
-                  const t24 = hlRegion.hotlink24?.[hpPlan];
-                  if (t24 && Number((t24 as { devicePrice?: number | string }).devicePrice) === 0) { hpFound = true; cTerm = cTerm ? "12M/24M" : "24M"; }
-                  if (hpFound) { crossPlanLabel = `Also FREE on ${hpPlan} ${cTerm} (Hotlink)`; break; }
-                }
-              }
-            }
-            results.push({ brand: brand.brand, model, storage, devicePrice: price, isFree: price === 0, crossPlanLabel });
+            results.push({ brand: brand.brand, model, storage, devicePrice: price, isFree: price === 0 });
           }
         }
       }
@@ -471,11 +494,13 @@ export default function Page() {
             if (dp === undefined || dp === "NA") continue;
             const thisPrice = Number(dp);
             if (isNaN(thisPrice)) continue;
+            const dpZero = (storage.regions.ECEM?.zero24?.[plan] as { monthly?: number | string } | undefined)?.monthly;
+            const zeroIsFree = dpZero === 0 || dpZero === "0";
             const baseDp = (storage.regions.ECEM?.upfront?.[byPlanSelected] as { devicePrice?: number | string } | undefined)?.devicePrice;
             if (baseDp === undefined || baseDp === "NA") {
               newDeviceCount++;
-              if (thisPrice === 0) newFreeCount++;
-            } else if (thisPrice === 0 && Number(baseDp) > 0) {
+              if (thisPrice === 0 || zeroIsFree) newFreeCount++;
+            } else if ((thisPrice === 0 || zeroIsFree) && Number(baseDp) > 0) {
               becomeFreeCount++;
             }
           }
@@ -922,11 +947,39 @@ export default function Page() {
     ].filter((l, i, arr) => !(l === "" && arr[i - 1] === "")).join("\n").trim();
   }, [regionPricing, selectedRow, selectedModel, activeStorage, selectedPlan, selectedTab, copyMode]);
 
+  const bestDeal = useMemo(() => {
+    const ecem = activeStorage.regions.ECEM;
+    if (!ecem) return null;
+    const mpOrder2 = ["MP69","MP89","MP99","MP109","MP139","MP169","MP199"] as const;
+    // 24M upfront free?
+    for (const plan of mpOrder2) {
+      const dp = (ecem.upfront?.[plan] as {devicePrice?: number|string}|undefined)?.devicePrice;
+      if (dp === 0 || dp === "0") return { label: `FREE on ${plan} (24M)`, isFree: true };
+    }
+    // 36M upfront free?
+    for (const plan of mpOrder2) {
+      const dp = (ecem.upfront36?.[plan] as {devicePrice?: number|string}|undefined)?.devicePrice;
+      if (dp === 0 || dp === "0") return { label: `FREE on ${plan} (36M)`, isFree: true };
+    }
+    // Cheapest 24M upfront device price
+    let minPrice = Infinity, minPlan = "";
+    for (const plan of mpOrder2) {
+      const dp = Number((ecem.upfront?.[plan] as {devicePrice?: number|string}|undefined)?.devicePrice);
+      if (!isNaN(dp) && dp < minPrice) { minPrice = dp; minPlan = plan; }
+    }
+    if (minPrice < Infinity) return { label: `from RM${minPrice} on ${minPlan}`, isFree: false };
+    return null;
+  }, [activeStorage]);
+
   const copyQuote = async () => {
     if (!quoteText) return;
     await navigator.clipboard.writeText(quoteText);
     setToast("Copied");
   };
+
+  useEffect(() => {
+    if (typeof window !== "undefined") localStorage.setItem("maxis-region", selectedRegion);
+  }, [selectedRegion]);
 
   useEffect(() => {
     if (!toast) return;
@@ -997,7 +1050,7 @@ export default function Page() {
                     ref={searchDropdownRef}
                     className="absolute right-0 top-full z-50 mt-1 w-72 overflow-hidden rounded-xl border border-white/10 bg-[#1a1e22] shadow-2xl"
                   >
-                    {searchResults.map(({ brand, model }) => (
+                    {searchResults.map(({ brand, model, hint }) => (
                       <button
                         key={`${brand}-${model.model}`}
                         onMouseDown={(e) => {
@@ -1006,7 +1059,10 @@ export default function Page() {
                         }}
                         className="w-full border-b border-white/5 px-4 py-3 text-left transition last:border-b-0 hover:bg-[#262b2f]"
                       >
-                        <div className="text-sm font-medium text-white">{model.model}</div>
+                        <div className="flex items-center gap-2">
+                          <div className="text-sm font-medium text-white">{model.model}</div>
+                          {hint && <span className="ml-auto text-[10px] text-[#00D46A]/70 shrink-0">{hint}</span>}
+                        </div>
                         <div className="mt-0.5 text-xs text-slate-500">
                           {brand} · {model.storages.map((s) => s.storage).join(" / ")}
                         </div>
@@ -1048,7 +1104,7 @@ export default function Page() {
             {/* Mobile dropdown — full width, never off-screen */}
             {searchResults.length > 0 && (
               <div className="absolute left-0 right-0 top-full z-50 mt-1 overflow-hidden rounded-xl border border-white/10 bg-[#1a1e22] shadow-2xl">
-                {searchResults.map(({ brand, model }) => (
+                {searchResults.map(({ brand, model, hint }) => (
                   <button
                     key={`${brand}-${model.model}`}
                     onMouseDown={(e) => {
@@ -1057,7 +1113,10 @@ export default function Page() {
                     }}
                     className="w-full border-b border-white/5 px-4 py-3.5 text-left transition last:border-b-0 active:bg-[#262b2f]"
                   >
-                    <div className="text-sm font-medium text-white">{model.model}</div>
+                    <div className="flex items-center gap-2">
+                      <div className="text-sm font-medium text-white">{model.model}</div>
+                      {hint && <span className="ml-auto text-[10px] text-[#00D46A]/70 shrink-0">{hint}</span>}
+                    </div>
                     <div className="mt-0.5 text-xs text-slate-500">
                       {brand} · {model.storages.map((s) => s.storage).join(" / ")}
                     </div>
@@ -1120,12 +1179,42 @@ export default function Page() {
                 </div>
               </div>
 
+              <button
+                onClick={() => setFreeAllPlans(v => !v)}
+                className={`w-full rounded-xl border py-2 text-[10px] font-semibold transition ${freeAllPlans ? "border-amber-400/50 bg-amber-400/10 text-amber-300" : "border-white/8 text-slate-500 hover:text-white"}`}
+              >
+                {freeAllPlans ? "✕ All plans view" : "⚡ Show ALL free devices (any plan)"}
+              </button>
+
               <div className="text-xs text-slate-500">
-                {freeDeviceResults.length} free device{freeDeviceResults.length !== 1 ? "s" : ""} on {freeDevicePlan}
+                {freeAllPlans
+                  ? `${allFreeResults.length} free devices across all plans`
+                  : `${freeDeviceResults.length} free device${freeDeviceResults.length !== 1 ? "s" : ""} on ${freeDevicePlan}`}
               </div>
 
+              {freeAllPlans ? (
+                <div className="max-h-[calc(100vh-300px)] space-y-2 overflow-y-auto pr-1">
+                  {allFreeResults.map(({ brand, model, storage, planLabel, isHotlink: isHL }, i) => (
+                    <button
+                      key={`all-free-${brand}-${model.model}-${storage.storage}-${i}`}
+                      onClick={() => navigateToDevice(brand, model, storage.storage, isHL ? "hotlink24" : "upfront", planLabel, { mode: "Free Device", plan: planLabel, label: `🎁 FREE on ${planLabel}` })}
+                      className="w-full rounded-xl border border-white/8 bg-[#181c1f] p-3 text-left transition hover:border-white/15 hover:bg-[#1e2225]"
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0">
+                          <div className="truncate text-xs font-semibold text-white">{model.model}</div>
+                          <div className="mt-0.5 text-[10px] text-slate-500">{brand} · {storage.storage}</div>
+                        </div>
+                        <span className={`flex-shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold ${isHL ? "bg-purple-400/15 text-purple-300" : "bg-emerald-400/15 text-emerald-400"}`}>{planLabel}</span>
+                      </div>
+                      {storage.promo && <div className="mt-1 text-[10px] text-amber-400/80">{storage.promo}</div>}
+                    </button>
+                  ))}
+                  {allFreeResults.length === 0 && <div className="rounded-xl border border-white/8 p-4 text-center text-sm text-slate-500">No free devices found</div>}
+                </div>
+              ) : (
               <div className="max-h-[calc(100vh-300px)] space-y-2 overflow-y-auto pr-1">
-                {freeDeviceResults.map(({ brand, model, storage, isHotlink, contractTerm, hotlinkTab, crossPlanLabel }, i) => (
+                {freeDeviceResults.map(({ brand, model, storage, isHotlink, contractTerm, hotlinkTab }, i) => (
                   <button
                     key={`free-${brand}-${model.model}-${storage.storage}-${i}`}
                     onClick={() => navigateToDevice(brand, model, storage.storage, isHotlink ? (hotlinkTab ?? "hotlink24") : "upfront", freeDevicePlan, { mode: "Free Device", plan: freeDevicePlan, label: `🎁 FREE on ${freeDevicePlan}` })}
@@ -1133,11 +1222,8 @@ export default function Page() {
                   >
                     <div className="text-xs font-semibold text-white">{model.model}</div>
                     <div className="mt-0.5 text-[10px] text-slate-500">{brand} · {storage.storage}</div>
-                    {isHotlink && contractTerm && !crossPlanLabel && (
+                    {isHotlink && contractTerm && (
                       <div className="mt-1 text-[10px] text-[#00D46A]/80">{freeDevicePlan} · {contractTerm}</div>
-                    )}
-                    {crossPlanLabel && (
-                      <div className="mt-1 text-[10px] font-medium text-amber-400/90">🎁 {crossPlanLabel}</div>
                     )}
                     {storage.promo && (
                       <div className="mt-1 text-[10px] text-amber-400/80">{storage.promo}</div>
@@ -1150,6 +1236,7 @@ export default function Page() {
                   </div>
                 )}
               </div>
+              )}
             </div>
           ) : byPlanMode ? (
             /* By Plan Filter Mode */
@@ -1230,7 +1317,7 @@ export default function Page() {
               )}
 
               <div className="max-h-[calc(100vh-340px)] space-y-2 overflow-y-auto pr-1">
-                {byPlanResults.map(({ brand, model, storage, devicePrice, isFree, isHotlinkResult, contractTerm, crossPlanLabel }, i) => (
+                {byPlanResults.map(({ brand, model, storage, devicePrice, isFree, isHotlinkResult, contractTerm }, i) => (
                   <button
                     key={`byplan-${brand}-${model.model}-${storage.storage}-${i}`}
                     onClick={() => navigateToDevice(brand, model, storage.storage, isHotlinkResult ? (contractTerm === "24M" ? "hotlink24" : "hotlink12") : "upfront", byPlanSelected, { mode: "By Plan", plan: byPlanSelected, label: `📋 ${byPlanSelected} By Plan` })}
@@ -1240,7 +1327,7 @@ export default function Page() {
                       <div className="min-w-0">
                         <div className="truncate text-xs font-semibold text-white">{model.model}</div>
                         <div className="mt-0.5 text-[10px] text-slate-500">
-                          {brand} · {storage.storage}{isHotlinkResult && contractTerm && !crossPlanLabel ? ` · ${contractTerm}` : ""}
+                          {brand} · {storage.storage}{isHotlinkResult && contractTerm ? ` · ${contractTerm}` : ""}
                         </div>
                       </div>
                       {isFree ? (
@@ -1249,9 +1336,11 @@ export default function Page() {
                         <span className="flex-shrink-0 text-xs font-semibold text-[#00D46A]">RM{devicePrice}</span>
                       )}
                     </div>
-                    {crossPlanLabel && (
-                      <div className="mt-1 text-[10px] font-medium text-amber-400/90">🎁 {crossPlanLabel}</div>
-                    )}
+                    {!isHotlinkResult && (() => {
+                      const z24 = (storage.regions.ECEM?.zero24 as any)?.[byPlanSelected]?.monthly;
+                      if (!z24 || z24 === "NA") return null;
+                      return <div className="mt-1 text-[10px] text-slate-400">Zero24: RM{z24}/mth</div>;
+                    })()}
                     {model.eol && (
                       <div className="mt-1 text-[10px] font-medium text-red-400">⚠️ Stock ending</div>
                     )}
@@ -1754,6 +1843,11 @@ export default function Page() {
               <InfoChip text={`Storage: ${activeStorage.storage}`} />
               <InfoChip text={`RRP: ${formatMoney(activeStorage.rrp)}`} />
               <InfoChip text={`Region: ${isHotlink ? "Hotlink" : "ECEM"}`} />
+              {bestDeal && (
+                <span className={`rounded-full border px-3 py-1.5 text-sm font-bold ${bestDeal.isFree ? "border-emerald-400/40 bg-emerald-400/10 text-emerald-400" : "border-blue-400/30 bg-blue-400/8 text-blue-300"}`}>
+                  {bestDeal.isFree ? "🎁" : "💡"} {bestDeal.label}
+                </span>
+              )}
               {isHotDeal && (
                 <span className="rounded-full border border-red-400/30 bg-red-400/10 px-3 py-1.5 text-sm font-bold text-red-400">
                   🔥 HOT DEAL
