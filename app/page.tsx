@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   catalog,
   CATALOG_SOURCE,
+  LATEST_UPDATES,
   type CatalogBrand,
   type CatalogModel,
   type CatalogStorage,
@@ -166,6 +167,9 @@ export default function Page() {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchDropdownRef = useRef<HTMLDivElement>(null);
   const planSectionRef = useRef<HTMLDivElement>(null);
+
+  // Latest Updates banner state
+  const [expandedUpdateIdx, setExpandedUpdateIdx] = useState<number | null>(null);
 
   // Budget filter state
   const [budgetMode, setBudgetMode] = useState(false);
@@ -1045,12 +1049,12 @@ export default function Page() {
                   onKeyDown={(e) => e.key === "Escape" && setSearchQuery("")}
                   className="w-44 rounded-xl border border-white/10 bg-[#1e2225] px-3 py-2 text-xs text-white placeholder-slate-500 transition focus:border-[#00D46A]/50 focus:outline-none"
                 />
-                {searchResults.length > 0 && (
+                {(searchResults.length > 0 || (searchQuery.trim().length >= 2 && searchResults.length === 0)) && (
                   <div
                     ref={searchDropdownRef}
                     className="absolute right-0 top-full z-50 mt-1 w-72 overflow-hidden rounded-xl border border-white/10 bg-[#1a1e22] shadow-2xl"
                   >
-                    {searchResults.map(({ brand, model, hint }) => (
+                    {searchResults.length > 0 ? searchResults.map(({ brand, model, hint }) => (
                       <button
                         key={`${brand}-${model.model}`}
                         onMouseDown={(e) => {
@@ -1067,7 +1071,18 @@ export default function Page() {
                           {brand} · {model.storages.map((s) => s.storage).join(" / ")}
                         </div>
                       </button>
-                    ))}
+                    )) : (
+                      <div className="px-4 py-4">
+                        <div className="text-sm font-medium text-slate-400">No results found</div>
+                        <div className="mt-1 text-xs text-slate-600">Try: &lsquo;samsung&rsquo;, &lsquo;iPhone 17&rsquo;, &lsquo;free on MP99&rsquo;</div>
+                        <button
+                          onMouseDown={(e) => { e.preventDefault(); setSearchQuery(""); }}
+                          className="mt-2 text-xs font-medium text-[#00D46A] hover:underline"
+                        >
+                          Clear search
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -1077,6 +1092,7 @@ export default function Page() {
               >
                 ↺ Reset
               </button>
+              <a href="/admin" className="text-slate-600 hover:text-slate-400 transition text-sm" title="Admin">⚙</a>
             </div>
           </div>
 
@@ -1102,9 +1118,9 @@ export default function Page() {
               </button>
             )}
             {/* Mobile dropdown — full width, never off-screen */}
-            {searchResults.length > 0 && (
+            {(searchResults.length > 0 || (searchQuery.trim().length >= 2 && searchResults.length === 0)) && (
               <div className="absolute left-0 right-0 top-full z-50 mt-1 overflow-hidden rounded-xl border border-white/10 bg-[#1a1e22] shadow-2xl">
-                {searchResults.map(({ brand, model, hint }) => (
+                {searchResults.length > 0 ? searchResults.map(({ brand, model, hint }) => (
                   <button
                     key={`${brand}-${model.model}`}
                     onMouseDown={(e) => {
@@ -1121,7 +1137,18 @@ export default function Page() {
                       {brand} · {model.storages.map((s) => s.storage).join(" / ")}
                     </div>
                   </button>
-                ))}
+                )) : (
+                  <div className="px-4 py-4">
+                    <div className="text-sm font-medium text-slate-400">No results found</div>
+                    <div className="mt-1 text-xs text-slate-600">Try: &lsquo;samsung&rsquo;, &lsquo;iPhone 17&rsquo;, &lsquo;free on MP99&rsquo;</div>
+                    <button
+                      onMouseDown={(e) => { e.preventDefault(); setSearchQuery(""); }}
+                      className="mt-2 text-xs font-medium text-[#00D46A] hover:underline"
+                    >
+                      Clear search
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -1876,6 +1903,15 @@ export default function Page() {
                   ✕ Clear
                 </button>
               )}
+              <button onClick={() => window.print()}
+                className="rounded-full border border-white/10 bg-[#181c1f] px-3 py-1.5 text-sm font-medium text-slate-400 hover:text-white transition no-print">
+                🖨️ Print
+              </button>
+              <button
+                onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(quoteText)}`, '_blank')}
+                className="rounded-full border border-green-500/30 bg-green-500/10 px-3 py-1.5 text-sm font-medium text-green-400 hover:text-green-300 transition no-print">
+                📲 WhatsApp
+              </button>
             </div>
             {activeStorage.promo && (
               <div className="mt-3 flex items-start gap-2 rounded-xl border border-amber-400/20 bg-amber-400/8 px-3 py-2">
@@ -2030,10 +2066,11 @@ export default function Page() {
 
           {/* ── Expanded plan pricing table ──────────────────────────────── */}
           {pricingExpanded && (
-          <div className="overflow-hidden rounded-2xl border border-white/8 bg-[#111417]">
+          <div className="overflow-x-auto rounded-2xl border border-white/8 bg-[#111417]">
             <div className="flex items-center justify-between border-b border-white/8 px-4 py-3">
               <div className="text-sm font-semibold text-white">③ Plan pricing</div>
-              <div className="text-xs text-slate-500">Tap row to select</div>
+              <div className="text-xs text-slate-500 md:hidden">← scroll →</div>
+              <div className="hidden text-xs text-slate-500 md:block">Tap row to select</div>
             </div>
 
             {regionPricing ? (
@@ -2411,6 +2448,66 @@ export default function Page() {
             )}
           </section>
 
+          {/* ── Latest Updates banner ──────────────────────────────── */}
+          {(() => {
+            const recentDates = [...new Set(LATEST_UPDATES.map((u) => u.date))].slice(0, 2);
+            const visibleUpdates = LATEST_UPDATES.filter((u) => recentDates.includes(u.date));
+            return (
+              <section>
+                <div className="mb-2 flex items-center justify-between">
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                    What&apos;s New
+                  </div>
+                  <span className="rounded-full bg-[#00D46A]/15 px-2 py-0.5 text-[10px] font-semibold text-[#00D46A]">
+                    {visibleUpdates.length} updates
+                  </span>
+                </div>
+                <div className="flex gap-1.5 mb-2">
+                  {recentDates.map((date) => (
+                    <span key={date} className="rounded-full border border-white/10 bg-[#181c1f] px-2 py-0.5 text-[10px] text-slate-400">
+                      {date}
+                    </span>
+                  ))}
+                </div>
+                <div className="space-y-1.5">
+                  {visibleUpdates.map((upd, idx) => {
+                    const isNew = upd.type === "new";
+                    const isExpanded = expandedUpdateIdx === idx;
+                    return (
+                      <button
+                        key={idx}
+                        onClick={() => setExpandedUpdateIdx(isExpanded ? null : idx)}
+                        className={`w-full rounded-xl border text-left transition ${
+                          isNew
+                            ? "border-green-500/20 bg-green-500/6 hover:bg-green-500/10"
+                            : "border-blue-400/20 bg-blue-400/6 hover:bg-blue-400/10"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2 px-3 py-2">
+                          <span className="flex-shrink-0 text-sm">{isNew ? "📱" : "🔄"}</span>
+                          <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide ${
+                            isNew ? "bg-green-500/20 text-green-400" : "bg-blue-400/20 text-blue-300"
+                          }`}>
+                            {isNew ? "new" : "change"}
+                          </span>
+                          <span className="flex-1 truncate text-[11px] text-slate-300">
+                            {upd.text.replace(/^📱\s*New:\s*|^🔄\s*/i, "")}
+                          </span>
+                          <span className="flex-shrink-0 text-[10px] text-slate-600">{isExpanded ? "▲" : "▼"}</span>
+                        </div>
+                        {isExpanded && upd.subtext && (
+                          <div className="border-t border-white/6 px-3 py-2 text-[10px] leading-4 text-slate-400">
+                            {upd.subtext}
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+            );
+          })()}
+
           {/* Value Tip */}
           {valueTip && (
             <section>
@@ -2498,6 +2595,110 @@ export default function Page() {
           </section>
 
         </aside>
+      </div>
+
+      {/* ── Print card (hidden on screen, visible when printing) ─────────── */}
+      <div id="print-card" style={{ position: "absolute", left: "-9999px", top: 0, width: "100%" }} className="bg-white text-black">
+        {selectedRow && regionPricing && (() => {
+          const modeLabel =
+            selectedTab === "upfront" ? "Upfront 24M"
+            : selectedTab === "upfront36" ? "Upfront 36M"
+            : selectedTab === "zero24" ? "Zerolution 24M"
+            : selectedTab === "zero36" ? "Zerolution 36M"
+            : selectedTab === "hotlink12" ? "Hotlink 12M"
+            : "Hotlink 24M";
+          const isUpfrontMode = selectedTab === "upfront" || selectedTab === "upfront36" || selectedTab === "hotlink12" || selectedTab === "hotlink24";
+          const row = selectedRow as { devicePrice?: number | string; dap?: number | string; totalUpfront?: number | string; monthly?: number | string };
+          const isFree = isUpfrontMode && Number(row.devicePrice) === 0;
+          return (
+            <div style={{ fontFamily: "sans-serif", padding: "32px", maxWidth: "480px", margin: "0 auto", border: "2px solid #00D46A", borderRadius: "12px" }}>
+              {/* Header */}
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "20px" }}>
+                <div>
+                  <div style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: "#666", marginBottom: "4px" }}>{selectedBrand}</div>
+                  <div style={{ fontSize: "28px", fontWeight: 800, color: "#111", lineHeight: 1.2 }}>{selectedModel.model}</div>
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <div style={{ fontSize: "13px", fontWeight: 700, color: "#00D46A" }}>Authorized Maxis Partner</div>
+                  <div style={{ fontSize: "11px", color: "#888", marginTop: "2px" }}>GC Store</div>
+                </div>
+              </div>
+
+              {/* Plan + mode */}
+              <div style={{ backgroundColor: "#00D46A", color: "#000", borderRadius: "8px", padding: "10px 14px", marginBottom: "16px", fontWeight: 700, fontSize: "16px" }}>
+                {selectedPlan} &nbsp;·&nbsp; {modeLabel}
+              </div>
+
+              {/* Price breakdown */}
+              <div style={{ border: "1px solid #e5e7eb", borderRadius: "8px", overflow: "hidden", marginBottom: "16px" }}>
+                {isUpfrontMode ? (
+                  <>
+                    <div style={{ display: "flex", justifyContent: "space-between", padding: "10px 14px", borderBottom: "1px solid #f0f0f0" }}>
+                      <span style={{ color: "#555" }}>Device Price</span>
+                      <span style={{ fontWeight: 700, color: isFree ? "#00D46A" : "#111" }}>{isFree ? "FREE 🎉" : formatMoney(row.devicePrice)}</span>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", padding: "10px 14px", borderBottom: "1px solid #f0f0f0" }}>
+                      <span style={{ color: "#555" }}>{isHotlink ? "DAP (deposit)" : "DAP / ECC"}</span>
+                      <span style={{ fontWeight: 700, color: "#111" }}>{formatMoney(row.dap)}</span>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", padding: "10px 14px", backgroundColor: "#f9fafb", borderBottom: "1px solid #f0f0f0" }}>
+                      <span style={{ color: "#333", fontWeight: 600 }}>Total Today</span>
+                      <span style={{ fontWeight: 800, fontSize: "17px", color: "#111" }}>{formatMoney(row.totalUpfront)}</span>
+                    </div>
+                    {(selectedTab === "hotlink12" || selectedTab === "hotlink24") && row.monthly !== undefined && (
+                      <div style={{ display: "flex", justifyContent: "space-between", padding: "10px 14px" }}>
+                        <span style={{ color: "#555" }}>Monthly plan</span>
+                        <span style={{ fontWeight: 700, color: "#111" }}>RM{row.monthly}/mo</span>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <div style={{ display: "flex", justifyContent: "space-between", padding: "10px 14px", borderBottom: "1px solid #f0f0f0" }}>
+                      <span style={{ color: "#555" }}>Monthly device</span>
+                      <span style={{ fontWeight: 700, color: "#111" }}>RM{row.monthly}/mo</span>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", padding: "10px 14px", backgroundColor: "#f9fafb" }}>
+                      <span style={{ color: "#333", fontWeight: 600 }}>Monthly total</span>
+                      <span style={{ fontWeight: 800, fontSize: "17px", color: "#111" }}>RM{Number(row.monthly) + planFee(selectedPlan)}/mo</span>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* RRP + storage */}
+              <div style={{ display: "flex", gap: "12px", marginBottom: "12px" }}>
+                <div style={{ flex: 1, border: "1px solid #e5e7eb", borderRadius: "8px", padding: "8px 12px" }}>
+                  <div style={{ fontSize: "10px", color: "#888", marginBottom: "2px" }}>Storage</div>
+                  <div style={{ fontWeight: 700, color: "#111" }}>{activeStorage.storage}</div>
+                </div>
+                <div style={{ flex: 1, border: "1px solid #e5e7eb", borderRadius: "8px", padding: "8px 12px" }}>
+                  <div style={{ fontSize: "10px", color: "#888", marginBottom: "2px" }}>RRP</div>
+                  <div style={{ fontWeight: 700, color: "#111" }}>{formatMoney(activeStorage.rrp)}</div>
+                </div>
+              </div>
+
+              {/* Promo */}
+              {activeStorage.promo && (
+                <div style={{ border: "1px solid #fbbf24", borderRadius: "8px", padding: "8px 12px", backgroundColor: "#fffbeb", marginBottom: "12px", fontSize: "13px", color: "#92400e" }}>
+                  🔥 {activeStorage.promo}
+                </div>
+              )}
+
+              {/* Footer */}
+              <div style={{ marginTop: "20px", paddingTop: "14px", borderTop: "1px solid #e5e7eb", display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+                <div>
+                  <div style={{ fontWeight: 800, color: "#00D46A", fontSize: "15px" }}>GC Store</div>
+                  <div style={{ fontSize: "11px", color: "#888" }}>Aiman Mall &amp; Emart Batu Kawa</div>
+                </div>
+                <div style={{ fontSize: "10px", color: "#aaa", textAlign: "right" }}>
+                  Prices valid as of {CATALOG_SOURCE}
+                  <br />⚠️ Subject to stock &amp; verification
+                </div>
+              </div>
+            </div>
+          );
+        })()}
       </div>
 
       {/* Mobile sticky bar */}
