@@ -106,3 +106,10 @@ select {
     border-radius: 22px;
   }
 }
+
+@media print {
+  body * { visibility: hidden !important; }
+  #print-card, #print-card * { visibility: visible !important; }
+  #print-card { position: fixed; top: 0; left: 0; width: 100%; padding: 32px; }
+  .no-print { display: none !important; }
+}
