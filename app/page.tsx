@@ -217,6 +217,9 @@ export default function Page() {
   // 5G WiFi mode
   const [wifiMode, setWifiMode] = useState(false);
 
+  // Home / start screen — "What does your customer want?" front door (shown on open)
+  const [homeScreen, setHomeScreen] = useState(true);
+
   // Upsell Advisor
   const [upsellMode, setUpsellMode] = useState(false);
   const [upsellBasePlan, setUpsellBasePlan] = useState("MP99");
@@ -733,6 +736,8 @@ export default function Page() {
     setBrandExpanded(false);
     setModelExpanded(false);
     setPricingExpanded(true);
+    setWifiMode(false);
+    setHomeScreen(false);
   };
 
   const pinToCompare = () => {
@@ -770,6 +775,8 @@ export default function Page() {
     setBrandExpanded(false);
     setModelExpanded(true);
     setPricingExpanded(true);
+    setWifiMode(false);
+    setHomeScreen(false);
   };
 
   const chooseModel = (model: CatalogModel, sourceBrand?: string) => {
@@ -786,6 +793,8 @@ export default function Page() {
     setSearchQuery("");
     setModelExpanded(false);
     setPricingExpanded(true);
+    setWifiMode(false);
+    setHomeScreen(false);
   };
 
   const resetAll = () => {
@@ -810,6 +819,8 @@ export default function Page() {
     setBrandExpanded(true);
     setModelExpanded(true);
     setPricingExpanded(true);
+    setWifiMode(false);
+    setHomeScreen(true);
   };
 
   const quoteText = useMemo(() => {
@@ -1040,9 +1051,13 @@ export default function Page() {
           {/* Row 1: logo + badges (always) */}
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#00D46A] text-sm font-bold text-black">
-                M
-              </div>
+              <button
+                onClick={() => { setFreeDeviceMode(false); setByPlanMode(false); setUpsellMode(false); setBudgetMode(false); setWifiMode(false); setHomeScreen(true); }}
+                title="Home"
+                className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#00D46A] text-sm font-bold text-black transition hover:opacity-90 active:scale-95"
+              >
+                🏠
+              </button>
               <div>
                 <div className="text-sm font-semibold text-white">Device Price Check</div>
                 <div className="flex items-center gap-1.5 text-[10px] text-slate-500">
@@ -1214,7 +1229,7 @@ export default function Page() {
         })()}
 
         {/* ── LEFT SIDEBAR ────────────────────────────────────────────────── */}
-        <aside className="border-b border-white/8 bg-[#111417] p-3 lg:row-start-2 lg:border-b-0 lg:border-r lg:p-4 lg:overflow-y-auto lg:max-h-[calc(100vh-57px)]">
+        <aside className={`border-b border-white/8 bg-[#111417] p-3 lg:row-start-2 lg:border-b-0 lg:border-r lg:p-4 lg:overflow-y-auto lg:max-h-[calc(100vh-57px)] ${homeScreen ? "hidden lg:block" : ""}`}>
           {freeDeviceMode ? (
             /* Free Device Filter Mode */
             <div className="flex flex-col gap-3">
@@ -1734,11 +1749,11 @@ export default function Page() {
                   {/* Filter shortcuts */}
                   <div className="mb-3 grid grid-cols-2 gap-1.5">
                     {[
-                      { label: "🎁 Free Device", onClick: () => { setWifiMode(false); setFreeDeviceMode(true); } },
-                      { label: "📋 By Plan", onClick: () => { setWifiMode(false); setByPlanMode(true); } },
-                      { label: "🔼 Upsell Advisor", onClick: () => { setWifiMode(false); setUpsellMode(true); setExpandedUpsellTier(null); } },
-                      { label: "💰 Budget", onClick: () => { setWifiMode(false); setBudgetMode(true); } },
-                      { label: "📶 5G WiFi", onClick: () => { setFreeDeviceMode(false); setByPlanMode(false); setUpsellMode(false); setBudgetMode(false); setWifiMode(true); } },
+                      { label: "🎁 Free Device", onClick: () => { setHomeScreen(false); setWifiMode(false); setFreeDeviceMode(true); } },
+                      { label: "📋 By Plan", onClick: () => { setHomeScreen(false); setWifiMode(false); setByPlanMode(true); } },
+                      { label: "🔼 Upsell Advisor", onClick: () => { setHomeScreen(false); setWifiMode(false); setUpsellMode(true); setExpandedUpsellTier(null); } },
+                      { label: "💰 Budget", onClick: () => { setHomeScreen(false); setWifiMode(false); setBudgetMode(true); } },
+                      { label: "📶 5G WiFi", onClick: () => { setHomeScreen(false); setFreeDeviceMode(false); setByPlanMode(false); setUpsellMode(false); setBudgetMode(false); setWifiMode(true); } },
                     ].map(({ label, onClick }) => (
                       <button
                         key={label}
@@ -1787,11 +1802,11 @@ export default function Page() {
                   {/* Shortcuts always accessible even when brand is collapsed */}
                   <div className="mt-2 grid grid-cols-2 gap-1.5">
                     {[
-                      { label: "🎁 Free Device", onClick: () => { setWifiMode(false); setFreeDeviceMode(true); } },
-                      { label: "📋 By Plan", onClick: () => { setWifiMode(false); setByPlanMode(true); } },
-                      { label: "🔼 Upsell", onClick: () => { setWifiMode(false); setUpsellMode(true); setExpandedUpsellTier(null); } },
-                      { label: "💰 Budget", onClick: () => { setWifiMode(false); setBudgetMode(true); } },
-                      { label: "📶 5G WiFi", onClick: () => { setFreeDeviceMode(false); setByPlanMode(false); setUpsellMode(false); setBudgetMode(false); setWifiMode(true); } },
+                      { label: "🎁 Free Device", onClick: () => { setHomeScreen(false); setWifiMode(false); setFreeDeviceMode(true); } },
+                      { label: "📋 By Plan", onClick: () => { setHomeScreen(false); setWifiMode(false); setByPlanMode(true); } },
+                      { label: "🔼 Upsell", onClick: () => { setHomeScreen(false); setWifiMode(false); setUpsellMode(true); setExpandedUpsellTier(null); } },
+                      { label: "💰 Budget", onClick: () => { setHomeScreen(false); setWifiMode(false); setBudgetMode(true); } },
+                      { label: "📶 5G WiFi", onClick: () => { setHomeScreen(false); setFreeDeviceMode(false); setByPlanMode(false); setUpsellMode(false); setBudgetMode(false); setWifiMode(true); } },
                     ].map(({ label, onClick }) => (
                       <button
                         key={label}
@@ -1902,7 +1917,41 @@ export default function Page() {
         {/* ── MAIN CONTENT ────────────────────────────────────────────────── */}
         <section className="space-y-4 p-3 pb-32 lg:row-start-2 lg:overflow-y-auto lg:max-h-[calc(100vh-57px)] lg:p-5 lg:pb-5">
 
-          {wifiMode ? (
+          {homeScreen ? (
+            /* ── START SCREEN — "What does your customer want?" ─────────── */
+            <div className="mx-auto max-w-2xl py-2">
+              <div className="mb-1 text-center text-lg font-bold text-white sm:text-2xl">
+                What does your customer want?
+              </div>
+              <div className="mb-5 text-center text-xs text-slate-500">
+                Tap one — {CATALOG_SOURCE}
+              </div>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                {[
+                  { icon: "📱", title: "Show a phone's price", sub: "Customer points at a phone", onClick: () => { setHomeScreen(false); } },
+                  { icon: "🎁", title: "What phone is FREE?", sub: "“What can I get free?”", onClick: () => { setHomeScreen(false); setWifiMode(false); setByPlanMode(false); setUpsellMode(false); setBudgetMode(false); setFreeDeviceMode(true); } },
+                  { icon: "💰", title: "Customer has a budget", sub: "e.g. around RM50/month", onClick: () => { setHomeScreen(false); setWifiMode(false); setFreeDeviceMode(false); setByPlanMode(false); setUpsellMode(false); setBudgetMode(true); } },
+                  { icon: "📋", title: "Customer's on a plan", sub: "Already on MP99 — what phones?", onClick: () => { setHomeScreen(false); setWifiMode(false); setFreeDeviceMode(false); setBudgetMode(false); setUpsellMode(false); setByPlanMode(true); } },
+                  { icon: "📶", title: "Home WiFi", sub: "5G home internet plans", onClick: () => { setHomeScreen(false); setFreeDeviceMode(false); setByPlanMode(false); setUpsellMode(false); setBudgetMode(false); setWifiMode(true); } },
+                ].map(({ icon, title, sub, onClick }) => (
+                  <button
+                    key={title}
+                    onClick={onClick}
+                    className="flex items-center gap-3 rounded-2xl border border-white/8 bg-[#181c1f] p-4 text-left transition hover:border-[#00D46A]/40 hover:bg-[#1e2225] active:scale-[0.98]"
+                  >
+                    <span className="text-2xl">{icon}</span>
+                    <span className="min-w-0">
+                      <span className="block text-sm font-semibold text-white">{title}</span>
+                      <span className="block text-[11px] text-slate-500">{sub}</span>
+                    </span>
+                  </button>
+                ))}
+              </div>
+              <div className="mt-4 text-center text-[10px] text-slate-600">
+                Not sure? Tap “Show a phone’s price” and search the model.
+              </div>
+            </div>
+          ) : wifiMode ? (
             /* ── 5G HOME WIFI MODE ──────────────────────────────────────── */
             <div className="space-y-5">
               {/* Header row */}
@@ -2584,7 +2633,7 @@ export default function Page() {
         </section>
 
         {/* ── RIGHT SIDEBAR ───────────────────────────────────────────────── */}
-        <aside className="space-y-4 border-t border-white/8 bg-[#111417] p-3 pb-28 lg:row-start-2 lg:border-l lg:border-t-0 lg:overflow-y-auto lg:max-h-[calc(100vh-57px)] lg:p-4 lg:pb-4">
+        <aside className={`space-y-4 border-t border-white/8 bg-[#111417] p-3 pb-28 lg:row-start-2 lg:border-l lg:border-t-0 lg:overflow-y-auto lg:max-h-[calc(100vh-57px)] lg:p-4 lg:pb-4 ${homeScreen ? "hidden lg:block" : ""}`}>
           <section>
             <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
               Current Selection
