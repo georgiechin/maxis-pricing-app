@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   catalog,
   CATALOG_SOURCE,
+  CATALOG_DATE,
   LATEST_UPDATES,
   type CatalogBrand,
   type CatalogModel,
@@ -170,6 +171,17 @@ export default function Page() {
 
   // Latest Updates banner state
   const [expandedUpdateIdx, setExpandedUpdateIdx] = useState<number | null>(null);
+
+  // What's New banner — auto-shows when CATALOG_DATE changes, dismissable per GTM
+  const bannerKey = `maxis-banner-${CATALOG_DATE}`;
+  const [bannerVisible, setBannerVisible] = useState(() => {
+    if (typeof window === "undefined") return false;
+    try { return localStorage.getItem(bannerKey) !== "dismissed"; } catch { return true; }
+  });
+  const dismissBanner = () => {
+    setBannerVisible(false);
+    try { localStorage.setItem(bannerKey, "dismissed"); } catch { /* */ }
+  };
 
   // Budget filter state
   const [budgetMode, setBudgetMode] = useState(false);
@@ -1153,6 +1165,49 @@ export default function Page() {
             )}
           </div>
         </header>
+
+        {/* ── WHAT'S NEW BANNER ───────────────────────────────────────────── */}
+        {bannerVisible && (() => {
+          const recentDate = LATEST_UPDATES[0]?.date;
+          const items = LATEST_UPDATES.filter(u => u.date === recentDate);
+          if (!items.length) return null;
+          return (
+            <div className="lg:col-span-3 border-b border-[#00D46A]/20 bg-[#00D46A]/6 px-4 py-3">
+              <div className="flex items-start gap-3">
+                <span className="mt-0.5 text-base flex-shrink-0">🔔</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#00D46A]">
+                      What&apos;s New · {recentDate}
+                    </span>
+                    <span className="rounded-full bg-[#00D46A]/20 px-1.5 py-0.5 text-[9px] font-bold text-[#00D46A]">
+                      {items.length} update{items.length > 1 ? "s" : ""}
+                    </span>
+                  </div>
+                  <div className="space-y-1">
+                    {items.map((item, i) => (
+                      <div key={i} className="flex flex-col gap-0.5">
+                        <p className="text-xs font-medium text-white/90 leading-snug">
+                          {item.text}
+                        </p>
+                        {item.subtext && (
+                          <p className="text-[10px] text-slate-400 leading-snug">{item.subtext}</p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <button
+                  onClick={dismissBanner}
+                  className="flex-shrink-0 text-slate-500 hover:text-white transition text-sm"
+                  title="Dismiss"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+          );
+        })()}
 
         {/* ── LEFT SIDEBAR ────────────────────────────────────────────────── */}
         <aside className="border-b border-white/8 bg-[#111417] p-3 lg:row-start-2 lg:border-b-0 lg:border-r lg:p-4 lg:overflow-y-auto lg:max-h-[calc(100vh-57px)]">
