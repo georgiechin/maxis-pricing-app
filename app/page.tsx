@@ -2503,15 +2503,15 @@ export default function Page() {
             )}
           </section>
 
-          {/* ── Latest Updates banner ──────────────────────────────── */}
+          {/* ── Update History ──────────────────────────────── */}
           {(() => {
-            const recentDates = [...new Set(LATEST_UPDATES.map((u) => u.date))].slice(0, 2);
+            const recentDates = [...new Set(LATEST_UPDATES.map((u) => u.date))].slice(0, 3);
             const visibleUpdates = LATEST_UPDATES.filter((u) => recentDates.includes(u.date));
             return (
               <section>
                 <div className="mb-2 flex items-center justify-between">
                   <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-                    What&apos;s New
+                    📋 Update History
                   </div>
                   <span className="rounded-full bg-[#00D46A]/15 px-2 py-0.5 text-[10px] font-semibold text-[#00D46A]">
                     {visibleUpdates.length} updates
