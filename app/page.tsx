@@ -11,6 +11,7 @@ import {
   type CatalogStorage,
   type PricingMode,
 } from "../data/catalog";
+import { WIFI_PLANS, WIFI_ROUTERS, WIFI_CHANGES, HOMEWIFI_SOURCE } from "../data/homewifi";
 
 const pricingTabs: { key: PricingMode; label: string; short: string }[] = [
   { key: "upfront", label: "Upfront 24M", short: "Up 24M" },
@@ -212,6 +213,9 @@ export default function Page() {
   // By Plan filter
   const [byPlanMode, setByPlanMode] = useState(false);
   const [byPlanSelected, setByPlanSelected] = useState("MP99");
+
+  // 5G WiFi mode
+  const [wifiMode, setWifiMode] = useState(false);
 
   // Upsell Advisor
   const [upsellMode, setUpsellMode] = useState(false);
@@ -1730,10 +1734,11 @@ export default function Page() {
                   {/* Filter shortcuts */}
                   <div className="mb-3 grid grid-cols-2 gap-1.5">
                     {[
-                      { label: "🎁 Free Device", onClick: () => setFreeDeviceMode(true) },
-                      { label: "📋 By Plan", onClick: () => setByPlanMode(true) },
-                      { label: "🔼 Upsell Advisor", onClick: () => { setUpsellMode(true); setExpandedUpsellTier(null); } },
-                      { label: "💰 Budget", onClick: () => setBudgetMode(true) },
+                      { label: "🎁 Free Device", onClick: () => { setWifiMode(false); setFreeDeviceMode(true); } },
+                      { label: "📋 By Plan", onClick: () => { setWifiMode(false); setByPlanMode(true); } },
+                      { label: "🔼 Upsell Advisor", onClick: () => { setWifiMode(false); setUpsellMode(true); setExpandedUpsellTier(null); } },
+                      { label: "💰 Budget", onClick: () => { setWifiMode(false); setBudgetMode(true); } },
+                      { label: "📶 5G WiFi", onClick: () => { setFreeDeviceMode(false); setByPlanMode(false); setUpsellMode(false); setBudgetMode(false); setWifiMode(true); } },
                     ].map(({ label, onClick }) => (
                       <button
                         key={label}
@@ -1782,10 +1787,11 @@ export default function Page() {
                   {/* Shortcuts always accessible even when brand is collapsed */}
                   <div className="mt-2 grid grid-cols-2 gap-1.5">
                     {[
-                      { label: "🎁 Free Device", onClick: () => setFreeDeviceMode(true) },
-                      { label: "📋 By Plan", onClick: () => setByPlanMode(true) },
-                      { label: "🔼 Upsell", onClick: () => { setUpsellMode(true); setExpandedUpsellTier(null); } },
-                      { label: "💰 Budget", onClick: () => setBudgetMode(true) },
+                      { label: "🎁 Free Device", onClick: () => { setWifiMode(false); setFreeDeviceMode(true); } },
+                      { label: "📋 By Plan", onClick: () => { setWifiMode(false); setByPlanMode(true); } },
+                      { label: "🔼 Upsell", onClick: () => { setWifiMode(false); setUpsellMode(true); setExpandedUpsellTier(null); } },
+                      { label: "💰 Budget", onClick: () => { setWifiMode(false); setBudgetMode(true); } },
+                      { label: "📶 5G WiFi", onClick: () => { setFreeDeviceMode(false); setByPlanMode(false); setUpsellMode(false); setBudgetMode(false); setWifiMode(true); } },
                     ].map(({ label, onClick }) => (
                       <button
                         key={label}
@@ -1895,6 +1901,107 @@ export default function Page() {
 
         {/* ── MAIN CONTENT ────────────────────────────────────────────────── */}
         <section className="space-y-4 p-3 pb-32 lg:row-start-2 lg:overflow-y-auto lg:max-h-[calc(100vh-57px)] lg:p-5 lg:pb-5">
+
+          {wifiMode ? (
+            /* ── 5G HOME WIFI MODE ──────────────────────────────────────── */
+            <div className="space-y-5">
+              {/* Header row */}
+              <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-white/8 bg-[#111417] p-5">
+                <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">📶 5G Home WiFi</h1>
+                <span className="rounded-full border border-white/10 bg-[#181c1f] px-2.5 py-1 text-[10px] font-medium text-slate-400">
+                  {HOMEWIFI_SOURCE}
+                </span>
+                <button
+                  onClick={() => setWifiMode(false)}
+                  className="ml-auto rounded-xl border border-white/10 bg-[#1e2225] px-3 py-2 text-xs font-medium text-slate-300 transition hover:text-white"
+                >
+                  ✕ Close
+                </button>
+              </div>
+
+              {/* PLANS */}
+              <div>
+                <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#00D46A]">Plans</div>
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  {WIFI_PLANS.map((p) => (
+                    <div key={p.plan} className="rounded-xl border border-white/8 bg-[#181c1f] p-4">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0">
+                          <div className="text-sm font-semibold text-white">{p.plan}</div>
+                          <div className="mt-0.5 text-[11px] text-slate-500">{p.short}</div>
+                        </div>
+                        <div className="shrink-0 text-right">
+                          <div className="text-xl font-bold text-white">RM{p.monthly}</div>
+                          <div className="text-[10px] text-slate-500">/mth</div>
+                        </div>
+                      </div>
+                      <div className="mt-2 text-xs text-slate-300">{p.data} · {p.speed}</div>
+                      <div className="mt-1.5 text-xs font-medium text-[#00D46A]">{p.rebate}</div>
+                      {p.freeTng && (
+                        <div className="mt-2">
+                          <span className="rounded-full border border-emerald-400/30 bg-emerald-400/10 px-2 py-0.5 text-[10px] font-bold text-emerald-400">FREE TNG</span>
+                        </div>
+                      )}
+                      {p.highlight && (
+                        <div className="mt-2 rounded-lg border border-amber-400/30 bg-amber-400/10 px-2.5 py-1.5 text-[11px] text-amber-300">
+                          {p.highlight}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* ROUTERS */}
+              <div>
+                <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#00D46A]">Routers &amp; Mesh</div>
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  {WIFI_ROUTERS.map((r) => (
+                    <div key={r.name} className="rounded-xl border border-white/8 bg-[#181c1f] p-4">
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        <span className="text-sm font-semibold text-white">{r.name}</span>
+                        {r.isNew && (
+                          <span className="rounded-full border border-[#00D46A]/40 bg-[#00D46A]/10 px-1.5 py-0.5 text-[9px] font-bold text-[#00D46A]">🆕 NEW</span>
+                        )}
+                        {r.isCombo && (
+                          <span className="rounded-full border border-blue-400/30 bg-blue-400/10 px-1.5 py-0.5 text-[9px] font-bold text-blue-300">Combo</span>
+                        )}
+                      </div>
+                      <div className="mt-0.5 text-[11px] text-slate-500">RRP RM{r.rrp}</div>
+                      <div className="mt-2 text-xs text-slate-300">{r.speed} · {r.coverage} · {r.devices}</div>
+                      <div className="mt-2 space-y-1">
+                        {r.free24 ? (
+                          <div className="text-xs font-medium text-[#00D46A]">24M: FREE router · RM{r.dap24} deposit (refundable)</div>
+                        ) : (
+                          <div className="text-xs text-slate-400">24M: RM{r.dap24} deposit</div>
+                        )}
+                        {r.upfront12 !== "NA" ? (
+                          <div className="text-xs text-slate-400">12M: RM{r.upfront12} upfront · RM{r.dap12} deposit</div>
+                        ) : (
+                          <div className="text-xs text-slate-500">12M: not available</div>
+                        )}
+                      </div>
+                      {r.note && <div className="mt-2 text-[11px] text-slate-500">{r.note}</div>}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* CHANGES */}
+              <div className="rounded-xl border border-amber-400/30 bg-amber-400/10 p-4">
+                <div className="mb-2 text-xs font-semibold text-amber-300">📅 Changes eff 11 Jun 2026</div>
+                <ul className="space-y-1">
+                  {WIFI_CHANGES.map((c, i) => (
+                    <li key={i} className="flex gap-2 text-[11px] text-amber-200/90">
+                      <span className="text-amber-400">•</span>
+                      <span>{c}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ) : (
+          <>
 
           {/* Context breadcrumb — shows which mode/plan led to this device */}
           {lastModeContext && (
@@ -2470,6 +2577,9 @@ export default function Page() {
               </div>
             );
           })()}
+
+          </>
+          )}
 
         </section>
 
