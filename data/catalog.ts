@@ -4214,7 +4214,7 @@ MP199: { devicePrice: 0, dap: 480, totalUpfront: 480 }
 },
 zero24: {
 MP48: { monthly: 74, dapLabel: "NA" },
-MP69: { monthly: 74, dapLabel: "Check ECC" },
+MP69: { monthly: 65, dapLabel: "Check ECC" },
 MP89: { monthly: 65, dapLabel: "Check ECC" },
 MP99: { monthly: 55, dapLabel: "Check ECC" },
 MP109: { monthly: 55, dapLabel: "Check ECC" },
@@ -4224,7 +4224,7 @@ MP199: { monthly: 15, dapLabel: "Check ECC" }
 },
 zero36: {
 MP48: { monthly: 49, dapLabel: "NA" },
-MP69: { monthly: 49, dapLabel: "Check ECC" },
+MP69: { monthly: 45, dapLabel: "Check ECC" },
 MP89: { monthly: 45, dapLabel: "Check ECC" },
 MP99: { monthly: 35, dapLabel: "Check ECC" },
 MP109: { monthly: 35, dapLabel: "Check ECC" },
@@ -4481,7 +4481,7 @@ MP199: { devicePrice: 4699, dap: 660, totalUpfront: 5359 }
 },
 zero24: {
 MP48: { monthly: 291, dapLabel: "NA" },
-MP69: { monthly: 291, dapLabel: "Check ECC" },
+MP69: { monthly: "NA", dapLabel: "NA" },
 MP89: { monthly: "NA", dapLabel: "NA" },
 MP99: { monthly: 260, dapLabel: "Check ECC" },
 MP109: { monthly: 260, dapLabel: "Check ECC" },
@@ -4491,7 +4491,7 @@ MP199: { monthly: 215, dapLabel: "Check ECC" }
 },
 zero36: {
 MP48: { monthly: 194, dapLabel: "NA" },
-MP69: { monthly: 194, dapLabel: "Check ECC" },
+MP69: { monthly: "NA", dapLabel: "NA" },
 MP89: { monthly: "NA", dapLabel: "NA" },
 MP99: { monthly: 178, dapLabel: "Check ECC" },
 MP109: { monthly: 178, dapLabel: "Check ECC" },
@@ -4529,7 +4529,7 @@ MP199: { devicePrice: 0, dap: 680, totalUpfront: 680 }
 },
 zero24: {
 MP48: { monthly: 70, dapLabel: "NA" },
-MP69: { monthly: 70, dapLabel: "Check ECC" },
+MP69: { monthly: 60, dapLabel: "Check ECC" },
 MP89: { monthly: 60, dapLabel: "Check ECC" },
 MP99: { monthly: 50, dapLabel: "Check ECC" },
 MP109: { monthly: 50, dapLabel: "Check ECC" },
@@ -4539,7 +4539,7 @@ MP199: { monthly: 10, dapLabel: "Check ECC" }
 },
 zero36: {
 MP48: { monthly: 47, dapLabel: "NA" },
-MP69: { monthly: 47, dapLabel: "Check ECC" },
+MP69: { monthly: 40, dapLabel: "Check ECC" },
 MP89: { monthly: 40, dapLabel: "Check ECC" },
 MP99: { monthly: 35, dapLabel: "Check ECC" },
 MP109: { monthly: 35, dapLabel: "Check ECC" },
@@ -4572,7 +4572,7 @@ MP199: { devicePrice: 0, dap: 1280, totalUpfront: 1280 }
 },
 zero24: {
 MP48: { monthly: 91, dapLabel: "NA" },
-MP69: { monthly: 91, dapLabel: "Check ECC" },
+MP69: { monthly: 80, dapLabel: "Check ECC" },
 MP89: { monthly: 80, dapLabel: "Check ECC" },
 MP99: { monthly: 75, dapLabel: "Check ECC" },
 MP109: { monthly: 75, dapLabel: "Check ECC" },
@@ -4582,7 +4582,7 @@ MP199: { monthly: 35, dapLabel: "Check ECC" }
 },
 zero36: {
 MP48: { monthly: 61, dapLabel: "NA" },
-MP69: { monthly: 61, dapLabel: "Check ECC" },
+MP69: { monthly: 55, dapLabel: "Check ECC" },
 MP89: { monthly: 55, dapLabel: "Check ECC" },
 MP99: { monthly: 50, dapLabel: "Check ECC" },
 MP109: { monthly: 50, dapLabel: "Check ECC" },
@@ -4615,7 +4615,7 @@ MP199: { devicePrice: 0, dap: 2000, totalUpfront: 2000 }
 },
 zero24: {
 MP48: { monthly: 124, dapLabel: "NA" },
-MP69: { monthly: 124, dapLabel: "Check ECC" },
+MP69: { monthly: "NA", dapLabel: "NA" },
 MP89: { monthly: "NA", dapLabel: "NA" },
 MP99: { monthly: 95, dapLabel: "Check ECC" },
 MP109: { monthly: 95, dapLabel: "Check ECC" },
@@ -4625,7 +4625,7 @@ MP199: { monthly: 55, dapLabel: "Check ECC" }
 },
 zero36: {
 MP48: { monthly: 83, dapLabel: "NA" },
-MP69: { monthly: 83, dapLabel: "Check ECC" },
+MP69: { monthly: "NA", dapLabel: "NA" },
 MP89: { monthly: "NA", dapLabel: "NA" },
 MP99: { monthly: 65, dapLabel: "Check ECC" },
 MP109: { monthly: 65, dapLabel: "Check ECC" },
@@ -4658,7 +4658,7 @@ MP199: { devicePrice: 3499, dap: 820, totalUpfront: 4319 }
 },
 zero24: {
 MP48: { monthly: 229, dapLabel: "NA" },
-MP69: { monthly: 229, dapLabel: "Check ECC" },
+MP69: { monthly: "NA", dapLabel: "NA" },
 MP89: { monthly: "NA", dapLabel: "NA" },
 MP99: { monthly: 200, dapLabel: "Check ECC" },
 MP109: { monthly: 200, dapLabel: "Check ECC" },
@@ -4668,7 +4668,7 @@ MP199: { monthly: 155, dapLabel: "Check ECC" }
 },
 zero36: {
 MP48: { monthly: 152, dapLabel: "NA" },
-MP69: { monthly: 152, dapLabel: "Check ECC" },
+MP69: { monthly: "NA", dapLabel: "NA" },
 MP89: { monthly: "NA", dapLabel: "NA" },
 MP99: { monthly: 135, dapLabel: "Check ECC" },
 MP109: { monthly: 135, dapLabel: "Check ECC" },
