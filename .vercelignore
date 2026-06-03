@@ -1,6 +1,7 @@
 # Files/folders excluded from Vercel deploy bundle.
-# Keep this in sync with anything that's repo-only (dev tools, scripts, docs).
-scripts/
+# NOTE: do NOT ignore all of scripts/ — scripts/gen-sw.mjs runs in the build
+# (prebuild) to generate public/sw.js. Exclude the repo-only Python tools instead.
 *.py
+__pycache__/
 *.md
 !README.md
