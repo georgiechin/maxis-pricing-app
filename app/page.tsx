@@ -163,10 +163,18 @@ export default function Page() {
   const [selectedTab, setSelectedTab] = useState<PricingMode>(initialSelection.tab);
   const [selectedPlan, setSelectedPlan] = useState(initialSelection.plan);
   const [toast, setToast] = useState("");
+  const [justCopied, setJustCopied] = useState(false);
 
   // Search state
   const [searchQuery, setSearchQuery] = useState("");
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const mobileSearchRef = useRef<HTMLInputElement>(null);
+  const [searchFocused, setSearchFocused] = useState(false);
+  // Combinable search filters (Change 5b)
+  const [fBrand, setFBrand] = useState("");
+  const [fMaxPrice, setFMaxPrice] = useState("");
+  const [f5G, setF5G] = useState(false);
+  const [fStorage, setFStorage] = useState("");
   const searchDropdownRef = useRef<HTMLDivElement>(null);
   const planSectionRef = useRef<HTMLDivElement>(null);
 
@@ -319,20 +327,89 @@ export default function Page() {
   const searchResults = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
     if (q.length < 2) return [];
-    const results: { brand: string; model: CatalogModel; hint: string }[] = [];
-    for (const brand of catalog) {
-      for (const model of brand.models) {
-        if (
-          model.model.toLowerCase().includes(q) ||
-          (model.aliases && model.aliases.some((a) => a.toLowerCase().includes(q)))
-        ) {
-          results.push({ brand: brand.brand, model, hint: getHint(model) });
-          if (results.length >= 8) return results;
+    const tokens = q.split(/\s+/).filter(Boolean);
+
+    // Lightweight edit distance (capped, small strings) for typo tolerance
+    const lev = (a: string, b: string): number => {
+      if (Math.abs(a.length - b.length) > 2) return 3; // early out, beyond our threshold
+      const dp = Array.from({ length: b.length + 1 }, (_, i) => i);
+      for (let i = 1; i <= a.length; i++) {
+        let prev = dp[0]; dp[0] = i;
+        for (let j = 1; j <= b.length; j++) {
+          const tmp = dp[j];
+          dp[j] = a[i - 1] === b[j - 1] ? prev : 1 + Math.min(prev, dp[j], dp[j - 1]);
+          prev = tmp;
         }
       }
+      return dp[b.length];
+    };
+
+    const scored: { brand: string; model: CatalogModel; hint: string; score: number }[] = [];
+    for (const brand of catalog) {
+      for (const model of brand.models) {
+        const hay = `${brand.brand} ${model.model} ${(model.aliases || []).join(" ")}`.toLowerCase();
+        const words = hay.split(/[^a-z0-9]+/).filter(Boolean);
+        let ok = true, score = 0;
+        for (const tk of tokens) {
+          if (hay.includes(tk)) { score += 3; continue; }               // direct substring (anywhere)
+          const thr = tk.length <= 4 ? 1 : 2;                           // typo tolerance scales with length
+          const near = words.some((w) => Math.abs(w.length - tk.length) <= thr && lev(w, tk) <= thr);
+          if (near) { score += 1; continue; }                           // fuzzy near-match
+          ok = false; break;                                            // every token must match (AND)
+        }
+        if (ok) scored.push({ brand: brand.brand, model, hint: getHint(model), score });
+      }
     }
-    return results;
+    scored.sort((a, b) => b.score - a.score);
+    return scored.slice(0, 8).map(({ brand, model, hint }) => ({ brand, model, hint }));
   }, [searchQuery]);
+
+  // Quick-chip top sellers (Change 6 — placeholder list, swap with real DealerNet data later)
+  const TOP_SELLERS = [
+    "Samsung Galaxy A07 5G", "Galaxy A57 5G", "Galaxy A26 5G", "Galaxy A56 5G",
+    "Vivo Y11 5G", "Oppo A6t 5G", "Oppo A6 5G", "Honor 600 Lite 5G",
+    "Honor 500 Smart 5G", "iPhone 17", "Realme C100 5G", "Xiaomi 15T 5G",
+  ];
+  const quickChips = useMemo(() => {
+    const out: { brand: string; model: CatalogModel }[] = [];
+    for (const name of TOP_SELLERS) {
+      for (const brand of catalog) {
+        const m = brand.models.find((mm) => mm.model === name);
+        if (m) { out.push({ brand: brand.brand, model: m }); break; }
+      }
+    }
+    return out;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const brandList = useMemo(() => catalog.map((b) => b.brand), []);
+
+  // Filtered search: fuzzy results narrowed by combinable filters (AND).
+  // No query but filters active => browse the whole catalog through the filters.
+  const filteredSearch = useMemo(() => {
+    const hasFilter = !!(fBrand || fMaxPrice || f5G || fStorage);
+    const q = searchQuery.trim();
+    let base: { brand: string; model: CatalogModel; hint: string }[];
+    if (q.length >= 2) base = searchResults;
+    else if (hasFilter) {
+      base = [];
+      for (const brand of catalog) for (const model of brand.models)
+        base.push({ brand: brand.brand, model, hint: getHint(model) });
+    } else return [];
+    const maxP = Number(fMaxPrice);
+    return base.filter(({ brand, model }) => {
+      if (fBrand && brand !== fBrand) return false;
+      if (f5G && !/5G/i.test(model.model)) return false;
+      if (fStorage && !model.storages.some((s) => s.storage.toLowerCase().includes(fStorage.toLowerCase()))) return false;
+      if (fMaxPrice && !isNaN(maxP)) {
+        const minRRP = Math.min(...model.storages.map((s) => s.rrp || Infinity));
+        if (minRRP > maxP) return false;
+      }
+      return true;
+    }).slice(0, 12);
+  }, [searchQuery, searchResults, fBrand, fMaxPrice, f5G, fStorage]);
+
+  const anyFilter = !!(fBrand || fMaxPrice || f5G || fStorage);
+  const clearFilters = () => { setFBrand(""); setFMaxPrice(""); setF5G(false); setFStorage(""); };
 
   // ── Budget filter results ───────────────────────────────────────────────────
   const budgetResults = useMemo((): BudgetResult[] => {
@@ -738,6 +815,7 @@ export default function Page() {
     setPricingExpanded(true);
     setWifiMode(false);
     setHomeScreen(false);
+    setSearchFocused(false);
   };
 
   const pinToCompare = () => {
@@ -854,6 +932,7 @@ export default function Page() {
           promo ? `🎁 ${promo}` : ``,
           ``,
           `⚠️ Subject to stock & verification`,
+          `📅 Prices valid as of ${CATALOG_SOURCE}`,
           ``,
           `👉 Reply YES to proceed`,
           `👉 I guide you step by step`,
@@ -873,6 +952,7 @@ export default function Page() {
         promo ? `🎁 ${promo}` : ``,
         ``,
         `⚡ Fast approval for eligible customers`,
+        `📅 Prices valid as of ${CATALOG_SOURCE}`,
         ``,
         `👉 Grab it — limited stocks`,
         `👉 Reply YES and I handle everything`,
@@ -902,6 +982,7 @@ export default function Page() {
           promo ? `🎁 ${promo}` : ``,
           ``,
           `⚠️ Subject to stock & verification`,
+          `📅 Prices valid as of ${CATALOG_SOURCE}`,
           ``,
           `👉 Reply YES to proceed`,
           `👉 I guide you step by step`,
@@ -921,6 +1002,7 @@ export default function Page() {
         promo ? `🎁 ${promo}` : ``,
         ``,
         `⚡ Fast approval for eligible customers`,
+        `📅 Prices valid as of ${CATALOG_SOURCE}`,
         ``,
         `👉 Grab it — limited stocks`,
         `👉 Reply YES and I handle everything`,
@@ -953,6 +1035,7 @@ export default function Page() {
         ``,
         `📋 ${eccNote}`,
         `⚠️ Subject to verification`,
+        `📅 Prices valid as of ${CATALOG_SOURCE}`,
         ``,
         `👉 Reply YES to proceed`,
         `👉 I guide you step by step`,
@@ -972,6 +1055,7 @@ export default function Page() {
       promo ? `🎁 ${promo}` : ``,
       ``,
       `⚡ Fast approval for eligible customers`,
+      `📅 Prices valid as of ${CATALOG_SOURCE}`,
       ``,
       `👉 Grab it — limited promo`,
       `👉 Reply YES and I handle everything`,
@@ -1006,6 +1090,21 @@ export default function Page() {
     if (!quoteText) return;
     await navigator.clipboard.writeText(quoteText);
     setToast("Copied");
+    setJustCopied(true);
+  };
+
+  // Reset "Copied ✓" button confirmation after ~1s
+  useEffect(() => {
+    if (!justCopied) return;
+    const t = window.setTimeout(() => setJustCopied(false), 1000);
+    return () => window.clearTimeout(t);
+  }, [justCopied]);
+
+  // Search-another-phone: focus whichever search input is visible + scroll up
+  const focusSearch = () => {
+    setSearchQuery("");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setTimeout(() => { searchInputRef.current?.focus(); mobileSearchRef.current?.focus(); }, 50);
   };
 
   useEffect(() => {
@@ -1027,7 +1126,7 @@ export default function Page() {
 
   // Close search dropdown when clicking outside
   useEffect(() => {
-    if (!searchQuery) return;
+    if (!searchQuery && !searchFocused) return;
     const handler = (e: MouseEvent) => {
       if (
         searchInputRef.current &&
@@ -1036,11 +1135,12 @@ export default function Page() {
         !searchDropdownRef.current.contains(e.target as Node)
       ) {
         setSearchQuery("");
+        setSearchFocused(false);
       }
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
-  }, [searchQuery]);
+  }, [searchQuery, searchFocused]);
 
   return (
     <main className="min-h-screen bg-[#0a0d0f] text-[#f0f2f4]">
@@ -1076,44 +1176,28 @@ export default function Page() {
                   type="text"
                   placeholder="🔍 Search model..."
                   value={searchQuery}
+                  onFocus={() => setSearchFocused(true)}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyDown={(e) => e.key === "Escape" && setSearchQuery("")}
+                  onKeyDown={(e) => e.key === "Escape" && (setSearchQuery(""), setSearchFocused(false))}
                   className="w-44 rounded-xl border border-white/10 bg-[#1e2225] px-3 py-2 text-xs text-white placeholder-slate-500 transition focus:border-[#00D46A]/50 focus:outline-none"
                 />
-                {(searchResults.length > 0 || (searchQuery.trim().length >= 2 && searchResults.length === 0)) && (
-                  <div
-                    ref={searchDropdownRef}
-                    className="absolute right-0 top-full z-50 mt-1 w-72 overflow-hidden rounded-xl border border-white/10 bg-[#1a1e22] shadow-2xl"
-                  >
-                    {searchResults.length > 0 ? searchResults.map(({ brand, model, hint }) => (
-                      <button
-                        key={`${brand}-${model.model}`}
-                        onMouseDown={(e) => {
-                          e.preventDefault();
-                          navigateToDevice(brand, model);
-                        }}
-                        className="w-full border-b border-white/5 px-4 py-3 text-left transition last:border-b-0 hover:bg-[#262b2f]"
-                      >
-                        <div className="flex items-center gap-2">
-                          <div className="text-sm font-medium text-white">{model.model}</div>
-                          {hint && <span className="ml-auto text-[10px] text-[#00D46A]/70 shrink-0">{hint}</span>}
-                        </div>
-                        <div className="mt-0.5 text-xs text-slate-500">
-                          {brand} · {model.storages.map((s) => s.storage).join(" / ")}
-                        </div>
-                      </button>
-                    )) : (
-                      <div className="px-4 py-4">
-                        <div className="text-sm font-medium text-slate-400">No results found</div>
-                        <div className="mt-1 text-xs text-slate-600">Try: &lsquo;samsung&rsquo;, &lsquo;iPhone 17&rsquo;, &lsquo;free on MP99&rsquo;</div>
-                        <button
-                          onMouseDown={(e) => { e.preventDefault(); setSearchQuery(""); }}
-                          className="mt-2 text-xs font-medium text-[#00D46A] hover:underline"
-                        >
-                          Clear search
-                        </button>
-                      </div>
-                    )}
+                {(searchFocused || searchQuery.trim().length >= 2 || anyFilter) && (
+                  <div ref={searchDropdownRef} className="absolute right-0 top-full z-50 mt-1 w-96">
+                    <SearchPanel
+                      query={searchQuery}
+                      results={filteredSearch}
+                      chips={quickChips}
+                      showChips={searchQuery.trim().length < 2 && !anyFilter}
+                      anyFilter={anyFilter}
+                      fBrand={fBrand} setFBrand={setFBrand}
+                      fMaxPrice={fMaxPrice} setFMaxPrice={setFMaxPrice}
+                      f5G={f5G} setF5G={setF5G}
+                      fStorage={fStorage} setFStorage={setFStorage}
+                      brands={brandList}
+                      onPick={(b, m) => navigateToDevice(b, m)}
+                      onClose={() => { setSearchQuery(""); setSearchFocused(false); clearFilters(); }}
+                      clearFilters={clearFilters}
+                    />
                   </div>
                 )}
               </div>
@@ -1133,53 +1217,41 @@ export default function Page() {
               🔍
             </span>
             <input
+              ref={mobileSearchRef}
               type="text"
               placeholder="Search model..."
               value={searchQuery}
+              onFocus={() => setSearchFocused(true)}
               onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyDown={(e) => e.key === "Escape" && setSearchQuery("")}
+              onKeyDown={(e) => e.key === "Escape" && (setSearchQuery(""), setSearchFocused(false))}
               className="w-full rounded-xl border border-white/10 bg-[#1e2225] py-2.5 pl-9 pr-9 text-sm text-white placeholder-slate-500 transition focus:border-[#00D46A]/50 focus:outline-none"
             />
-            {searchQuery && (
+            {(searchQuery || searchFocused || anyFilter) && (
               <button
-                onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-white"
+                onClick={() => { setSearchQuery(""); setSearchFocused(false); clearFilters(); }}
+                className="absolute right-3 top-[1.35rem] -translate-y-1/2 text-slate-400 transition hover:text-white"
               >
                 ✕
               </button>
             )}
-            {/* Mobile dropdown — full width, never off-screen */}
-            {(searchResults.length > 0 || (searchQuery.trim().length >= 2 && searchResults.length === 0)) && (
-              <div className="absolute left-0 right-0 top-full z-50 mt-1 overflow-hidden rounded-xl border border-white/10 bg-[#1a1e22] shadow-2xl">
-                {searchResults.length > 0 ? searchResults.map(({ brand, model, hint }) => (
-                  <button
-                    key={`${brand}-${model.model}`}
-                    onMouseDown={(e) => {
-                      e.preventDefault();
-                      navigateToDevice(brand, model);
-                    }}
-                    className="w-full border-b border-white/5 px-4 py-3.5 text-left transition last:border-b-0 active:bg-[#262b2f]"
-                  >
-                    <div className="flex items-center gap-2">
-                      <div className="text-sm font-medium text-white">{model.model}</div>
-                      {hint && <span className="ml-auto text-[10px] text-[#00D46A]/70 shrink-0">{hint}</span>}
-                    </div>
-                    <div className="mt-0.5 text-xs text-slate-500">
-                      {brand} · {model.storages.map((s) => s.storage).join(" / ")}
-                    </div>
-                  </button>
-                )) : (
-                  <div className="px-4 py-4">
-                    <div className="text-sm font-medium text-slate-400">No results found</div>
-                    <div className="mt-1 text-xs text-slate-600">Try: &lsquo;samsung&rsquo;, &lsquo;iPhone 17&rsquo;, &lsquo;free on MP99&rsquo;</div>
-                    <button
-                      onMouseDown={(e) => { e.preventDefault(); setSearchQuery(""); }}
-                      className="mt-2 text-xs font-medium text-[#00D46A] hover:underline"
-                    >
-                      Clear search
-                    </button>
-                  </div>
-                )}
+            {/* Mobile search panel — inline, full width, never off-screen */}
+            {(searchFocused || searchQuery.trim().length >= 2 || anyFilter) && (
+              <div className="mt-2">
+                <SearchPanel
+                  query={searchQuery}
+                  results={filteredSearch}
+                  chips={quickChips}
+                  showChips={searchQuery.trim().length < 2 && !anyFilter}
+                  anyFilter={anyFilter}
+                  fBrand={fBrand} setFBrand={setFBrand}
+                  fMaxPrice={fMaxPrice} setFMaxPrice={setFMaxPrice}
+                  f5G={f5G} setF5G={setF5G}
+                  fStorage={fStorage} setFStorage={setFStorage}
+                  brands={brandList}
+                  onPick={(b, m) => navigateToDevice(b, m)}
+                  onClose={() => { setSearchQuery(""); setSearchFocused(false); clearFilters(); }}
+                  clearFilters={clearFilters}
+                />
               </div>
             )}
           </div>
@@ -2069,6 +2141,14 @@ export default function Page() {
             </div>
           )}
 
+          {/* Search another phone — fast return for comparing 2-3 phones */}
+          <button
+            onClick={focusSearch}
+            className="flex min-h-[44px] w-full items-center gap-2 rounded-xl border border-white/10 bg-[#181c1f] px-4 text-sm font-semibold text-slate-200 transition hover:border-[#00D46A]/40 hover:text-white no-print"
+          >
+            🔍 Search another phone
+          </button>
+
           <div className="rounded-2xl border border-white/8 bg-[#111417] p-5">
             <div className="mb-2 text-[11px] font-medium uppercase tracking-[0.12em] text-slate-500">
               {selectedBrand}
@@ -2077,10 +2157,44 @@ export default function Page() {
               {selectedModel.model}
             </h1>
 
-            <div className="mt-4 flex flex-wrap gap-2">
-              <InfoChip text={`Storage: ${activeStorage.storage}`} />
-              <InfoChip text={`RRP: ${formatMoney(activeStorage.rrp)}`} />
-              <InfoChip text={`Region: ${isHotlink ? "Hotlink" : "ECEM"}`} />
+            {/* HERO — the two numbers staff say out loud */}
+            {(() => {
+              if (!selectedRow) return null;
+              const isUpfrontMode = selectedTab === "upfront" || selectedTab === "upfront36" || selectedTab === "hotlink12" || selectedTab === "hotlink24";
+              const r = selectedRow as { devicePrice?: number | string; totalUpfront?: number | string; monthly?: number | string };
+              let aLabel = "", aVal = "", bLabel = "", bVal = "";
+              if (isUpfrontMode) {
+                if (r.devicePrice === "NA" || r.devicePrice === undefined) return null;
+                const isHL = selectedTab === "hotlink12" || selectedTab === "hotlink24";
+                aLabel = "Total today"; aVal = formatMoney(r.totalUpfront);
+                bLabel = isHL ? "Monthly" : "Monthly plan";
+                bVal = isHL ? `RM${r.monthly}/mo` : `RM${planFee(selectedPlan)}/mo`;
+              } else {
+                if (r.monthly === "NA" || r.monthly === undefined) return null;
+                const m = Number(r.monthly);
+                aLabel = "Monthly total"; aVal = `RM${planFee(selectedPlan) + m}/mo`;
+                bLabel = "Pay today"; bVal = "RM0";
+              }
+              return (
+                <div className="mt-4 grid grid-cols-2 gap-3">
+                  <div className="rounded-2xl border border-[#00D46A]/40 bg-[#00D46A]/12 px-4 py-4">
+                    <div className="text-[11px] font-bold uppercase tracking-wide text-[#00D46A]">{aLabel}</div>
+                    <div className="mt-1 text-3xl font-extrabold text-white sm:text-4xl">{aVal}</div>
+                  </div>
+                  <div className="rounded-2xl border border-white/15 bg-[#181c1f] px-4 py-4">
+                    <div className="text-[11px] font-bold uppercase tracking-wide text-slate-300">{bLabel}</div>
+                    <div className="mt-1 text-3xl font-extrabold text-white sm:text-4xl">{bVal}</div>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Supporting detail — demoted below the hero */}
+            <div className="mt-3 text-xs text-slate-400">
+              {activeStorage.storage} · RRP {formatMoney(activeStorage.rrp)} · {isHotlink ? "Hotlink" : "ECEM"}
+            </div>
+
+            <div className="mt-3 flex flex-wrap gap-2">
               {bestDeal && (
                 <span className={`rounded-full border px-3 py-1.5 text-sm font-bold ${bestDeal.isFree ? "border-emerald-400/40 bg-emerald-400/10 text-emerald-400" : "border-blue-400/30 bg-blue-400/8 text-blue-300"}`}>
                   {bestDeal.isFree ? "🎁" : "💡"} {bestDeal.label}
@@ -2802,9 +2916,9 @@ export default function Page() {
             <button
               onClick={copyQuote}
               disabled={!quoteText}
-              className="mt-3 w-full rounded-xl bg-[#00D46A] px-4 py-3 text-sm font-bold text-black transition hover:bg-[#00b85c] disabled:cursor-not-allowed disabled:bg-[#1e2225] disabled:text-slate-500"
+              className={`mt-3 min-h-[44px] w-full rounded-xl px-4 py-3 text-sm font-bold text-black transition disabled:cursor-not-allowed disabled:bg-[#1e2225] disabled:text-slate-500 ${justCopied ? "bg-emerald-400" : "bg-[#00D46A] hover:bg-[#00b85c]"}`}
             >
-              {copyMode === "aggressive" ? "🔥 Copy Closing Message" : "⭐ Copy Smart Quote"}
+              {justCopied ? "Copied ✓" : copyMode === "aggressive" ? "🔥 Copy Closing Message" : "⭐ Copy Smart Quote"}
             </button>
           </section>
 
@@ -2929,11 +3043,11 @@ export default function Page() {
           <button
             onClick={copyQuote}
             disabled={!quoteText}
-            className={`flex-shrink-0 rounded-xl px-5 py-3 text-sm font-bold text-black transition disabled:opacity-40 ${
-              copyMode === "aggressive" ? "bg-red-400" : "bg-[#00D46A]"
+            className={`min-h-[44px] flex-shrink-0 rounded-xl px-5 py-3 text-sm font-bold text-black transition disabled:opacity-40 ${
+              justCopied ? "bg-emerald-400" : copyMode === "aggressive" ? "bg-red-400" : "bg-[#00D46A]"
             }`}
           >
-            {copyMode === "aggressive" ? "🔥 Copy" : "Copy Quote"}
+            {justCopied ? "Copied ✓" : copyMode === "aggressive" ? "🔥 Copy" : "Copy Quote"}
           </button>
         </div>
       </div>
@@ -3165,6 +3279,108 @@ function InfoChip({ text }: { text: string }) {
     <span className="rounded-full border border-white/8 bg-[#181c1f] px-3 py-1.5 text-sm text-slate-300">
       {text}
     </span>
+  );
+}
+
+// Search panel: quick-chips (top sellers) + combinable filters + filtered results.
+// Rendered inside the desktop dropdown and the mobile search area (search view only).
+function SearchPanel({
+  query, results, chips, showChips, anyFilter,
+  fBrand, setFBrand, fMaxPrice, setFMaxPrice, f5G, setF5G, fStorage, setFStorage,
+  brands, onPick, onClose, clearFilters,
+}: {
+  query: string;
+  results: { brand: string; model: CatalogModel; hint: string }[];
+  chips: { brand: string; model: CatalogModel }[];
+  showChips: boolean;
+  anyFilter: boolean;
+  fBrand: string; setFBrand: (v: string) => void;
+  fMaxPrice: string; setFMaxPrice: (v: string) => void;
+  f5G: boolean; setF5G: (v: boolean) => void;
+  fStorage: string; setFStorage: (v: string) => void;
+  brands: string[];
+  onPick: (brand: string, model: CatalogModel) => void;
+  onClose: () => void;
+  clearFilters: () => void;
+}) {
+  const sel = "rounded-lg border border-white/10 bg-[#181c1f] px-2 py-1.5 text-[11px] font-medium text-slate-200 focus:border-[#00D46A]/50 focus:outline-none";
+  return (
+    <div className="overflow-hidden rounded-xl border border-white/10 bg-[#1a1e22] shadow-2xl">
+      {showChips && chips.length > 0 && (
+        <div className="border-b border-white/8 p-2.5">
+          <div className="mb-1.5 text-[9px] font-bold uppercase tracking-wide text-slate-500">⚡ Top sellers — one tap</div>
+          <div className="flex flex-wrap gap-1.5">
+            {chips.map(({ brand, model }) => (
+              <button
+                key={model.model}
+                onMouseDown={(e) => { e.preventDefault(); onPick(brand, model); }}
+                className="min-h-[32px] rounded-full border border-white/10 bg-[#181c1f] px-2.5 py-1 text-[11px] font-medium text-slate-200 transition hover:border-[#00D46A]/40 hover:text-white"
+              >
+                {model.model.replace(/^Samsung /, "")}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Combinable filters (AND) */}
+      <div className="space-y-2 border-b border-white/8 p-2.5">
+        <div className="flex items-center justify-between">
+          <span className="text-[9px] font-bold uppercase tracking-wide text-slate-500">Filter</span>
+          {anyFilter && (
+            <button onMouseDown={(e) => { e.preventDefault(); clearFilters(); }} className="text-[10px] font-medium text-[#00D46A]">clear</button>
+          )}
+        </div>
+        <div className="flex flex-wrap gap-1.5">
+          <select value={fBrand} onChange={(e) => setFBrand(e.target.value)} className={sel}>
+            <option value="">All brands</option>
+            {brands.map((b) => <option key={b} value={b}>{b}</option>)}
+          </select>
+          <select value={fMaxPrice} onChange={(e) => setFMaxPrice(e.target.value)} className={sel}>
+            <option value="">Any price</option>
+            <option value="1000">≤ RM1,000</option>
+            <option value="2000">≤ RM2,000</option>
+            <option value="3000">≤ RM3,000</option>
+            <option value="5000">≤ RM5,000</option>
+          </select>
+          <select value={fStorage} onChange={(e) => setFStorage(e.target.value)} className={sel}>
+            <option value="">Any storage</option>
+            <option value="128GB">128GB</option>
+            <option value="256GB">256GB</option>
+            <option value="512GB">512GB</option>
+          </select>
+          <button
+            onMouseDown={(e) => { e.preventDefault(); setF5G(!f5G); }}
+            className={`min-h-[32px] rounded-lg border px-2.5 py-1 text-[11px] font-medium transition ${f5G ? "border-[#00D46A] bg-[#00D46A]/15 text-[#00D46A]" : "border-white/10 bg-[#181c1f] text-slate-300"}`}
+          >
+            5G only
+          </button>
+        </div>
+      </div>
+
+      {/* Results */}
+      <div className="max-h-[50vh] overflow-y-auto">
+        {results.length > 0 ? results.map(({ brand, model, hint }) => (
+          <button
+            key={`${brand}-${model.model}`}
+            onMouseDown={(e) => { e.preventDefault(); onPick(brand, model); }}
+            className="w-full border-b border-white/5 px-4 py-3 text-left transition last:border-b-0 hover:bg-[#262b2f]"
+          >
+            <div className="flex items-center gap-2">
+              <div className="text-sm font-medium text-white">{model.model}</div>
+              {hint && <span className="ml-auto shrink-0 text-[10px] text-[#00D46A]/70">{hint}</span>}
+            </div>
+            <div className="mt-0.5 text-xs text-slate-500">{brand} · {model.storages.map((s) => s.storage).join(" / ")}</div>
+          </button>
+        )) : (query.trim().length >= 2 || anyFilter) ? (
+          <div className="px-4 py-4">
+            <div className="text-sm font-medium text-slate-400">No results</div>
+            <div className="mt-1 text-xs text-slate-600">Try fewer letters, or clear the filters.</div>
+            <button onMouseDown={(e) => { e.preventDefault(); onClose(); }} className="mt-2 text-xs font-medium text-[#00D46A] hover:underline">Clear search</button>
+          </div>
+        ) : null}
+      </div>
+    </div>
   );
 }
 
