@@ -54,7 +54,7 @@ export type CatalogBrand = {
 
 // Pricing source — update this whenever a new GTM is applied
 export const CATALOG_SOURCE = "GTM 4 June 2026";
-export const CATALOG_DATE = "2026-06-04";
+export const CATALOG_DATE = "2026-06-05";
 
 // Latest updates — shown at top of app so staff stay informed without reading emails
 // Keep most recent first. Update whenever a new GTM/email changes the catalog.
@@ -66,6 +66,12 @@ export type AppUpdate = {
 };
 
 export const LATEST_UPDATES: AppUpdate[] = [
+  {
+    date: "5 Jun",
+    type: "alert",
+    text: "⚠️ Realme C100 5G — stock ending (EOL)",
+    subtext: "No more incoming stock. Still sellable to clear existing stock — sell first.",
+  },
   {
     date: "4 Jun",
     type: "new",
@@ -365,6 +371,7 @@ HP75: { devicePrice: 99, dap: 180, totalUpfront: 279, monthly: 67.50 }
 {
 model: "Realme C100 5G",
 aliases: ["realme", "c100", "hotlink"],
+eol: true,
 storages: [{
 storage: "4+256GB",
 rrp: 1099,
@@ -3163,6 +3170,7 @@ MP199: { monthly: 35, dapLabel: "Check ECC" }
 {
 model: "Realme C100 5G",
 aliases: ["realme", "c100"],
+eol: true,
 storages: [
 {
 storage: "4+256GB",
