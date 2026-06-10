@@ -53,8 +53,8 @@ export type CatalogBrand = {
 };
 
 // Pricing source — update this whenever a new GTM is applied
-export const CATALOG_SOURCE = "GTM 4 June 2026";
-export const CATALOG_DATE = "2026-06-05";
+export const CATALOG_SOURCE = "GTM 11 June 2026";
+export const CATALOG_DATE = "2026-06-10";
 
 // Latest updates — shown at top of app so staff stay informed without reading emails
 // Keep most recent first. Update whenever a new GTM/email changes the catalog.
@@ -66,6 +66,18 @@ export type AppUpdate = {
 };
 
 export const LATEST_UPDATES: AppUpdate[] = [
+  {
+    date: "11 Jun",
+    type: "new",
+    text: "📱 New: Nubia Neo 5 5G · Xiaomi 17T 5G · Xiaomi 17T Pro 5G",
+    subtext: "Neo 5 RRP RM1,299 · 17T RRP RM2,499 · 17T Pro RRP RM3,199 · all on ECEM",
+  },
+  {
+    date: "11 Jun",
+    type: "change",
+    text: "🔄 iPhone 17/17e/17Pro/17ProMax now from MP89 (upfront) · Samsung S26 series from MP89 (zero)",
+    subtext: "Google Pixel 10 series & iPhone 17 series MP89 zerolution added · Oppo A6t/Vivo Y11 price down · Vivo Y21 repriced · Honor Pad 10 repriced",
+  },
   {
     date: "5 Jun",
     type: "alert",
