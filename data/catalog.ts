@@ -54,7 +54,7 @@ export type CatalogBrand = {
 
 // Pricing source — update this whenever a new GTM is applied
 export const CATALOG_SOURCE = "GTM 11 June 2026";
-export const CATALOG_DATE = "2026-06-12";
+export const CATALOG_DATE = "2026-06-19";
 
 // Latest updates — shown at top of app so staff stay informed without reading emails
 // Keep most recent first. Update whenever a new GTM/email changes the catalog.
@@ -1554,21 +1554,21 @@ model: "Google Pixel 10 5G",
                     zero24: {
                       MP48: { monthly: 187, dapLabel: "NA" },
                       MP69: { monthly: "NA", dapLabel: "Check ECC" },
-                      MP89: { monthly: 160, dapLabel: "Check ECC" },
-                      MP99: { monthly: 160, dapLabel: "Check ECC" },
-                      MP109: { monthly: 160, dapLabel: "Check ECC" },
-                      MP139: { monthly: 155, dapLabel: "Check ECC" },
-                      MP169: { monthly: 145, dapLabel: "Check ECC" },
+                      MP89: { monthly: 175, dapLabel: "Check ECC" },
+                      MP99: { monthly: 175, dapLabel: "Check ECC" },
+                      MP109: { monthly: 175, dapLabel: "Check ECC" },
+                      MP139: { monthly: 160, dapLabel: "Check ECC" },
+                      MP169: { monthly: 155, dapLabel: "Check ECC" },
                       MP199: { monthly: 125, dapLabel: "Check ECC" }
                     },
                     zero36: {
                       MP48: { monthly: 124, dapLabel: "NA" },
                       MP69: { monthly: "NA", dapLabel: "Check ECC" },
-                      MP89: { monthly: 105, dapLabel: "Check ECC" },
-                      MP99: { monthly: 105, dapLabel: "Check ECC" },
-                      MP109: { monthly: 105, dapLabel: "Check ECC" },
-                      MP139: { monthly: 100, dapLabel: "Check ECC" },
-                      MP169: { monthly: 90, dapLabel: "Check ECC" },
+                      MP89: { monthly: 115, dapLabel: "Check ECC" },
+                      MP99: { monthly: 115, dapLabel: "Check ECC" },
+                      MP109: { monthly: 115, dapLabel: "Check ECC" },
+                      MP139: { monthly: 105, dapLabel: "Check ECC" },
+                      MP169: { monthly: 100, dapLabel: "Check ECC" },
                       MP199: { monthly: 70, dapLabel: "Check ECC" }
                     }
 }
@@ -1597,18 +1597,18 @@ model: "Google Pixel 10a 5G",
                     zero24: {
                       MP48: { monthly: 116, dapLabel: "NA" },
                       MP69: { monthly: "NA", dapLabel: "Check ECC" },
-                      MP89: { monthly: 80, dapLabel: "Check ECC" },
-                      MP99: { monthly: 80, dapLabel: "Check ECC" },
-                      MP109: { monthly: 80, dapLabel: "Check ECC" },
-                      MP139: { monthly: 70, dapLabel: "Check ECC" },
-                      MP169: { monthly: 55, dapLabel: "Check ECC" },
-                      MP199: { monthly: 40, dapLabel: "Check ECC" }
+                      MP89: { monthly: 95, dapLabel: "Check ECC" },
+                      MP99: { monthly: 95, dapLabel: "Check ECC" },
+                      MP109: { monthly: 95, dapLabel: "Check ECC" },
+                      MP139: { monthly: 80, dapLabel: "Check ECC" },
+                      MP169: { monthly: 70, dapLabel: "Check ECC" },
+                      MP199: { monthly: 55, dapLabel: "Check ECC" }
                     },
                     zero36: {
                       MP48: { monthly: 77, dapLabel: "NA" },
                       MP69: { monthly: "NA", dapLabel: "Check ECC" },
-                      MP89: { monthly: 55, dapLabel: "Check ECC" },
-                      MP99: { monthly: 55, dapLabel: "Check ECC" },
+                      MP89: { monthly: 65, dapLabel: "Check ECC" },
+                      MP99: { monthly: 65, dapLabel: "Check ECC" },
                       MP109: { monthly: 55, dapLabel: "Check ECC" },
                       MP139: { monthly: 45, dapLabel: "Check ECC" },
                       MP169: { monthly: 35, dapLabel: "Check ECC" },
@@ -1640,18 +1640,18 @@ model: "Google Pixel 10 Pro 5G",
                     zero24: {
                       MP48: { monthly: 229, dapLabel: "NA" },
                       MP69: { monthly: "NA", dapLabel: "Check ECC" },
-                      MP89: { monthly: 190, dapLabel: "Check ECC" },
-                      MP99: { monthly: 190, dapLabel: "Check ECC" },
-                      MP109: { monthly: 190, dapLabel: "Check ECC" },
-                      MP139: { monthly: 180, dapLabel: "Check ECC" },
-                      MP169: { monthly: 165, dapLabel: "Check ECC" },
-                      MP199: { monthly: 145, dapLabel: "Check ECC" }
+                      MP89: { monthly: 200, dapLabel: "Check ECC" },
+                      MP99: { monthly: 200, dapLabel: "Check ECC" },
+                      MP109: { monthly: 200, dapLabel: "Check ECC" },
+                      MP139: { monthly: 190, dapLabel: "Check ECC" },
+                      MP169: { monthly: 180, dapLabel: "Check ECC" },
+                      MP199: { monthly: 165, dapLabel: "Check ECC" }
                     },
                     zero36: {
                       MP48: { monthly: 152, dapLabel: "NA" },
                       MP69: { monthly: "NA", dapLabel: "Check ECC" },
-                      MP89: { monthly: 130, dapLabel: "Check ECC" },
-                      MP99: { monthly: 130, dapLabel: "Check ECC" },
+                      MP89: { monthly: 140, dapLabel: "Check ECC" },
+                      MP99: { monthly: 140, dapLabel: "Check ECC" },
                       MP109: { monthly: 130, dapLabel: "Check ECC" },
                       MP139: { monthly: 120, dapLabel: "Check ECC" },
                       MP169: { monthly: 110, dapLabel: "Check ECC" },
@@ -1677,8 +1677,8 @@ model: "Google Pixel 10 Pro 5G",
                     zero24: {
                       MP48: { monthly: 254, dapLabel: "NA" },
                       MP69: { monthly: "NA", dapLabel: "Check ECC" },
-                      MP89: { monthly: 225, dapLabel: "Check ECC" },
-                      MP99: { monthly: 225, dapLabel: "Check ECC" },
+                      MP89: { monthly: 240, dapLabel: "Check ECC" },
+                      MP99: { monthly: 240, dapLabel: "Check ECC" },
                       MP109: { monthly: 225, dapLabel: "Check ECC" },
                       MP139: { monthly: 215, dapLabel: "Check ECC" },
                       MP169: { monthly: 200, dapLabel: "Check ECC" },
@@ -1687,8 +1687,8 @@ model: "Google Pixel 10 Pro 5G",
                     zero36: {
                       MP48: { monthly: 169, dapLabel: "NA" },
                       MP69: { monthly: "NA", dapLabel: "Check ECC" },
-                      MP89: { monthly: 150, dapLabel: "Check ECC" },
-                      MP99: { monthly: 150, dapLabel: "Check ECC" },
+                      MP89: { monthly: 160, dapLabel: "Check ECC" },
+                      MP99: { monthly: 160, dapLabel: "Check ECC" },
                       MP109: { monthly: 150, dapLabel: "Check ECC" },
                       MP139: { monthly: 140, dapLabel: "Check ECC" },
                       MP169: { monthly: 130, dapLabel: "Check ECC" },
@@ -1714,8 +1714,8 @@ model: "Google Pixel 10 Pro 5G",
                     zero24: {
                       MP48: { monthly: 304, dapLabel: "NA" },
                       MP69: { monthly: "NA", dapLabel: "Check ECC" },
-                      MP89: { monthly: 250, dapLabel: "Check ECC" },
-                      MP99: { monthly: 250, dapLabel: "Check ECC" },
+                      MP89: { monthly: 270, dapLabel: "Check ECC" },
+                      MP99: { monthly: 270, dapLabel: "Check ECC" },
                       MP109: { monthly: 250, dapLabel: "Check ECC" },
                       MP139: { monthly: 240, dapLabel: "Check ECC" },
                       MP169: { monthly: 220, dapLabel: "Check ECC" },
@@ -1724,8 +1724,8 @@ model: "Google Pixel 10 Pro 5G",
                     zero36: {
                       MP48: { monthly: 202, dapLabel: "NA" },
                       MP69: { monthly: "NA", dapLabel: "Check ECC" },
-                      MP89: { monthly: 165, dapLabel: "Check ECC" },
-                      MP99: { monthly: 165, dapLabel: "Check ECC" },
+                      MP89: { monthly: 185, dapLabel: "Check ECC" },
+                      MP99: { monthly: 185, dapLabel: "Check ECC" },
                       MP109: { monthly: 165, dapLabel: "Check ECC" },
                       MP139: { monthly: 155, dapLabel: "Check ECC" },
                       MP169: { monthly: 145, dapLabel: "Check ECC" },
@@ -1757,8 +1757,8 @@ model: "Google Pixel 10 Pro XL 5G",
                     zero24: {
                       MP48: { monthly: 249, dapLabel: "NA" },
                       MP69: { monthly: "NA", dapLabel: "Check ECC" },
-                      MP89: { monthly: 200, dapLabel: "Check ECC" },
-                      MP99: { monthly: 200, dapLabel: "Check ECC" },
+                      MP89: { monthly: 210, dapLabel: "Check ECC" },
+                      MP99: { monthly: 210, dapLabel: "Check ECC" },
                       MP109: { monthly: 200, dapLabel: "Check ECC" },
                       MP139: { monthly: 190, dapLabel: "Check ECC" },
                       MP169: { monthly: 180, dapLabel: "Check ECC" },
@@ -1767,8 +1767,8 @@ model: "Google Pixel 10 Pro XL 5G",
                     zero36: {
                       MP48: { monthly: 166, dapLabel: "NA" },
                       MP69: { monthly: "NA", dapLabel: "Check ECC" },
-                      MP89: { monthly: 140, dapLabel: "Check ECC" },
-                      MP99: { monthly: 140, dapLabel: "Check ECC" },
+                      MP89: { monthly: 150, dapLabel: "Check ECC" },
+                      MP99: { monthly: 150, dapLabel: "Check ECC" },
                       MP109: { monthly: 140, dapLabel: "Check ECC" },
                       MP139: { monthly: 130, dapLabel: "Check ECC" },
                       MP169: { monthly: 120, dapLabel: "Check ECC" },
@@ -2261,7 +2261,8 @@ MP199: { monthly: 75, dapLabel: "Check ECC" }
     storages: [
       {
         storage: "512GB",
-        rrp: 1699,
+        rrp: 1999,
+        promo: "Repriced eff 11 Jun 2026.",
         regions: {
           ECEM: {
             upfront: {
@@ -2283,24 +2284,24 @@ MP199: { monthly: 75, dapLabel: "Check ECC" }
               MP199: { devicePrice: 0, dap: 1140, totalUpfront: 1140 }
             },
             zero24: {
-              MP48: { monthly: 70, dapLabel: "NA" },
+              MP48: { monthly: 83, dapLabel: "NA" },
               MP69: { monthly: "NA", dapLabel: "NA" },
               MP89: { monthly: "NA", dapLabel: "NA" },
-              MP99: { monthly: 60, dapLabel: "Check ECC" },
-              MP109: { monthly: 50, dapLabel: "Check ECC" },
-              MP139: { monthly: 40, dapLabel: "Check ECC" },
-              MP169: { monthly: 30, dapLabel: "Check ECC" },
-              MP199: { monthly: 10, dapLabel: "Check ECC" }
+              MP99: { monthly: "NA", dapLabel: "Check ECC" },
+              MP109: { monthly: 75, dapLabel: "Check ECC" },
+              MP139: { monthly: 65, dapLabel: "Check ECC" },
+              MP169: { monthly: 50, dapLabel: "Check ECC" },
+              MP199: { monthly: 30, dapLabel: "Check ECC" }
             },
             zero36: {
-              MP48: { monthly: 40, dapLabel: "NA" },
+              MP48: { monthly: "NA", dapLabel: "NA" },
               MP69: { monthly: "NA", dapLabel: "NA" },
               MP89: { monthly: "NA", dapLabel: "NA" },
-              MP99: { monthly: 35, dapLabel: "Check ECC" },
-              MP109: { monthly: 25, dapLabel: "Check ECC" },
-              MP139: { monthly: 25, dapLabel: "Check ECC" },
-              MP169: { monthly: 20, dapLabel: "Check ECC" },
-              MP199: { monthly: 5, dapLabel: "Check ECC" }
+              MP99: { monthly: "NA", dapLabel: "Check ECC" },
+              MP109: { monthly: 50, dapLabel: "Check ECC" },
+              MP139: { monthly: 45, dapLabel: "Check ECC" },
+              MP169: { monthly: 35, dapLabel: "Check ECC" },
+              MP199: { monthly: 20, dapLabel: "Check ECC" }
             }
           }
         }
@@ -2326,19 +2327,19 @@ storages: [
               MP199: { devicePrice: 0, dap: 1200, totalUpfront: 1200 }
             },
             zero24: {
-              MP48: { monthly: 92, dapLabel: "NA" },
-MP69: { monthly: 70, dapLabel: "Check ECC" },
-MP89: { monthly: 70, dapLabel: "Check ECC" },
-MP99: { monthly: 65, dapLabel: "Check ECC" },
-MP109: { monthly: 65, dapLabel: "Check ECC" },
-MP139: { monthly: 60, dapLabel: "Check ECC" },
-MP169: { monthly: 50, dapLabel: "Check ECC" },
-              MP199: { monthly: 30, dapLabel: "Check ECC" }
+              MP48: { monthly: 74, dapLabel: "NA" },
+              MP69: { monthly: "NA", dapLabel: "Check ECC" },
+              MP89: { monthly: "NA", dapLabel: "Check ECC" },
+              MP99: { monthly: 70, dapLabel: "Check ECC" },
+              MP109: { monthly: 70, dapLabel: "Check ECC" },
+              MP139: { monthly: 65, dapLabel: "Check ECC" },
+              MP169: { monthly: 60, dapLabel: "Check ECC" },
+              MP199: { monthly: 50, dapLabel: "Check ECC" }
             },
             zero36: {
-              MP48: { monthly: 61, dapLabel: "NA" },
-              MP69: { monthly: 45, dapLabel: "Check ECC" },
-              MP89: { monthly: 45, dapLabel: "Check ECC" },
+              MP48: { monthly: 45, dapLabel: "NA" },
+              MP69: { monthly: "NA", dapLabel: "Check ECC" },
+              MP89: { monthly: "NA", dapLabel: "Check ECC" },
               MP99: { monthly: 40, dapLabel: "Check ECC" },
               MP109: { monthly: 40, dapLabel: "Check ECC" },
               MP139: { monthly: 35, dapLabel: "Check ECC" },
@@ -2839,7 +2840,7 @@ aliases: ["oppo", "reno15"],
 storages: [
 {
         storage: "Default",
-        rrp: 2599,
+        rrp: 2399,
         regions: {
           ECEM: {
             upfront: {
@@ -2861,7 +2862,7 @@ MP169: { devicePrice: 0, dap: 1400, totalUpfront: 1400 },
 MP199: { devicePrice: 0, dap: 1400, totalUpfront: 1400 }
 },
             zero24: {
-              MP48: { monthly: 108, dapLabel: "NA" },
+              MP48: { monthly: 99, dapLabel: "NA" },
               MP69: { monthly: 85, dapLabel: "Check ECC" },
               MP89: { monthly: 85, dapLabel: "Check ECC" },
               MP99: { monthly: 75, dapLabel: "Check ECC" },
@@ -2891,7 +2892,7 @@ aliases: ["oppo", "reno15pro"],
 storages: [
 {
         storage: "Default",
-        rrp: 3299,
+        rrp: 2999,
         regions: {
           ECEM: {
             upfront: {
@@ -2913,7 +2914,7 @@ storages: [
               MP199: { devicePrice: 0, dap: 1900, totalUpfront: 1900 }
             },
             zero24: {
-              MP48: { monthly: 137, dapLabel: "NA" },
+              MP48: { monthly: 124, dapLabel: "NA" },
               MP69: { monthly: "NA", dapLabel: "Check ECC" },
               MP89: { monthly: "NA", dapLabel: "Check ECC" },
               MP99: { monthly: 90, dapLabel: "Check ECC" },
@@ -2923,7 +2924,7 @@ storages: [
               MP199: { monthly: 55, dapLabel: "Check ECC" }
             },
             zero36: {
-              MP48: { monthly: 91, dapLabel: "NA" },
+              MP48: { monthly: 82, dapLabel: "NA" },
               MP69: { monthly: "NA", dapLabel: "Check ECC" },
               MP89: { monthly: "NA", dapLabel: "Check ECC" },
               MP99: { monthly: 60, dapLabel: "Check ECC" },
@@ -3408,7 +3409,6 @@ MP199: { monthly: 35, dapLabel: "Check ECC" }
 {
 model: "Realme C100 5G",
 aliases: ["realme", "c100"],
-eol: true,
 storages: [
 {
 storage: "4+256GB",
@@ -4192,7 +4192,7 @@ MP199: { monthly: 155, dapLabel: "Check ECC" }
 },
 {
 storage: "1TB",
-rrp: 10999,
+rrp: 10099,
 regions: {
 ECEM: {
 upfront: {
@@ -4356,7 +4356,7 @@ MP99: { monthly: 35, dapLabel: "Check ECC" },
 MP109: { monthly: 35, dapLabel: "Check ECC" },
 MP139: { monthly: 30, dapLabel: "Check ECC" },
 MP169: { monthly: 20, dapLabel: "Check ECC" },
-MP199: { monthly: 0, dapLabel: "Check ECC" }
+MP199: { monthly: "NA", dapLabel: "NA" }
 }
 }
 }
@@ -4413,7 +4413,7 @@ aliases: ["vivo", "v70"],
 storages: [
 {
 storage: "Default",
-rrp: 2599,
+rrp: 2499,
 regions: {
 ECEM: {
 upfront: {
