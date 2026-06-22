@@ -53,8 +53,8 @@ export type CatalogBrand = {
 };
 
 // Pricing source — update this whenever a new GTM is applied
-export const CATALOG_SOURCE = "GTM 11 June 2026";
-export const CATALOG_DATE = "2026-06-19";
+export const CATALOG_SOURCE = "GTM 19 June 2026";
+export const CATALOG_DATE = "2026-06-22";
 
 // Latest updates — shown at top of app so staff stay informed without reading emails
 // Keep most recent first. Update whenever a new GTM/email changes the catalog.
@@ -66,6 +66,12 @@ export type AppUpdate = {
 };
 
 export const LATEST_UPDATES: AppUpdate[] = [
+  {
+    date: "19 Jun",
+    type: "alert",
+    text: "⚠️ Home Device: Samsung Galaxy Tab S10 Lite — stock constraint, temporarily disabled",
+    subtext: "Stop selling until further notice (eff. 19 Jun). Tab S10 Lite reprice coming 2 Jul 2026. Samsung 65\" The Frame QLED EOL eff. 19 Jun.",
+  },
   {
     date: "11 Jun",
     type: "new",
