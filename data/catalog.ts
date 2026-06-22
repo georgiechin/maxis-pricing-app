@@ -1952,12 +1952,13 @@ MP199: { monthly: "NA", dapLabel: "Check ECC" }
 },
 {
 model: "Honor 500 Smart 5G",
-aliases: ["honor", "honor500"],
-storages: [
-{
-storage: "8+256GB",
-rrp: 1099,
-regions: {
+ aliases: ["honor", "honor500"],
+ storages: [
+ {
+ storage: "8+256GB",
+ rrp: 1099,
+ promo: "Port-in Special: FREE on MP69 (Outbound Striker / in-store port-in, 14 Apr – 30 Sept 2026). Standard upfront pricing applies for non-port-in.",
+ regions: {
 ECEM: {
 upfront: {
 MP69: { devicePrice: 129, dap: 120, totalUpfront: 249 },
@@ -2138,7 +2139,7 @@ storages: [
 {
 storage: "16+512GB",
 rrp: 7699,
-      promo: "Launch 12 Jun 2026. NEW — Zerolution 24M available.",
+      promo: "Launch 12 Jun 2026. NEW — Zerolution 24M available. Port-in Rebate RM20x6mths applicable (14 Apr – 30 Sept 2026, excl. MP79).",
 regions: {
 ECEM: {
 upfront: {
