@@ -53,8 +53,8 @@ export type CatalogBrand = {
 };
 
 // Pricing source — update this whenever a new GTM is applied
-export const CATALOG_SOURCE = "GTM 25 June 2026";
-export const CATALOG_DATE = "2026-06-22";
+export const CATALOG_SOURCE = "GTM 26 June 2026";
+export const CATALOG_DATE = "2026-06-27";
 
 // Latest updates — shown at top of app so staff stay informed without reading emails
 // Keep most recent first. Update whenever a new GTM/email changes the catalog.
@@ -66,6 +66,12 @@ export type AppUpdate = {
 };
 
 export const LATEST_UPDATES: AppUpdate[] = [
+  {
+    date: "26 Jun",
+    type: "new",
+    text: "📱 HP75 + 4G Device Rebate: Samsung A07 LTE / Realme C85 4G / Nubia V80 Max 4G FREE on HP75 24M",
+    subtext: "Campaign 26 Jun – 30 Sep 2026 · RM10/mth rebate x 24M · New sign-up only · Not stackable with MNP rebate",
+  },
   {
     date: "25 Jun",
     type: "change",
@@ -202,10 +208,12 @@ rrp: 899,
 regions: {
 HOTLINK: {
 hotlink12: {
-HP65: { devicePrice: 199, dap: 0, totalUpfront: 199, monthly: 65 }
+HP65: { devicePrice: 199, dap: 0, totalUpfront: 199, monthly: 65 },
+HP75: { devicePrice: 199, dap: 0, totalUpfront: 199, monthly: 75 }
 },
 hotlink24: {
-HP65: { devicePrice: 0, dap: 180, totalUpfront: 180, monthly: 57.50 }
+HP65: { devicePrice: 0, dap: 180, totalUpfront: 180, monthly: 57.50 },
+HP75: { devicePrice: 0, dap: 180, totalUpfront: 180, monthly: 67.50 }
 }
 }
 }
@@ -346,7 +354,7 @@ model: "Vivo Y11d 4G",
 aliases: ["vivo", "y11d", "hotlink"],
 storages: [{
 storage: "4+128GB",
-rrp: 549,
+rrp: 599,
 regions: {
 HOTLINK: {
 hotlink12: {
@@ -3544,7 +3552,8 @@ brand: "Samsung",
 models: [
 {
 model: "Samsung Galaxy A07 5G",
-aliases: ["samsung", "a07", "a075g"],
+            aliases: ["samsung", "a07", "a075g"],
+            // HP75 promo note: A07 LTE (4G) RRP RM899 available FREE on Hotlink Postpaid 75 (HP75+4G Device Offer). RM10/mth rebate x 12 or 24 mths. Campaign 26 Jun – 30 Sep 2026. New sign-ups only. Not stackable. See HOTLINK region for HP65/HP75 entries.
 storages: [{
 storage: "8+256GB",
 rrp: 1029,
