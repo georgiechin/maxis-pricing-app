@@ -337,7 +337,7 @@ regions: {
 HOTLINK: {
 hotlink12: {
 HP65: { devicePrice: 459, dap: 0, totalUpfront: 459, monthly: 65 },
-HP75: { devicePrice: 399, dap: 0, totalUpfront: 399, monthly: 75 }
+HP75: { devicePrice: 329, dap: 0, totalUpfront: 329, monthly: 75 }
 },
 hotlink24: {
 HP65: { devicePrice: 99, dap: 180, totalUpfront: 279, monthly: 57.50 },
@@ -357,7 +357,7 @@ regions: {
 HOTLINK: {
 hotlink12: {
 HP65: { devicePrice: 459, dap: 0, totalUpfront: 459, monthly: 65 },
-HP75: { devicePrice: 399, dap: 0, totalUpfront: 399, monthly: 75 }
+HP75: { devicePrice: 329, dap: 0, totalUpfront: 329, monthly: 75 }
 },
 hotlink24: {
 HP65: { devicePrice: 99, dap: 180, totalUpfront: 279, monthly: 57.50 },
@@ -376,7 +376,8 @@ rrp: 599,
 regions: {
 HOTLINK: {
 hotlink12: {
-HP65: { devicePrice: 199, dap: 0, totalUpfront: 199, monthly: 65 }
+HP65: { devicePrice: 199, dap: 0, totalUpfront: 199, monthly: 65 },
+HP75: { devicePrice: 199, dap: 0, totalUpfront: 199, monthly: 75 }
 }
 }
 }
@@ -2033,7 +2034,7 @@ storages: [
 {
 storage: "256GB",
 rrp: 1499,
-      promo: "Price down — RM299 with MP89. Free on MP139.",
+      promo: "Price down — RM299 with MP89. Free on MP139. HP75 4G Device Rebate: RM10/month x 24 months rebate (26 Jun – 30 Sep 2026, new sign-up only, not stackable with other rebates).",
 regions: {
 ECEM: {
             upfront: {
@@ -3908,10 +3909,10 @@ MP199: { monthly: "NA", dapLabel: "NA" }
 brand: "Samsung",
 models: [
 {
-// CHANGELOG: Samsung Galaxy A27 5G added 2-9 Jul GTM (eff 9 Jul 2026). Realme 16T 5G added (eff 3 Jul 2026). Samsung A07 5G MP69 upfront repriced to devicePrice=99, dap=120 (eff 2 Jul 2026).
+      // CHANGELOG: Samsung Galaxy A27 5G added 2-9 Jul GTM (eff 9 Jul 2026). Realme 16T 5G added (eff 3 Jul 2026). Samsung A07 5G MP69 upfront repriced to devicePrice=99, dap=120 (eff 2 Jul 2026).
       model: "Samsung Galaxy A07 5G",
             aliases: ["samsung", "a07", "a075g"],
-            // HP75 promo note: A07 LTE (4G) RRP RM899 available FREE on Hotlink Postpaid 75 (HP75+4G Device Offer). RM10/mth rebate x 12 or 24 mths. Campaign 26 Jun – 30 Sep 2026. New sign-ups only. Not stackable. See HOTLINK region for HP65/HP75 entries.
+            // HP75 promo note: Samsung Galaxy A07 LTE (4G, RRP RM899) — SEPARATE device from this A07 5G (RRP RM1,029) — is available FREE on Hotlink Postpaid 75 (HP75+4G Device Offer). 12-month price: RM199 upfront; 24-month: FREE. RM10/mth rebate x contract duration. Campaign 26 Jun – 30 Sep 2026. New sign-ups only. Not stackable with MNP/Roadshow rebates. HP75 region entries (HP65/HP75) for the 4G LTE variant should be tracked in a separate Samsung Galaxy A07 LTE (4G) device entry.
 storages: [{
 storage: "8+256GB",
 rrp: 1029,
