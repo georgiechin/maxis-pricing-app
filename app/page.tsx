@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import {
   catalog,
   CATALOG_SOURCE,
@@ -28,6 +28,49 @@ const hotlinkTabs: { key: PricingMode; label: string; short: string }[] = [
 const mpOrder = ["MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
 const mpOrderZero = ["MP48", "MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
 const hpOrder = ["HP45", "HP65", "HP75"];
+
+// ── Scan view (new default front door): one searchable table, scroll-and-find like the PDF ──
+const SCAN_MODES: { key: PricingMode; label: string; short: string }[] = [
+  { key: "zero24", label: "Zerolution 24M", short: "Zero 24M" },
+  { key: "zero36", label: "Zerolution 36M", short: "Zero 36M" },
+  { key: "upfront", label: "Upfront 24M", short: "Up 24M" },
+  { key: "upfront36", label: "Upfront 36M", short: "Up 36M" },
+  { key: "hotlink12", label: "Hotlink 12M", short: "HL 12M" },
+  { key: "hotlink24", label: "Hotlink 24M", short: "HL 24M" },
+];
+function scanRegionFor(mode: PricingMode): "ECEM" | "HOTLINK" {
+  return mode === "hotlink12" || mode === "hotlink24" ? "HOTLINK" : "ECEM";
+}
+function scanPlansFor(mode: PricingMode): string[] {
+  if (mode === "zero24" || mode === "zero36") return mpOrderZero;   // includes MP48 (Shareline)
+  if (mode === "hotlink12" || mode === "hotlink24") return hpOrder;
+  return mpOrder;
+}
+function scanIsMonthly(mode: PricingMode): boolean {
+  return mode === "zero24" || mode === "zero36";
+}
+// numeric value to show in a scan cell for (storage, mode, plan), or null if not available
+function readScanCell(storage: CatalogStorage, mode: PricingMode, plan: string): number | null {
+  const region = scanRegionFor(mode);
+  const table = (region === "HOTLINK" ? storage.regions.HOTLINK : storage.regions.ECEM)?.[mode];
+  const row = table?.[plan] as
+    | { monthly?: number | string; totalUpfront?: number | string; devicePrice?: number | string }
+    | undefined;
+  if (!row) return null;
+  const raw = scanIsMonthly(mode)
+    ? row.monthly
+    : row.totalUpfront !== undefined
+    ? row.totalUpfront
+    : row.devicePrice;
+  if (raw === undefined || raw === "NA") return null;
+  const n = Number(raw);
+  return isNaN(n) ? null : n;
+}
+function scanCellText(v: number | null, mode: PricingMode): string {
+  if (v === null) return "—";
+  if (v === 0) return "FREE";
+  return scanIsMonthly(mode) ? `RM${v}` : `RM${v.toLocaleString()}`;
+}
 
 function getDefaultRegion(storage: CatalogStorage): "ECEM" | "HOTLINK" {
   return storage.regions.ECEM ? "ECEM" : "HOTLINK";
@@ -227,6 +270,37 @@ export default function Page() {
 
   // Home / start screen — "What does your customer want?" front door (shown on open)
   const [homeScreen, setHomeScreen] = useState(true);
+
+  // ── Scan view: the new default front door (scroll-and-find table, like the PDF) ──
+  const [scanView, setScanView] = useState(true);
+  const [scanMode, setScanMode] = useState<PricingMode>("zero24");
+  const [scanPlan, setScanPlan] = useState("MP99");   // mobile single-plan column (remembered)
+  const [scanQuery, setScanQuery] = useState("");
+  const [scanBrand, setScanBrand] = useState("");     // "" = all brands
+  const [topPhones, setTopPhones] = useState<string[]>([]);  // most-used device keys (daily-smart)
+  // hydrate remembered prefs after mount (avoids SSR mismatch)
+  useEffect(() => {
+    try {
+      const m = localStorage.getItem("maxis-scan-mode"); if (m) setScanMode(m as PricingMode);
+      const p = localStorage.getItem("maxis-scan-plan"); if (p) setScanPlan(p);
+      const t = localStorage.getItem("maxis-top-phones"); if (t) setTopPhones(JSON.parse(t));
+    } catch { /* ignore */ }
+  }, []);
+  const pickScanMode = (m: PricingMode) => {
+    setScanMode(m);
+    try { localStorage.setItem("maxis-scan-mode", m); } catch { /* ignore */ }
+  };
+  const pickScanPlan = (p: string) => {
+    setScanPlan(p);
+    try { localStorage.setItem("maxis-scan-plan", p); } catch { /* ignore */ }
+  };
+  const recordTopPhone = (key: string) => {
+    setTopPhones((prev) => {
+      const next = [key, ...prev.filter((k) => k !== key)].slice(0, 8);
+      try { localStorage.setItem("maxis-top-phones", JSON.stringify(next)); } catch { /* ignore */ }
+      return next;
+    });
+  };
 
   // Upsell Advisor
   const [upsellMode, setUpsellMode] = useState(false);
@@ -818,6 +892,68 @@ export default function Page() {
     setSearchFocused(false);
   };
 
+  // Scan view -> existing detail/copy: set the selection and leave scan. Reuses all existing logic.
+  const goToDevice = (
+    brand: string,
+    model: CatalogModel,
+    storageName: string,
+    plan: string,
+    mode: PricingMode,
+  ) => {
+    recordTopPhone(`${brand}|${model.model}|${storageName}`);
+    navigateToDevice(brand, model, storageName, mode, plan);
+    setScanView(false);
+  };
+
+  // Devices that have data for the current scan mode, filtered by brand + search, deduped.
+  const scanRows = useMemo(() => {
+    const q = scanQuery.toLowerCase().trim();
+    const region = scanRegionFor(scanMode);
+    const seen = new Set<string>();
+    const out: { brand: string; model: CatalogModel; storage: CatalogStorage }[] = [];
+    for (const b of catalog) {
+      if (scanBrand && b.brand !== scanBrand) continue;
+      for (const m of b.models) {
+        for (const s of m.storages) {
+          const has = !!(region === "HOTLINK" ? s.regions.HOTLINK?.[scanMode] : s.regions.ECEM?.[scanMode]);
+          if (!has) continue;
+          const key = `${m.model}|${s.storage}`;
+          if (seen.has(key)) continue;
+          if (q && `${m.model} ${s.storage}`.toLowerCase().indexOf(q) < 0) continue;
+          seen.add(key);
+          out.push({ brand: b.brand, model: m, storage: s });
+        }
+      }
+    }
+    return out;
+  }, [scanQuery, scanBrand, scanMode]);
+
+  // Brands that have any device for the current mode (for the filter chips).
+  const scanBrands = useMemo(() => {
+    const region = scanRegionFor(scanMode);
+    const set: string[] = [];
+    for (const b of catalog) {
+      const has = b.models.some((m) =>
+        m.storages.some((s) => (region === "HOTLINK" ? s.regions.HOTLINK?.[scanMode] : s.regions.ECEM?.[scanMode])),
+      );
+      if (has) set.push(b.brand);
+    }
+    return set;
+  }, [scanMode]);
+
+  // "Your top phones" resolved to device objects.
+  const scanTop = useMemo(() => {
+    const out: { brand: string; model: CatalogModel; storage: CatalogStorage }[] = [];
+    for (const k of topPhones) {
+      const [brand, modelName, storageName] = k.split("|");
+      const b = catalog.find((x) => x.brand === brand);
+      const m = b?.models.find((x) => x.model === modelName);
+      const s = m?.storages.find((x) => x.storage === storageName);
+      if (b && m && s) out.push({ brand, model: m, storage: s });
+    }
+    return out;
+  }, [topPhones]);
+
   const pinToCompare = () => {
     const storage = selectedModel.storages.find((s) => s.storage === selectedStorage) || selectedModel.storages[0];
     const device: CompareDevice = { brand: selectedBrand, model: selectedModel, storage };
@@ -1142,9 +1278,210 @@ export default function Page() {
     return () => document.removeEventListener("mousedown", handler);
   }, [searchQuery, searchFocused]);
 
+  // scanRows grouped by brand for sectioned rendering
+  const scanGroups = useMemo(() => {
+    const groups: { brand: string; rows: { brand: string; model: CatalogModel; storage: CatalogStorage }[] }[] = [];
+    for (const r of scanRows) {
+      let g = groups[groups.length - 1];
+      if (!g || g.brand !== r.brand) { g = { brand: r.brand, rows: [] }; groups.push(g); }
+      g.rows.push(r);
+    }
+    return groups;
+  }, [scanRows]);
+  // pick a sensible plan when tapping a device row: the remembered plan if valid, else cheapest available
+  const planForDevice = (storage: CatalogStorage, mode: PricingMode): string => {
+    const plans = scanPlansFor(mode);
+    if (plans.includes(scanPlan) && readScanCell(storage, mode, scanPlan) !== null) return scanPlan;
+    let best: string | null = null;
+    let bestV = Infinity;
+    for (const p of plans) {
+      const v = readScanCell(storage, mode, p);
+      if (v !== null && v < bestV) { bestV = v; best = p; }
+    }
+    return best || plans[plans.length - 1];
+  };
+
   return (
     <main className="min-h-screen bg-[#0a0d0f] text-[#f0f2f4]">
-      <div className="min-h-screen lg:grid lg:grid-cols-[240px_minmax(0,1fr)_300px] lg:grid-rows-[auto_1fr]">
+      {scanView && (
+        <div className="min-h-screen px-3 py-3 lg:px-6 lg:py-5 mx-auto max-w-[1120px]">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-emerald-400 font-medium text-base lg:text-lg">Device prices</span>
+            <span className="text-white/40 text-xs hidden sm:inline">· scroll or search to the phone</span>
+            <span className="flex-1" />
+            <button
+              onClick={() => { setScanView(false); resetAll(); }}
+              className="rounded-lg border border-white/15 px-3 py-1.5 text-sm text-white/80 hover:bg-white/5"
+            >
+              Tools
+            </button>
+          </div>
+
+          <input
+            value={scanQuery}
+            onChange={(e) => setScanQuery(e.target.value)}
+            placeholder="Search phone — e.g. 16 pro, a07, redmi, 256"
+            className="w-full rounded-lg border border-white/12 bg-[#111417] px-3 py-2.5 text-sm text-white placeholder:text-white/35 outline-none focus:border-emerald-500/50"
+          />
+
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {SCAN_MODES.map((t) => (
+              <button
+                key={t.key}
+                onClick={() => pickScanMode(t.key)}
+                className={`rounded-full px-3 py-1 text-xs ${
+                  scanMode === t.key
+                    ? "border border-emerald-500/50 bg-emerald-500/15 text-emerald-300"
+                    : "border border-white/12 text-white/70 hover:bg-white/5"
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            <button
+              onClick={() => setScanBrand("")}
+              className={`rounded-full px-3 py-1 text-xs ${scanBrand === "" ? "border border-emerald-500/50 bg-emerald-500/15 text-emerald-300" : "border border-white/12 text-white/70 hover:bg-white/5"}`}
+            >
+              All
+            </button>
+            {scanBrands.map((b) => (
+              <button
+                key={b}
+                onClick={() => setScanBrand(b)}
+                className={`rounded-full px-3 py-1 text-xs ${scanBrand === b ? "border border-emerald-500/50 bg-emerald-500/15 text-emerald-300" : "border border-white/12 text-white/70 hover:bg-white/5"}`}
+              >
+                {b}
+              </button>
+            ))}
+          </div>
+
+          {scanTop.length > 0 && !scanQuery && (
+            <div className="mt-3">
+              <div className="mb-1 text-xs text-emerald-400">★ Your top phones</div>
+              <div className="flex flex-wrap gap-1.5">
+                {scanTop.map((r, i) => (
+                  <button
+                    key={i}
+                    onClick={() => goToDevice(r.brand, r.model, r.storage.storage, planForDevice(r.storage, scanMode), scanMode)}
+                    className="rounded-lg border border-white/12 bg-[#111417] px-2.5 py-1.5 text-xs text-white/85 hover:border-emerald-500/40"
+                  >
+                    {r.model.model}{r.storage.storage && r.storage.storage !== "Default" ? ` ${r.storage.storage}` : ""}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="mt-3 hidden overflow-hidden rounded-xl border border-white/8 lg:block">
+            <div className="max-h-[68vh] overflow-auto">
+              <table className="w-full border-collapse text-sm">
+                <thead>
+                  <tr>
+                    <th className="sticky left-0 top-0 z-30 w-[200px] bg-[#15191c] px-3 py-2 text-left text-xs font-medium text-white/60">Phone</th>
+                    {scanPlansFor(scanMode).map((p) => (
+                      <th key={p} className="sticky top-0 z-20 bg-[#15191c] px-2 py-2 text-right text-xs font-medium text-white/60">
+                        {p}{p === "MP48" ? <span className="ml-1 text-emerald-400">Shareline</span> : null}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {scanGroups.map((g) => {
+                    const plans = scanPlansFor(scanMode);
+                    return (
+                      <Fragment key={g.brand}>
+                        <tr>
+                          <td colSpan={plans.length + 1} className="sticky left-0 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-300">{g.brand}</td>
+                        </tr>
+                        {g.rows.map((r, ri) => {
+                          const vals = plans.map((p) => readScanCell(r.storage, scanMode, p));
+                          const lo = Math.min(...vals.filter((v): v is number => v !== null));
+                          return (
+                            <tr key={ri} className="border-t border-white/5 hover:bg-white/[0.03]">
+                              <td
+                                onClick={() => goToDevice(r.brand, r.model, r.storage.storage, planForDevice(r.storage, scanMode), scanMode)}
+                                className="sticky left-0 z-10 cursor-pointer bg-[#0a0d0f] px-3 py-2 text-left text-white/90 hover:text-emerald-300"
+                              >
+                                {r.model.model}{r.storage.storage && r.storage.storage !== "Default" ? <span className="text-white/40"> {r.storage.storage}</span> : null}
+                              </td>
+                              {plans.map((p, pi) => {
+                                const v = vals[pi];
+                                return (
+                                  <td
+                                    key={p}
+                                    onClick={() => v !== null && goToDevice(r.brand, r.model, r.storage.storage, p, scanMode)}
+                                    className={`px-2 py-2 text-right tabular-nums ${v === null ? "text-white/25" : v === lo ? "cursor-pointer font-medium text-emerald-400" : "cursor-pointer text-white/85"}`}
+                                  >
+                                    {scanCellText(v, scanMode)}
+                                  </td>
+                                );
+                              })}
+                            </tr>
+                          );
+                        })}
+                      </Fragment>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div className="lg:hidden">
+            <div className="mt-3 flex items-center gap-2">
+              <span className="whitespace-nowrap text-xs text-white/60">Price on</span>
+              <select
+                value={scanPlansFor(scanMode).includes(scanPlan) ? scanPlan : scanPlansFor(scanMode)[0]}
+                onChange={(e) => pickScanPlan(e.target.value)}
+                className="flex-1 rounded-lg border border-white/12 bg-[#111417] px-2 py-2 text-sm text-white outline-none"
+              >
+                {scanPlansFor(scanMode).map((p) => (
+                  <option key={p} value={p}>{p}{p === "MP48" ? " (Shareline)" : ""}</option>
+                ))}
+              </select>
+              <span className="whitespace-nowrap text-xs text-emerald-400">✓ saved</span>
+            </div>
+            <div className="mt-2">
+              {scanGroups.map((g) => (
+                <div key={g.brand}>
+                  <div className="mt-2 rounded-md bg-emerald-500/10 px-2 py-1 text-xs font-medium text-emerald-300">{g.brand}</div>
+                  {g.rows.map((r, ri) => {
+                    const mp = scanPlansFor(scanMode).includes(scanPlan) ? scanPlan : scanPlansFor(scanMode)[0];
+                    const v = readScanCell(r.storage, scanMode, mp);
+                    return (
+                      <div
+                        key={ri}
+                        onClick={() => goToDevice(r.brand, r.model, r.storage.storage, planForDevice(r.storage, scanMode), scanMode)}
+                        className="flex min-h-[46px] cursor-pointer items-center gap-2 border-b border-white/6 px-1 py-2.5 active:bg-white/5"
+                      >
+                        <div className="flex-1 text-sm text-white/90">
+                          {r.model.model}{r.storage.storage && r.storage.storage !== "Default" ? <span className="text-white/40"> {r.storage.storage}</span> : null}
+                        </div>
+                        <div className={`whitespace-nowrap text-right text-base font-medium ${v === 0 ? "text-emerald-400" : "text-white"}`}>
+                          {scanCellText(v, scanMode)}
+                          <div className="text-[11px] font-normal text-white/40">{v === null ? "n/a" : `${scanIsMonthly(scanMode) ? "/mth " : ""}· ${mp}`}</div>
+                        </div>
+                        <span className="text-white/30">›</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {scanRows.length === 0 && (
+            <div className="mt-6 text-center text-sm text-white/40">No phone matches that.</div>
+          )}
+          <p className="mt-3 text-[11px] text-white/35">
+            <span className="text-emerald-400">Green</span> = cheapest plan in the row. MP48 = Shareline (no ECC). Tap a phone for the full breakdown + copy to WhatsApp.
+          </p>
+        </div>
+      )}
+      <div style={scanView ? { display: "none" } : undefined} className="min-h-screen lg:grid lg:grid-cols-[240px_minmax(0,1fr)_300px] lg:grid-rows-[auto_1fr]">
 
         {/* ── HEADER ──────────────────────────────────────────────────────── */}
         <header className="relative border-b border-white/8 bg-[#111417] px-4 py-4 lg:col-span-3 lg:px-5">
@@ -1152,8 +1489,8 @@ export default function Page() {
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <button
-                onClick={() => { setFreeDeviceMode(false); setByPlanMode(false); setUpsellMode(false); setBudgetMode(false); setWifiMode(false); setHomeScreen(true); }}
-                title="Home"
+                onClick={() => { setFreeDeviceMode(false); setByPlanMode(false); setUpsellMode(false); setBudgetMode(false); setWifiMode(false); setHomeScreen(true); setScanView(true); }}
+                title="Back to price list"
                 className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#00D46A] text-sm font-bold text-black transition hover:opacity-90 active:scale-95"
               >
                 🏠
@@ -3029,7 +3366,8 @@ export default function Page() {
         })()}
       </div>
 
-      {/* Mobile sticky bar */}
+      {/* Mobile sticky bar (hidden on the scan front door) */}
+      {!scanView && (
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-[#0e1114]/95 px-4 py-3 backdrop-blur-md lg:hidden">
         <div className="flex items-center gap-3">
           <div className="min-w-0 flex-1">
@@ -3051,6 +3389,7 @@ export default function Page() {
           </button>
         </div>
       </div>
+      )}
 
       {/* ── Compare Panel ───────────────────────────────────────────────── */}
       {showCompare && compareA && compareB && (
