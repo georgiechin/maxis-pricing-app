@@ -2176,14 +2176,14 @@ export default function Page() {
                 bLabel = "Pay today"; bVal = "RM0";
               }
               return (
-                <div className="mt-4 grid grid-cols-2 gap-3">
-                  <div className="rounded-2xl border border-[#00D46A]/40 bg-[#00D46A]/12 px-4 py-4">
+                <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <div className="min-w-0 rounded-2xl border border-[#00D46A]/40 bg-[#00D46A]/12 px-4 py-4">
                     <div className="text-[11px] font-bold uppercase tracking-wide text-[#00D46A]">{aLabel}</div>
-                    <div className="mt-1 text-3xl font-extrabold text-white sm:text-4xl">{aVal}</div>
+                    <div className="mt-1 truncate text-3xl font-extrabold tracking-tight text-white sm:text-4xl">{aVal}</div>
                   </div>
-                  <div className="rounded-2xl border border-white/15 bg-[#181c1f] px-4 py-4">
+                  <div className="min-w-0 rounded-2xl border border-white/15 bg-[#181c1f] px-4 py-4">
                     <div className="text-[11px] font-bold uppercase tracking-wide text-slate-300">{bLabel}</div>
-                    <div className="mt-1 text-3xl font-extrabold text-white sm:text-4xl">{bVal}</div>
+                    <div className="mt-1 truncate text-3xl font-extrabold tracking-tight text-white sm:text-4xl">{bVal}</div>
                   </div>
                 </div>
               );
@@ -3152,9 +3152,9 @@ export default function Page() {
 
                   {/* DAP + Total row */}
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="rounded-2xl border border-white/10 bg-white/4 p-4 text-center">
+                    <div className="min-w-0 rounded-2xl border border-white/10 bg-white/4 p-4 text-center">
                       <div className="mb-1 text-xs text-slate-400">DAP Deposit</div>
-                      <div className="text-2xl font-bold text-white">{r.dapLabel || formatMoney(r.dap)}</div>
+                      <div className={`font-bold leading-tight text-white break-words ${r.dapLabel ? "text-base" : "text-2xl"}`}>{r.dapLabel || formatMoney(r.dap)}</div>
                       <div className="mt-0.5 text-[10px] text-slate-500">returned monthly</div>
                     </div>
                     <div className="rounded-2xl border border-[#00D46A]/30 bg-[#00D46A]/8 p-4 text-center">
@@ -3385,10 +3385,13 @@ function SearchPanel({
 }
 
 function StackValue({ label, value }: { label: string; value: string }) {
+  // long text labels (e.g. "No ECC — Shareline") render smaller so they don't clip on mobile;
+  // numeric values keep the big size.
+  const isText = /[A-Za-z]{3,}/.test(value.replace(/^RM/, "").replace(/NA/, ""));
   return (
-    <div className="rounded-xl border border-white/8 bg-[#181c1f] px-4 py-3">
+    <div className="min-w-0 rounded-xl border border-white/8 bg-[#181c1f] px-4 py-3">
       <div className="text-sm text-slate-400">{label}</div>
-      <div className="mt-2 text-2xl font-bold text-white">{value}</div>
+      <div className={`mt-2 font-bold text-white leading-tight break-words ${isText ? "text-base" : "text-2xl"}`}>{value}</div>
     </div>
   );
 }
