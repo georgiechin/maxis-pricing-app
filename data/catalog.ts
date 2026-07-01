@@ -53,8 +53,8 @@ export type CatalogBrand = {
 };
 
 // Pricing source — update this whenever a new GTM is applied
-export const CATALOG_SOURCE = "GTM 2-9 July 2026";
-export const CATALOG_DATE = "2026-06-27";
+export const CATALOG_SOURCE = "GTM 2-9 July 2026 + Port-in Rebate 29 Jun 2026";
+export const CATALOG_DATE = "2026-07-01";
 
 // Latest updates — shown at top of app so staff stay informed without reading emails
 // Keep most recent first. Update whenever a new GTM/email changes the catalog.
@@ -66,6 +66,12 @@ export type AppUpdate = {
 };
 
 export const LATEST_UPDATES: AppUpdate[] = [
+  {
+    date: "29 Jun",
+    type: "alert",
+    text: "🎁 Port-in Rebate: RM20 x 12 mths on MP99 & above · RM20 x 6 mths on MP69 (in-store walk-in)",
+    subtext: "MP99+ offer: 1 Jul – 30 Sep 2026 · MP69 offer extended to 30 Sep 2026 · Not stackable with other bill rebate offers · Outbound Striker: HP50 RM10x12, HP75/MP69 RM20x6, MP99+ RM20x12",
+  },
   {
     date: "9 Jul",
     type: "new",
