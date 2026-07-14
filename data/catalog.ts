@@ -53,8 +53,8 @@ export type CatalogBrand = {
 };
 
 // Pricing source — update this whenever a new GTM is applied
-export const CATALOG_SOURCE = "GTM 16 July 2026 (Price Down: Realme 16T, Samsung A27, Vivo Y21) + GTM 2-9 July 2026 + Port-in Rebate 29 Jun 2026";
-export const CATALOG_DATE = "2026-07-16";
+export const CATALOG_SOURCE = "GTM 16 July 2026 (Price Down: Realme 16T, Samsung A27, Vivo Y21) + GTM 2-9 July 2026 + Port-in Rebate 29 Jun 2026 + Home Device GTM 13 Jul 2026 (iPad reprice eff 23 Jul, Sharp 75\" TV EOL eff 24 Jul)";
+export const CATALOG_DATE = "2026-07-14";
 
 // Latest updates — shown at top of app so staff stay informed without reading emails
 // Keep most recent first. Update whenever a new GTM/email changes the catalog.
@@ -66,6 +66,12 @@ export type AppUpdate = {
 };
 
 export const LATEST_UPDATES: AppUpdate[] = [
+  {
+    date: "13 Jul",
+    type: "alert",
+    text: "🏠 Home Device: iPad 11\" (11th Gen) 128GB & 256GB + iPad Pro 11\" (6th Gen) 256GB — RRP & Zerolution price UP eff 23 Jul 2026",
+    subtext: "Sharp 75\" 4K Google TV + Soundbar bundle EOL eff 24 Jul 2026 — submit orders ASAP, while-stocks-last",
+  },
   {
     date: "16 Jul",
     type: "change",
