@@ -54,7 +54,7 @@ export type CatalogBrand = {
 
 // Pricing source — update this whenever a new GTM is applied
 export const CATALOG_SOURCE = "GTM 23 Jul 2026 (New: Huawei Pura 90s Pro 5G, Huawei Pura 90s Pro Max 5G; iPad Air 11\"/13\" & iPad Pro 11\"/13\" price updates) + GTM 16 July 2026 (Price Down: Realme 16T, Samsung A27, Vivo Y21) + GTM 2-9 July 2026 + Port-in Rebate 29 Jun 2026 + Home Device GTM 13 Jul 2026";
-export const CATALOG_DATE = "2026-07-15";
+export const CATALOG_DATE = "2026-07-21";
 
 // Latest updates — shown at top of app so staff stay informed without reading emails
 // Keep most recent first. Update whenever a new GTM/email changes the catalog.
@@ -3837,7 +3837,7 @@ MP199: { monthly: 20, dapLabel: "Check ECC" }
             MP169: { monthly: 30, dapLabel: "Check ECC" },
             MP199: { monthly: 10, dapLabel: "Check ECC" }
           },
-          zero36: {
+                      zero36: {
             MP48: { monthly: 38, dapLabel: "NA" },
             MP69: { monthly: 35, dapLabel: "Check ECC" },
             MP89: { monthly: 35, dapLabel: "Check ECC" },
@@ -3845,7 +3845,7 @@ MP199: { monthly: 20, dapLabel: "Check ECC" }
             MP109: { monthly: 30, dapLabel: "Check ECC" },
             MP139: { monthly: 25, dapLabel: "Check ECC" },
             MP169: { monthly: 20, dapLabel: "Check ECC" },
-            MP199: { monthly: 0, dapLabel: "Check ECC" }
+            MP199: { monthly: "NA", dapLabel: "Check ECC" }
           }
         }
       }
@@ -3949,7 +3949,7 @@ model: "Realme 16T 5G",
                 MP109: { monthly: 30, dapLabel: "Check ECC" },
                 MP139: { monthly: 25, dapLabel: "Check ECC" },
                 MP169: { monthly: 20, dapLabel: "Check ECC" },
-                MP199: { monthly: 0, dapLabel: "Check ECC" }
+                MP199: { monthly: "NA", dapLabel: "Check ECC" }
               }
             }
           }
