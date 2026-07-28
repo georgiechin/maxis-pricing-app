@@ -53,8 +53,8 @@ export type CatalogBrand = {
 };
 
 // Pricing source — update this whenever a new GTM is applied
-export const CATALOG_SOURCE = "GTM 23 Jul 2026 (New: Huawei Pura 90s Pro 5G, Huawei Pura 90s Pro Max 5G; iPad Air 11\"/13\" & iPad Pro 11\"/13\" price updates) + GTM 16 July 2026 (Price Down: Realme 16T, Samsung A27, Vivo Y21) + GTM 2-9 July 2026 + Port-in Rebate 29 Jun 2026 + Home Device GTM 13 Jul 2026";
-export const CATALOG_DATE = "2026-07-21";
+export const CATALOG_SOURCE = "GTM 27 Jul 2026 (K2 Port-in: +RM100 DAP waiver 28 Jul 2026 – 31 Jan 2027; RM20x12 bill rebate on HVP switch) + GTM 23 Jul 2026 (New: Huawei Pura 90s Pro 5G, Huawei Pura 90s Pro Max 5G; iPad Air 11\"/13\" & iPad Pro 11\"/13\" price updates) + GTM 16 July 2026 (Price Down: Realme 16T, Samsung A27, Vivo Y21) + GTM 2-9 July 2026 + Port-in Rebate 29 Jun 2026 + Home Device GTM 13 Jul 2026";
+export const CATALOG_DATE = "2026-07-28";
 
 // Latest updates — shown at top of app so staff stay informed without reading emails
 // Keep most recent first. Update whenever a new GTM/email changes the catalog.
@@ -66,6 +66,12 @@ export type AppUpdate = {
 };
 
 export const LATEST_UPDATES: AppUpdate[] = [
+  {
+    date: "27 Jul",
+    type: "alert",
+    text: "💰 K2 Port-in: Additional RM100 DAP waiver (28 Jul 2026 – 31 Jan 2027) — total DAP waiver now up to RM240",
+    subtext: "Requires 3 months OLO bills (min RM60/mth excl. tax, no overdue). FL collects only residual DAP after RM100 waiver. Also: RM20 bill rebate x12 mths when switching to Maxis High Value Plan. *In-store port-in offer until 30 Sep 2026.",
+  },
   {
     date: "23 Jul",
     type: "new",
@@ -2348,7 +2354,7 @@ storages: [
 {
 storage: "16+512GB",
 rrp: 7699,
-      promo: "Launch 12 Jun 2026. NEW — Zerolution 24M available. Port-in Rebate RM20x6mths applicable (14 Apr – 30 Sept 2026, excl. MP79).",
+      promo: "Launch 12 Jun 2026. NEW — Zerolution 24M available. Port-in Rebate RM20x6mths applicable (14 Apr – 30 Sept 2026, excl. MP79). K2 Port-in: Additional RM100 DAP waiver (28 Jul 2026 – 31 Jan 2027, Maxis Postpaid only). Port-in Specials up to RM240 rebate (RM20 bill rebate x 12 mths on High Value Plan, in-store port-in until 30 Sept 2026).",
 regions: {
 ECEM: {
 upfront: {
