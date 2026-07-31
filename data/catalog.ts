@@ -54,7 +54,7 @@ export type CatalogBrand = {
 
 // Pricing source — update this whenever a new GTM is applied
 export const CATALOG_SOURCE = "GTM 27 Jul 2026 (K2 Port-in: +RM100 DAP waiver 28 Jul 2026 – 31 Jan 2027; RM20x12 bill rebate on HVP switch) + GTM 23 Jul 2026 (New: Huawei Pura 90s Pro 5G, Huawei Pura 90s Pro Max 5G; iPad Air 11\"/13\" & iPad Pro 11\"/13\" price updates) + GTM 16 July 2026 (Price Down: Realme 16T, Samsung A27, Vivo Y21) + GTM 2-9 July 2026 + Port-in Rebate 29 Jun 2026 + Home Device GTM 13 Jul 2026";
-export const CATALOG_DATE = "2026-07-28";
+export const CATALOG_DATE = "2026-07-31";
 
 // Latest updates — shown at top of app so staff stay informed without reading emails
 // Keep most recent first. Update whenever a new GTM/email changes the catalog.
@@ -4059,7 +4059,7 @@ MP199: { monthly: "NA", dapLabel: "NA" }
 brand: "Samsung",
 models: [
 {
-      // CHANGELOG: Samsung Galaxy A27 5G added 2-9 Jul GTM (eff 9 Jul 2026). Realme 16T 5G added (eff 3 Jul 2026). Samsung A07 5G MP69 upfront repriced to devicePrice=99, dap=120 (eff 2 Jul 2026).
+      // CHANGELOG: Samsung Galaxy A27 5G added 2-9 Jul GTM (eff 9 Jul 2026). Realme 16T 5G added (eff 3 Jul 2026). Samsung A07 5G MP69 upfront repriced to devicePrice=99, dap=120 (eff 2 Jul 2026). Samsung A07 5G DTP updated RM675→RM1,005 eff 3 Aug 2026 (dealer-facing only; no customer device price change per PDF).
       model: "Samsung Galaxy A07 5G",
             aliases: ["samsung", "a07", "a075g"],
             // HP75 promo note: Samsung Galaxy A07 LTE (4G, RRP RM899) — SEPARATE device from this A07 5G (RRP RM1,029) — is available FREE on Hotlink Postpaid 75 (HP75+4G Device Offer). 12-month price: RM199 upfront; 24-month: FREE. RM10/mth rebate x contract duration. Campaign 26 Jun – 30 Sep 2026. New sign-ups only. Not stackable with MNP/Roadshow rebates. HP75 region entries (HP65/HP75) for the 4G LTE variant should be tracked in a separate Samsung Galaxy A07 LTE (4G) device entry.
