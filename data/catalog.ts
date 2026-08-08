@@ -53,8 +53,8 @@ export type CatalogBrand = {
 };
 
 // Pricing source — update this whenever a new GTM is applied
-export const CATALOG_SOURCE = "GTM 27 Jul 2026 (K2 Port-in: +RM100 DAP waiver 28 Jul 2026 – 31 Jan 2027; RM20x12 bill rebate on HVP switch) + GTM 23 Jul 2026 (New: Huawei Pura 90s Pro 5G, Huawei Pura 90s Pro Max 5G; iPad Air 11\"/13\" & iPad Pro 11\"/13\" price updates) + GTM 16 July 2026 (Price Down: Realme 16T, Samsung A27, Vivo Y21) + GTM 2-9 July 2026 + Port-in Rebate 29 Jun 2026 + Home Device GTM 13 Jul 2026";
-export const CATALOG_DATE = "2026-07-31";
+export const CATALOG_SOURCE = "GTM 27 Jul 2026 (K2 Port-in: +RM100 DAP waiver 28 Jul 2026 – 31 Jan 2027; RM20x12 bill rebate on HVP switch) + GTM 23 Jul 2026 (New: Huawei Pura 90s Pro 5G, Huawei Pura 90s Pro Max 5G; iPad Air 11\"/13\" & iPad Pro 11\"/13\" price updates) + GTM 16 July 2026 (Price Down: Realme 16T, Samsung A27, Vivo Y21) + GTM 2-9 July 2026 + Port-in Rebate 29 Jun 2026 + Home Device GTM 13 Jul 2026 + MEP Device Governance Policy updated 9 Jul 2026 (internal process only, no pricing impact)";
+export const CATALOG_DATE = "2026-08-08";
 
 // Latest updates — shown at top of app so staff stay informed without reading emails
 // Keep most recent first. Update whenever a new GTM/email changes the catalog.
