@@ -21,14 +21,23 @@ export default function LoginPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!password || busy) return;
+    if (busy) return;
+    // Read the field itself rather than trusting React state. Chrome autofill and
+    // password managers can write a value without firing onChange, which would
+    // otherwise leave staff staring at a filled box that refuses to submit.
+    const value = inputRef.current?.value || password;
+    if (!value) {
+      setError("Enter the password.");
+      inputRef.current?.focus();
+      return;
+    }
     setBusy(true);
     setError("");
     try {
       const res = await fetch("/api/login", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ password: value }),
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok && data?.ok) {
@@ -95,13 +104,16 @@ export default function LoginPage() {
               {error}
             </p>
           )}
+          {/* Never disabled on "empty" — see handleSubmit. An autofilled field can
+              read as empty to React, and a dead button with no explanation is the
+              one failure staff can't work around on a busy shop floor. */}
           <button
             type="submit"
-            disabled={!password || busy}
+            disabled={busy}
             className="w-full py-3 rounded-xl font-semibold text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed"
             style={{
-              background: password && !busy ? "#00D46A" : "rgba(0,212,106,0.3)",
-              color: password && !busy ? "#0a0d0f" : "#ecf3ff",
+              background: busy ? "rgba(0,212,106,0.3)" : "#00D46A",
+              color: busy ? "#ecf3ff" : "#0a0d0f",
             }}
           >
             {busy ? "Checking…" : "Unlock"}
