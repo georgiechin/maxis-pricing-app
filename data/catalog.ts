@@ -494,100 +494,7 @@ HP75: { devicePrice: 299, dap: 120, totalUpfront: 419, monthly: 67.50 }
 }
 ]
 },
-{
-brand: "Huawei",
-models: [
-{
-model: "Huawei Pura 90s Pro 5G",
-aliases: ["huawei", "pura90spro", "pura90s", "maxis exclusive"],
-storages: [
-{
-storage: "256GB",
-rrp: 3699,
-promo: "Maxis Exclusive. FREE on MP169/MP199 (36M upfront). Bundle: FREE Huawei MatePad SE 11\" LTE worth RM999 with Pro Max (while stocks last — see Pro Max listing).",
-regions: {
-ECEM: {
-upfront: {
-MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP109: { devicePrice: 1899, dap: 180, totalUpfront: 2079 },
-MP139: { devicePrice: 1399, dap: 680, totalUpfront: 2079 },
-MP169: { devicePrice: 999, dap: 1080, totalUpfront: 2079 },
-MP199: { devicePrice: 199, dap: 1880, totalUpfront: 2079 }
-},
-upfront36: {
-MP99: { devicePrice: 1199, dap: 880, totalUpfront: 2079 },
-MP109: { devicePrice: 1199, dap: 880, totalUpfront: 2079 },
-MP139: { devicePrice: 699, dap: 1360, totalUpfront: 2059 },
-MP169: { devicePrice: 0, dap: 2060, totalUpfront: 2060 },
-MP199: { devicePrice: 0, dap: 2060, totalUpfront: 2060 }
-},
-zero24: {
-MP48: { monthly: 154, dapLabel: "NA" },
-MP69: { monthly: 112, dapLabel: "Check ECC" },
-MP99: { monthly: 110, dapLabel: "Check ECC" },
-MP109: { monthly: 110, dapLabel: "Check ECC" },
-MP139: { monthly: 85, dapLabel: "Check ECC" },
-MP169: { monthly: 75, dapLabel: "Check ECC" },
-MP199: { monthly: 55, dapLabel: "Check ECC" }
-},
-zero36: {
-MP48: { monthly: 102, dapLabel: "NA" },
-MP69: { monthly: 74, dapLabel: "Check ECC" },
-MP99: { monthly: 75, dapLabel: "Check ECC" },
-MP109: { monthly: 75, dapLabel: "Check ECC" },
-MP139: { monthly: 55, dapLabel: "Check ECC" },
-MP169: { monthly: 45, dapLabel: "Check ECC" },
-MP199: { monthly: 30, dapLabel: "Check ECC" }
-}
-}
-}
-}
-]
-},
-{
-model: "Huawei Pura 90s Pro Max 5G",
-aliases: ["huawei", "pura90spromax", "pura90s", "maxis exclusive"],
-storages: [
-{
-storage: "512GB",
-rrp: 4899,
-promo: "Maxis Exclusive. FREE Huawei MatePad SE 11\" LTE worth RM999 while stocks last (bundle ID; single ID available once tablet depleted).",
-regions: {
-ECEM: {
-upfront: {
-MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-MP109: { devicePrice: 3199, dap: 160, totalUpfront: 3359 },
-MP139: { devicePrice: 2999, dap: 360, totalUpfront: 3359 },
-MP169: { devicePrice: 2699, dap: 660, totalUpfront: 3359 },
-MP199: { devicePrice: 2399, dap: 960, totalUpfront: 3359 }
-},
-zero24: {
-MP48: { monthly: 204, dapLabel: "NA" },
-MP69: { monthly: 162, dapLabel: "Check ECC" },
-MP99: { monthly: 160, dapLabel: "Check ECC" },
-MP109: { monthly: 160, dapLabel: "Check ECC" },
-MP139: { monthly: 150, dapLabel: "Check ECC" },
-MP169: { monthly: 135, dapLabel: "Check ECC" },
-MP199: { monthly: 115, dapLabel: "Check ECC" }
-},
-zero36: {
-MP48: { monthly: 136, dapLabel: "NA" },
-MP69: { monthly: 108, dapLabel: "Check ECC" },
-MP99: { monthly: 110, dapLabel: "Check ECC" },
-MP109: { monthly: 110, dapLabel: "Check ECC" },
-MP139: { monthly: 100, dapLabel: "Check ECC" },
-MP169: { monthly: 90, dapLabel: "Check ECC" },
-MP199: { monthly: 70, dapLabel: "Check ECC" }
-}
-}
-}
-}
-]
-}
-]
-},
+
 {
 brand: "Apple",
 models: [
@@ -2625,103 +2532,8 @@ model: "Honor 600 5G",
       }
     ]
   },
-  {
-    model: "Huawei Pura 90s Pro 5G",
-    aliases: ["huawei", "pura90spro"],
-    storages: [
-      {
-        storage: "Default",
-        rrp: 3699,
-        promo: "Maxis Exclusive. Bundle with free Huawei MatePad SE 11\" LTE (worth RM999) while stocks last. Effective 23 Jul 2026.",
-        regions: {
-          ECEM: {
-            upfront: {
-              MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-              MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-              MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-              MP109: { devicePrice: 1899, dap: 180, totalUpfront: 2079 },
-              MP139: { devicePrice: 1399, dap: 680, totalUpfront: 2079 },
-              MP169: { devicePrice: 999, dap: 1080, totalUpfront: 2079 },
-              MP199: { devicePrice: 199, dap: 1880, totalUpfront: 2079 }
-            },
-            upfront36: {
-              MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-              MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-              MP99: { devicePrice: 1199, dap: 880, totalUpfront: 2079 },
-              MP109: { devicePrice: 1199, dap: 880, totalUpfront: 2079 },
-              MP139: { devicePrice: 699, dap: 1360, totalUpfront: 2059 },
-              MP169: { devicePrice: 0, dap: 2060, totalUpfront: 2060 },
-              MP199: { devicePrice: 0, dap: 2060, totalUpfront: 2060 }
-            },
-            zero24: {
-              MP48: { monthly: 154, dapLabel: "NA" },
-              MP69: { monthly: "NA", dapLabel: "Check ECC" },
-              MP89: { monthly: "NA", dapLabel: "Check ECC" },
-              MP99: { monthly: 110, dapLabel: "Check ECC" },
-              MP109: { monthly: 110, dapLabel: "Check ECC" },
-              MP139: { monthly: 85, dapLabel: "Check ECC" },
-              MP169: { monthly: 75, dapLabel: "Check ECC" },
-              MP199: { monthly: 55, dapLabel: "Check ECC" }
-            },
-            zero36: {
-              MP48: { monthly: 102, dapLabel: "NA" },
-              MP69: { monthly: "NA", dapLabel: "Check ECC" },
-              MP89: { monthly: "NA", dapLabel: "Check ECC" },
-              MP99: { monthly: 75, dapLabel: "Check ECC" },
-              MP109: { monthly: 75, dapLabel: "Check ECC" },
-              MP139: { monthly: 55, dapLabel: "Check ECC" },
-              MP169: { monthly: 45, dapLabel: "Check ECC" },
-              MP199: { monthly: 30, dapLabel: "Check ECC" }
-            }
-          }
-        }
-      }
-    ]
-  },
-  {
-    model: "Huawei Pura 90s Pro Max 5G",
-    aliases: ["huawei", "pura90spromax"],
-    storages: [
-      {
-        storage: "Default",
-        rrp: 4899,
-        promo: "Maxis Exclusive. Effective 23 Jul 2026.",
-        regions: {
-          ECEM: {
-            upfront: {
-              MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-              MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-              MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-              MP109: { devicePrice: 3199, dap: 160, totalUpfront: 3359 },
-              MP139: { devicePrice: 2999, dap: 360, totalUpfront: 3359 },
-              MP169: { devicePrice: 2699, dap: 660, totalUpfront: 3359 },
-              MP199: { devicePrice: 2399, dap: 960, totalUpfront: 3359 }
-            },
-            zero24: {
-              MP48: { monthly: 204, dapLabel: "NA" },
-              MP69: { monthly: "NA", dapLabel: "Check ECC" },
-              MP89: { monthly: "NA", dapLabel: "Check ECC" },
-              MP99: { monthly: 160, dapLabel: "Check ECC" },
-              MP109: { monthly: 160, dapLabel: "Check ECC" },
-              MP139: { monthly: 150, dapLabel: "Check ECC" },
-              MP169: { monthly: 135, dapLabel: "Check ECC" },
-              MP199: { monthly: 115, dapLabel: "Check ECC" }
-            },
-            zero36: {
-              MP48: { monthly: 136, dapLabel: "NA" },
-              MP69: { monthly: "NA", dapLabel: "Check ECC" },
-              MP89: { monthly: "NA", dapLabel: "Check ECC" },
-              MP99: { monthly: 110, dapLabel: "Check ECC" },
-              MP109: { monthly: 110, dapLabel: "Check ECC" },
-              MP139: { monthly: 100, dapLabel: "Check ECC" },
-              MP169: { monthly: 90, dapLabel: "Check ECC" },
-              MP199: { monthly: 70, dapLabel: "Check ECC" }
-            }
-          }
-        }
-      }
-    ]
-  },
+  
+  
   {
 model: "Honor Pad 10 5G",
 aliases: ["honor", "pad10"],
@@ -2816,10 +2628,10 @@ MP199: { monthly: 60, dapLabel: "Check ECC" }
 },
 {
   model: "Huawei Pura 90s Pro 5G",
-  aliases: ["huawei", "pura90spro"],
+  aliases: ["huawei", "pura90spro", "pura90s", "maxis exclusive"],
   storages: [
     {
-      storage: "Default",
+      storage: "256GB",
       rrp: 3699,
       promo: "Gift: FREE Huawei MatePad SE 11\" LTE worth RM999 (while stocks last, Bundle ID). Maxis Exclusive Model.",
       regions: {
@@ -2869,10 +2681,10 @@ MP199: { monthly: 60, dapLabel: "Check ECC" }
 },
 {
   model: "Huawei Pura 90s Pro Max 5G",
-  aliases: ["huawei", "pura90spromax"],
+  aliases: ["huawei", "pura90spromax", "pura90s", "maxis exclusive"],
   storages: [
     {
-      storage: "Default",
+      storage: "512GB",
       rrp: 4899,
       regions: {
         ECEM: {
@@ -3806,58 +3618,7 @@ MP199: { monthly: 20, dapLabel: "Check ECC" }
 }
 ]
 },
-{
-  model: "Realme 16T 5G",
-  aliases: ["realme", "16t"],
-  storages: [
-    {
-      storage: "Default",
-      rrp: 1399,
-      regions: {
-        ECEM: {
-          upfront: {
-            MP69: { devicePrice: 499, dap: 60, totalUpfront: 559 },
-            MP89: { devicePrice: 399, dap: 120, totalUpfront: 519 },
-            MP99: { devicePrice: 199, dap: 320, totalUpfront: 519 },
-            MP109: { devicePrice: 199, dap: 320, totalUpfront: 519 },
-            MP139: { devicePrice: 0, dap: 500, totalUpfront: 500 },
-            MP169: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-            MP199: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" }
-          },
-          upfront36: {
-            MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-            MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-            MP99: { devicePrice: 0, dap: 500, totalUpfront: 500 },
-            MP109: { devicePrice: 0, dap: 500, totalUpfront: 500 },
-            MP139: { devicePrice: 0, dap: 500, totalUpfront: 500 },
-            MP169: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-            MP199: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" }
-          },
-          zero24: {
-            MP48: { monthly: 58, dapLabel: "NA" },
-            MP69: { monthly: 50, dapLabel: "Check ECC" },
-            MP89: { monthly: 50, dapLabel: "Check ECC" },
-            MP99: { monthly: 45, dapLabel: "Check ECC" },
-            MP109: { monthly: 45, dapLabel: "Check ECC" },
-            MP139: { monthly: 40, dapLabel: "Check ECC" },
-            MP169: { monthly: 30, dapLabel: "Check ECC" },
-            MP199: { monthly: 10, dapLabel: "Check ECC" }
-          },
-                      zero36: {
-            MP48: { monthly: 38, dapLabel: "NA" },
-            MP69: { monthly: 35, dapLabel: "Check ECC" },
-            MP89: { monthly: 35, dapLabel: "Check ECC" },
-            MP99: { monthly: 30, dapLabel: "Check ECC" },
-            MP109: { monthly: 30, dapLabel: "Check ECC" },
-            MP139: { monthly: 25, dapLabel: "Check ECC" },
-            MP169: { monthly: 20, dapLabel: "Check ECC" },
-            MP199: { monthly: "NA", dapLabel: "Check ECC" }
-          }
-        }
-      }
-    }
-  ]
-},
+
 {
 model: "Realme 16 Pro+ 5G",
 aliases: ["realme", "16proplus"],
@@ -5599,101 +5360,8 @@ MP199: { monthly: 30, dapLabel: "Check ECC" }
           }
         ]
       },
-      {
-        model: "Huawei Pura 90s Pro 5G",
-        aliases: ["huawei", "pura90spro"],
-        storages: [
-          {
-            storage: "Default",
-            rrp: 3699,
-            regions: {
-              ECEM: {
-                upfront: {
-                  MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-                  MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-                  MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-                  MP109: { devicePrice: 1899, dap: 180, totalUpfront: 2079 },
-                  MP139: { devicePrice: 1399, dap: 680, totalUpfront: 2079 },
-                  MP169: { devicePrice: 999, dap: 1080, totalUpfront: 2079 },
-                  MP199: { devicePrice: 199, dap: 1880, totalUpfront: 2079 }
-                },
-                upfront36: {
-                  MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-                  MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-                  MP99: { devicePrice: 1199, dap: 880, totalUpfront: 2079 },
-                  MP109: { devicePrice: 1199, dap: 880, totalUpfront: 2079 },
-                  MP139: { devicePrice: 699, dap: 1360, totalUpfront: 2059 },
-                  MP169: { devicePrice: 0, dap: 2060, totalUpfront: 2060 },
-                  MP199: { devicePrice: 0, dap: 2060, totalUpfront: 2060 }
-                },
-                zero24: {
-                  MP48: { monthly: 154, dapLabel: "NA" },
-                  MP69: { monthly: "NA", dapLabel: "NA" },
-                  MP89: { monthly: "NA", dapLabel: "NA" },
-                  MP99: { monthly: 110, dapLabel: "Check ECC" },
-                  MP109: { monthly: 110, dapLabel: "Check ECC" },
-                  MP139: { monthly: 85, dapLabel: "Check ECC" },
-                  MP169: { monthly: 75, dapLabel: "Check ECC" },
-                  MP199: { monthly: 55, dapLabel: "Check ECC" }
-                },
-                zero36: {
-                  MP48: { monthly: 102, dapLabel: "NA" },
-                  MP69: { monthly: "NA", dapLabel: "NA" },
-                  MP89: { monthly: "NA", dapLabel: "NA" },
-                  MP99: { monthly: 75, dapLabel: "Check ECC" },
-                  MP109: { monthly: 75, dapLabel: "Check ECC" },
-                  MP139: { monthly: 55, dapLabel: "Check ECC" },
-                  MP169: { monthly: 45, dapLabel: "Check ECC" },
-                  MP199: { monthly: 30, dapLabel: "Check ECC" }
-                }
-              }
-            }
-          }
-        ]
-      },
-      {
-        model: "Huawei Pura 90s Pro Max 5G",
-        aliases: ["huawei", "pura90spromax"],
-        storages: [
-          {
-            storage: "Default",
-            rrp: 4899,
-            regions: {
-              ECEM: {
-                upfront: {
-                  MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-                  MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-                  MP99: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-                  MP109: { devicePrice: 3199, dap: 160, totalUpfront: 3359 },
-                  MP139: { devicePrice: 2999, dap: 360, totalUpfront: 3359 },
-                  MP169: { devicePrice: 2699, dap: 660, totalUpfront: 3359 },
-                  MP199: { devicePrice: 2399, dap: 960, totalUpfront: 3359 }
-                },
-                zero24: {
-                  MP48: { monthly: 204, dapLabel: "NA" },
-                  MP69: { monthly: "NA", dapLabel: "NA" },
-                  MP89: { monthly: "NA", dapLabel: "NA" },
-                  MP99: { monthly: 160, dapLabel: "Check ECC" },
-                  MP109: { monthly: 160, dapLabel: "Check ECC" },
-                  MP139: { monthly: 150, dapLabel: "Check ECC" },
-                  MP169: { monthly: 135, dapLabel: "Check ECC" },
-                  MP199: { monthly: 115, dapLabel: "Check ECC" }
-                },
-                zero36: {
-                  MP48: { monthly: 136, dapLabel: "NA" },
-                  MP69: { monthly: "NA", dapLabel: "NA" },
-                  MP89: { monthly: "NA", dapLabel: "NA" },
-                  MP99: { monthly: 110, dapLabel: "Check ECC" },
-                  MP109: { monthly: 110, dapLabel: "Check ECC" },
-                  MP139: { monthly: 100, dapLabel: "Check ECC" },
-                  MP169: { monthly: 90, dapLabel: "Check ECC" },
-                  MP199: { monthly: 70, dapLabel: "Check ECC" }
-                }
-              }
-            }
-          }
-        ]
-      },
+      
+      
       {
         model: "Xiaomi 17 Ultra 5G",
         aliases: ["xiaomi", "17ultra"],
