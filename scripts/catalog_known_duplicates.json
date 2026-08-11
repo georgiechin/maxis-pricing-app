@@ -1,0 +1,20 @@
+{
+  "_why": "Duplicates that already exist in the catalog and are accepted for now, so today's data debt does not block tomorrow's price update. Anything NOT listed here is a regression and fails audit_catalog.py with CRITICAL, which makes Agent 3 roll back instead of pushing.",
+  "_how_they_got_here": "Agent 3 reads the catalog in chunks and each chunk independently decides whether a device is missing. On 15 Jul 2026 (commit 82b2ba6) two chunks each concluded the Huawei Pura 90s Pro pair was missing and each added it, landing the devices in the Huawei block twice and in the Honor and Xiaomi blocks as well. The same shape of fault was cleaned by hand five days earlier (commit 766e09b).",
+  "_blocked_on": "Merging the Huawei copies needs a pricing decision, not a script: they DISAGREE on Zerolution MP69 (RM112/mth 24M and RM74/mth 36M in one copy, 'NA' in the other; Pro Max RM162/RM108 vs NA). Source of truth is the deck attached to Sylvia's 15 Jul mail, 'MEP (ECEM)_GTM Device Update_RFS 23 Jul.pdf'. Run scripts/catalog_dupe_report.mjs to see every differing cell.",
+  "_remove_entries_when": "the duplicate is actually merged in data — this list should shrink to empty",
+  "_recorded": "2026-08-11",
+
+  "accepted": [
+    "brand-block:Huawei",
+
+    "model:Huawei-Huawei Pura 90s Pro 5G",
+    "model:Huawei-Huawei Pura 90s Pro Max 5G",
+    "model:Realme-Realme 16T 5G",
+
+    "misfiled:Honor-Huawei Pura 90s Pro 5G",
+    "misfiled:Honor-Huawei Pura 90s Pro Max 5G",
+    "misfiled:Xiaomi-Huawei Pura 90s Pro 5G",
+    "misfiled:Xiaomi-Huawei Pura 90s Pro Max 5G"
+  ]
+}

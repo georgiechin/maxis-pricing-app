@@ -186,6 +186,8 @@ def audit():
     ts_text = catalog_path.read_text(encoding="utf-8")
     catalog = extract_catalog_json(ts_text)
 
+    audit_structure(catalog, load_known_dupes(catalog_path))
+
     seen_devices = {}  # (model_lower, storage_lower) -> context
 
     device_count = 0
@@ -370,6 +372,94 @@ def audit():
                             )
 
     return device_count, row_count
+
+
+# ---------------------------------------------------------------------------
+# Structural audit — catalog SHAPE, not prices
+# ---------------------------------------------------------------------------
+# Added 11 Aug 2026 after a fault that shipped twice.
+#
+# Agent 3 reads the catalog in chunks and each chunk decides independently
+# whether a device is missing. On 15 Jul both chunks concluded "Huawei Pura 90s
+# Pro is missing" and each added it, so the device landed in the Huawei block
+# twice AND in the Honor and Xiaomi blocks. The same shape of fault had already
+# been cleaned by hand on 10 Jul ("Removed duplicate Xiaomi + Honor brand
+# blocks"), five days earlier.
+#
+# It is not cosmetic. The app keys search results by `${brand}-${model}`, so
+# duplicates give React duplicate keys, it cannot unmount the old rows, and two
+# ghost results stayed pinned above EVERY search — including searches that
+# matched nothing.
+#
+# The existing per-row duplicate check missed all of it because it keys on
+# (model, storage) and the copies disagreed on the storage LABEL
+# ("256GB" vs "Default"), so they never collided.
+
+KNOWN_DUPES_FILE = "catalog_known_duplicates.json"
+
+BRAND_WORDS = {
+    "huawei": "Huawei", "samsung": "Samsung", "apple": "Apple", "iphone": "Apple",
+    "ipad": "Apple", "honor": "Honor", "vivo": "Vivo", "oppo": "Oppo",
+    "realme": "Realme", "xiaomi": "Xiaomi", "redmi": "Xiaomi", "google": "Google",
+    "pixel": "Google", "nubia": "Nubia", "redmagic": "Redmagic",
+}
+
+
+def load_known_dupes(catalog_path):
+    """Accepted pre-existing duplicates, so today's debt doesn't block tomorrow's
+    price update. Anything NOT listed here is a regression and fails the build."""
+    p = catalog_path.parent.parent / "scripts" / KNOWN_DUPES_FILE
+    if not p.exists():
+        return set()
+    try:
+        data = json.loads(p.read_text(encoding="utf-8"))
+        return {str(k) for k in data.get("accepted", [])}
+    except Exception:
+        return set()
+
+
+def audit_structure(catalog, known):
+    """Duplicate brand blocks, duplicate models, and misfiled devices."""
+    # 1. the same brand split across two blocks
+    blocks = {}
+    for i, b in enumerate(catalog):
+        blocks.setdefault(b.get("brand", "?"), []).append(i)
+    for brand, idx in blocks.items():
+        if len(idx) < 2:
+            continue
+        key = f"brand-block:{brand}"
+        counts = " + ".join(str(len(catalog[i].get("models", []))) for i in idx)
+        msg = (f"brand '{brand}' is split across {len(idx)} blocks "
+               f"(models: {counts}) — staff see two identical brand cards and "
+               f"only find some phones under each")
+        add("WARNING" if key in known else "CRITICAL", "Duplicate brand block", msg)
+
+    # 2. same brand + same model twice — this is the exact React key
+    seen = {}
+    for b in catalog:
+        brand = b.get("brand", "?")
+        for m in b.get("models", []):
+            k = f"{brand}-{m.get('model', '?')}"
+            seen[k] = seen.get(k, 0) + 1
+    for k, n in sorted(seen.items()):
+        if n < 2:
+            continue
+        add("WARNING" if f"model:{k}" in known else "CRITICAL", "Duplicate model",
+            f"'{k}' appears {n} times — duplicate React key, ghost rows in search")
+
+    # 3. a device filed under a brand its own name contradicts
+    for b in catalog:
+        brand = b.get("brand", "?")
+        if brand == "Hotlink":       # Hotlink is a channel, not a manufacturer
+            continue
+        for m in b.get("models", []):
+            model = m.get("model", "?")
+            first = re.split(r"[^A-Za-z]+", model.strip())[0].lower() if model else ""
+            canon = BRAND_WORDS.get(first)
+            if canon and canon.lower() != brand.lower():
+                key = f"misfiled:{brand}-{model}"
+                add("WARNING" if key in known else "CRITICAL", "Misfiled device",
+                    f"'{model}' sits in the '{brand}' block but belongs in '{canon}'")
 
 
 def main():
