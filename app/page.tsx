@@ -381,7 +381,10 @@ export default function Page() {
     return out;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const brandList = useMemo(() => catalog.map((b) => b.brand), []);
+  // Deduped: the catalog currently holds two separate "Huawei" blocks, which
+  // listed the brand twice in the filter dropdown and gave those <option>s the
+  // same React key. Filtering matches on the name, so one entry covers both.
+  const brandList = useMemo(() => [...new Set(catalog.map((b) => b.brand))], []);
 
   // Filtered search: fuzzy results narrowed by combinable filters (AND).
   // No query but filters active => browse the whole catalog through the filters.
@@ -932,7 +935,7 @@ export default function Page() {
           promo ? `🎁 ${promo}` : ``,
           ``,
           `⚠️ Subject to stock & verification`,
-          `📅 Prices valid as of ${CATALOG_SOURCE}`,
+          `📅 Prices valid as of ${CATALOG_DATE}`,
           ``,
           `👉 Reply YES to proceed`,
           `👉 I guide you step by step`,
@@ -952,7 +955,7 @@ export default function Page() {
         promo ? `🎁 ${promo}` : ``,
         ``,
         `⚡ Fast approval for eligible customers`,
-        `📅 Prices valid as of ${CATALOG_SOURCE}`,
+        `📅 Prices valid as of ${CATALOG_DATE}`,
         ``,
         `👉 Grab it — limited stocks`,
         `👉 Reply YES and I handle everything`,
@@ -982,7 +985,7 @@ export default function Page() {
           promo ? `🎁 ${promo}` : ``,
           ``,
           `⚠️ Subject to stock & verification`,
-          `📅 Prices valid as of ${CATALOG_SOURCE}`,
+          `📅 Prices valid as of ${CATALOG_DATE}`,
           ``,
           `👉 Reply YES to proceed`,
           `👉 I guide you step by step`,
@@ -1002,7 +1005,7 @@ export default function Page() {
         promo ? `🎁 ${promo}` : ``,
         ``,
         `⚡ Fast approval for eligible customers`,
-        `📅 Prices valid as of ${CATALOG_SOURCE}`,
+        `📅 Prices valid as of ${CATALOG_DATE}`,
         ``,
         `👉 Grab it — limited stocks`,
         `👉 Reply YES and I handle everything`,
@@ -1035,7 +1038,7 @@ export default function Page() {
         ``,
         `📋 ${eccNote}`,
         `⚠️ Subject to verification`,
-        `📅 Prices valid as of ${CATALOG_SOURCE}`,
+        `📅 Prices valid as of ${CATALOG_DATE}`,
         ``,
         `👉 Reply YES to proceed`,
         `👉 I guide you step by step`,
@@ -1055,7 +1058,7 @@ export default function Page() {
       promo ? `🎁 ${promo}` : ``,
       ``,
       `⚡ Fast approval for eligible customers`,
-      `📅 Prices valid as of ${CATALOG_SOURCE}`,
+      `📅 Prices valid as of ${CATALOG_DATE}`,
       ``,
       `👉 Grab it — limited promo`,
       `👉 Reply YES and I handle everything`,
@@ -1163,7 +1166,9 @@ export default function Page() {
                 <div className="flex items-center gap-1.5 text-[10px] text-slate-500">
                   <span className="text-[#00D46A]/70">ECEM</span>
                   <span>·</span>
-                  <span>{CATALOG_SOURCE}</span>
+                  {/* Date in the bar, full GTM history on hover — the string is
+                      append-only and was wrapping to several lines on a phone. */}
+                  <span title={CATALOG_SOURCE} className="cursor-help">{CATALOG_DATE}</span>
                 </div>
               </div>
             </div>
@@ -1838,11 +1843,13 @@ export default function Page() {
                   </div>
 
                   <div className="grid grid-cols-2 gap-2 lg:grid-cols-1">
-                    {catalog.map((brand) => {
+                    {catalog.map((brand, bi) => {
                       const active = brand.brand === selectedBrand;
                       return (
                         <button
-                          key={brand.brand}
+                          // Index-suffixed: the catalog currently holds two separate
+                          // "Huawei" blocks, so the brand name alone is not unique.
+                          key={`${brand.brand}-${bi}`}
                           onClick={() => chooseBrand(brand.brand)}
                           className={`rounded-xl border px-3 py-2.5 text-left transition ${
                             active
@@ -1936,10 +1943,13 @@ export default function Page() {
                       </>
                     )}
                     {/* All models */}
-                    {activeBrandModels.filter(({ model: m }) => !favourites.includes(m.model)).map(({ model, sourceBrand }) => {
+                    {activeBrandModels.filter(({ model: m }) => !favourites.includes(m.model)).map(({ model, sourceBrand }, i) => {
                       const active = model.model === selectedModel.model;
                       return (
-                        <div key={model.model} className="flex items-stretch gap-1.5">
+                        // Index-suffixed for the same reason as the search results:
+                        // a brand can currently list one model twice (Realme 16T 5G),
+                        // and duplicate keys leave stale rows mounted.
+                        <div key={`${model.model}-${i}`} className="flex items-stretch gap-1.5">
                           <button
                             onClick={() => chooseModel(model, sourceBrand)}
                             className={`flex-1 rounded-xl border px-3 py-3 text-left transition ${
@@ -1995,8 +2005,13 @@ export default function Page() {
               <div className="mb-1 text-center text-lg font-bold text-white sm:text-2xl">
                 What does your customer want?
               </div>
+              {/* The full CATALOG_SOURCE used to sit here. It is an append-only
+                  GTM changelog — 46 chars in July, ~470 now, longer every month —
+                  so the first thing staff read on opening the app was a wall of
+                  update history. The date staff actually need is in the header;
+                  the detail stays on the price card where a quote is made. */}
               <div className="mb-5 text-center text-xs text-slate-500">
-                Tap one — {CATALOG_SOURCE}
+                Tap one — prices as of {CATALOG_DATE}
               </div>
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 {[
@@ -3360,9 +3375,15 @@ function SearchPanel({
 
       {/* Results */}
       <div className="max-h-[50vh] overflow-y-auto">
-        {results.length > 0 ? results.map(({ brand, model, hint }) => (
+        {results.length > 0 ? results.map(({ brand, model, hint }, i) => (
           <button
-            key={`${brand}-${model.model}`}
+            // Index-suffixed on purpose. The catalog currently files some devices
+            // twice under one brand (e.g. Huawei Pura 90s Pro), so brand+model is
+            // not unique. React cannot reconcile duplicate keys and leaves the old
+            // rows mounted — which pinned two Huawei results above EVERY search,
+            // including searches that matched nothing. Results are a fresh derived
+            // list each keystroke, so positional keys are safe here.
+            key={`${brand}-${model.model}-${i}`}
             onMouseDown={(e) => { e.preventDefault(); onPick(brand, model); }}
             className="w-full border-b border-white/5 px-4 py-3 text-left transition last:border-b-0 hover:bg-[#262b2f]"
           >
