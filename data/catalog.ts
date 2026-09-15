@@ -4007,7 +4007,7 @@ aliases: ["samsung", "a57"],
 storages: [
 {
 storage: "Default",
-rrp: 2699,
+rrp: 2899,
 regions: {
 ECEM: {
 upfront: {
