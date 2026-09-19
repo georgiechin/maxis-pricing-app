@@ -4268,13 +4268,13 @@ MP199: { monthly: 15, dapLabel: "Check ECC" }
 ]
 },
 {
-      // CHANGELOG: RRP RM2,199→RM1,999 & DTP RM2,009→RM1,705 eff 17 Sep 2026 (source: MEP GTM Device Updates_Eff 17 Sep). Dealer-facing RRP/DTP change only; no customer device fee change per PDF note.
+      // CHANGELOG: RRP RM1,999→RM2,199 & DTP RM1,705→RM2,009 eff 17 Sep 2026 (source: MEP GTM Device Updates_Eff 17 Sep). Dealer-facing RRP/DTP change only; no customer device fee change per PDF note.
       model: "Samsung Galaxy A37 5G",
       aliases: ["samsung", "a37", "a375g"],
       storages: [
         {
           storage: "12+256GB",
-          rrp: 1999,
+          rrp: 2199,
           regions: {
             ECEM: {
               upfront: {
@@ -4323,7 +4323,7 @@ MP199: { monthly: 15, dapLabel: "Check ECC" }
       ]
     },
     {
- // CHANGELOG: RRP RM2,899→RM2,699 & DTP RM2,647→RM2,185 eff 17 Sep 2026 (source: MEP GTM Device Updates_Eff 17 Sep). Dealer-facing RRP/DTP change only; no customer device fee change per PDF note.
+ // CHANGELOG: RRP RM2,699→RM2,899 & DTP RM2,185→RM2,647 eff 17 Sep 2026 (source: MEP GTM Device Updates_Eff 17 Sep). Dealer-facing RRP/DTP change only; no customer device fee change per PDF note.
  model: "Galaxy A57 5G",
  aliases: ["samsung", "a57"],
 storages: [
