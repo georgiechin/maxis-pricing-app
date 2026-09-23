@@ -53,7 +53,7 @@ export type CatalogBrand = {
 };
 
 // Pricing source — update this whenever a new GTM is applied
-export const CATALOG_SOURCE = "GTM 14 Aug 2026 (Samsung Galaxy Z Flip8 5G 256GB/512GB RRP RM5,399/RM6,199; Samsung Galaxy Z Fold8 5G 256GB/512GB/1TB RRP RM7,299/RM8,099/RM9,699; Samsung Galaxy Z Fold8 Ultra 5G 256GB/512GB/1TB RRP RM8,099/RM8,899/RM10,499 — all eff 14 Aug 2026 on Zerolution 24M/36M and 1L1D; freebies: Buds4 Pro with Flip8, Watch9 with Fold8, Samsung 55\" TV with Fold8 Ultra) + GTM 11 Aug 2026 (ECEM Q3: New MP79 ECEM-exclusive plan eff 13 Aug; MP69 2x data eff 20 Aug; MP99 flagship deals; Honor 500 Smart 4+256GB added; iPhone 15/16/17e/17/Air repriced for MP79/89; Samsung A07/Oppo A6t/Vivo Y11 FREE on MP79; Nubia Neo 5 RM249 on MP79 port-in; Samsung A27/Oppo A6/Vivo Y21/A37/Reno16F/Reno16/Honor 600/Vivo X300 FE upfront repriced; K2 port-in DAP waiver up to RM200) + GTM 27 Jul 2026 (K2 Port-in: +RM100 DAP waiver 28 Jul 2026 – 31 Jan 2027; RM20x12 bill rebate on HVP switch) + GTM 23 Jul 2026 (New: Huawei Pura 90s Pro 5G, Huawei Pura 90s Pro Max 5G; iPad Air 11\"/13\" & iPad Pro 11\"/13\" price updates) + GTM 16 July 2026 (Price Down: Realme 16T, Samsung A27, Vivo Y21) + GTM 2-9 July 2026 + Port-in Rebate 29 Jun 2026 + Home Device GTM 13 Jul 2026 + MEP Device Governance Policy updated 9 Jul 2026 (internal process only, no pricing impact)";
+export const CATALOG_SOURCE = "GTM 21 Sep 2026 (Home Device: NEW Sony 65\" BRAVIA 3 II 4K Google TV K-65XR30M2 SKU#100021900001 RRP RM6,599 eff 24 Sep 2026; NEW Sony 65\" BRAVIA 3 II + PS5 Bundle SKU#100021901001 RRP RM9,098 eff 24 Sep 2026; NEW LG 65\" 4K UHD Smart TV 65UA731 SKU#100022073001 RRP RM3,899 eff 24 Sep 2026; NEW LG 65\" QNED Mini LED 65QNED70 SKU#100022074001 RRP RM4,899 eff 24 Sep 2026; EOL Samsung 75\" Micro RGB + Nintendo Switch OLED SKU#100021107001 eff 21 Sep 2026; EOL Sony PS5 Pro Digital Console SKU#100020545001 eff 21 Sep 2026) + GTM 14 Aug 2026 (Samsung Galaxy Z Flip8 5G 256GB/512GB RRP RM5,399/RM6,199; Samsung Galaxy Z Fold8 5G 256GB/512GB/1TB RRP RM7,299/RM8,099/RM9,699; Samsung Galaxy Z Fold8 Ultra 5G 256GB/512GB/1TB RRP RM8,099/RM8,899/RM10,499 — all eff 14 Aug 2026 on Zerolution 24M/36M and 1L1D; freebies: Buds4 Pro with Flip8, Watch9 with Fold8, Samsung 55\" TV with Fold8 Ultra) + GTM 11 Aug 2026 (ECEM Q3: New MP79 ECEM-exclusive plan eff 13 Aug; MP69 2x data eff 20 Aug; MP99 flagship deals; Honor 500 Smart 4+256GB added; iPhone 15/16/17e/17/Air repriced for MP79/89; Samsung A07/Oppo A6t/Vivo Y11 FREE on MP79; Nubia Neo 5 RM249 on MP79 port-in; Samsung A27/Oppo A6/Vivo Y21/A37/Reno16F/Reno16/Honor 600/Vivo X300 FE upfront repriced; K2 port-in DAP waiver up to RM200) + GTM 27 Jul 2026 (K2 Port-in: +RM100 DAP waiver 28 Jul 2026 – 31 Jan 2027; RM20x12 bill rebate on HVP switch) + GTM 23 Jul 2026 (New: Huawei Pura 90s Pro 5G, Huawei Pura 90s Pro Max 5G; iPad Air 11\"/13\" & iPad Pro 11\"/13\" price updates) + GTM 16 July 2026 (Price Down: Realme 16T, Samsung A27, Vivo Y21) + GTM 2-9 July 2026 + Port-in Rebate 29 Jun 2026 + Home Device GTM 13 Jul 2026 + MEP Device Governance Policy updated 9 Jul 2026 (internal process only, no pricing impact)";
 export const CATALOG_DATE = "2026-09-23";
 
 // Latest updates — shown at top of app so staff stay informed without reading emails
@@ -66,6 +66,12 @@ export type AppUpdate = {
 };
 
 export const LATEST_UPDATES: AppUpdate[] = [
+  {
+    date: "21 Sep",
+    type: "new",
+    text: "🏠 Home Device GTM (eff 24 Sep 2026): NEW Sony 65\" BRAVIA 3 II 4K Google TV (K-65XR30M2) RRP RM6,599 · NEW Sony 65\" BRAVIA 3 II + PS5 Bundle RRP RM9,098 · NEW LG 65\" 4K UHD Smart TV (65UA731) RRP RM3,899 · NEW LG 65\" QNED Mini LED (65QNED70) RRP RM4,899",
+    subtext: "EOL (eff 21 Sep): Samsung 75\" Micro RGB + Nintendo Switch OLED (SKU#100021107001) · Sony PS5 Pro Digital Console 2-ctrl (SKU#100020545001). All new TVs available on 36M Home Zerolution & Family Plan.",
+  },
   {
     date: "14 Aug",
     type: "new",
