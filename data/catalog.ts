@@ -54,7 +54,7 @@ export type CatalogBrand = {
 
 // Pricing source — update this whenever a new GTM is applied
 export const CATALOG_SOURCE = "GTM 14 Aug 2026 (Samsung Galaxy Z Flip8 5G 256GB/512GB RRP RM5,399/RM6,199; Samsung Galaxy Z Fold8 5G 256GB/512GB/1TB RRP RM7,299/RM8,099/RM9,699; Samsung Galaxy Z Fold8 Ultra 5G 256GB/512GB/1TB RRP RM8,099/RM8,899/RM10,499 — all eff 14 Aug 2026 on Zerolution 24M/36M and 1L1D; freebies: Buds4 Pro with Flip8, Watch9 with Fold8, Samsung 55\" TV with Fold8 Ultra) + GTM 11 Aug 2026 (ECEM Q3: New MP79 ECEM-exclusive plan eff 13 Aug; MP69 2x data eff 20 Aug; MP99 flagship deals; Honor 500 Smart 4+256GB added; iPhone 15/16/17e/17/Air repriced for MP79/89; Samsung A07/Oppo A6t/Vivo Y11 FREE on MP79; Nubia Neo 5 RM249 on MP79 port-in; Samsung A27/Oppo A6/Vivo Y21/A37/Reno16F/Reno16/Honor 600/Vivo X300 FE upfront repriced; K2 port-in DAP waiver up to RM200) + GTM 27 Jul 2026 (K2 Port-in: +RM100 DAP waiver 28 Jul 2026 – 31 Jan 2027; RM20x12 bill rebate on HVP switch) + GTM 23 Jul 2026 (New: Huawei Pura 90s Pro 5G, Huawei Pura 90s Pro Max 5G; iPad Air 11\"/13\" & iPad Pro 11\"/13\" price updates) + GTM 16 July 2026 (Price Down: Realme 16T, Samsung A27, Vivo Y21) + GTM 2-9 July 2026 + Port-in Rebate 29 Jun 2026 + Home Device GTM 13 Jul 2026 + MEP Device Governance Policy updated 9 Jul 2026 (internal process only, no pricing impact)";
-export const CATALOG_DATE = "2026-09-19";
+export const CATALOG_DATE = "2026-09-23";
 
 // Latest updates — shown at top of app so staff stay informed without reading emails
 // Keep most recent first. Update whenever a new GTM/email changes the catalog.
@@ -3469,9 +3469,9 @@ model: "Oppo Reno 15 Pro 5G",
           },
           zero24: {
             MP48: { monthly: 95, dapLabel: "NA" },
-            MP69: { monthly: 85, dapLabel: "Check ECC" },
-            MP89: { monthly: 85, dapLabel: "Check ECC" },
-            MP99: { monthly: 85, dapLabel: "Check ECC" },
+            MP69: { monthly: "NA", dapLabel: "Check ECC" },
+            MP89: { monthly: "NA", dapLabel: "Check ECC" },
+            MP99: { monthly: 95, dapLabel: "Check ECC" },
             MP109: { monthly: 85, dapLabel: "Check ECC" },
             MP139: { monthly: 75, dapLabel: "Check ECC" },
             MP169: { monthly: 65, dapLabel: "Check ECC" },
@@ -3480,8 +3480,8 @@ model: "Oppo Reno 15 Pro 5G",
           zero36: {
             MP48: { monthly: 63, dapLabel: "NA" },
             MP69: { monthly: "NA", dapLabel: "Check ECC" },
-            MP89: { monthly: 35, dapLabel: "Check ECC" },
-            MP99: { monthly: 60, dapLabel: "Check ECC" },
+            MP89: { monthly: "NA", dapLabel: "Check ECC" },
+            MP99: { monthly: 63, dapLabel: "Check ECC" },
             MP109: { monthly: 60, dapLabel: "Check ECC" },
             MP139: { monthly: 50, dapLabel: "Check ECC" },
             MP169: { monthly: 40, dapLabel: "Check ECC" },
@@ -3524,22 +3524,22 @@ model: "Oppo Reno 15 Pro 5G",
           zero24: {
             MP48: { monthly: 124, dapLabel: "NA" },
             MP69: { monthly: "NA", dapLabel: "Check ECC" },
-            MP89: { monthly: 82, dapLabel: "Check ECC" },
-            MP99: { monthly: 110, dapLabel: "Check ECC" },
+            MP89: { monthly: "NA", dapLabel: "Check ECC" },
+            MP99: { monthly: 124, dapLabel: "Check ECC" },
             MP109: { monthly: 110, dapLabel: "Check ECC" },
-            MP139: { monthly: 100, dapLabel: "Check ECC" },
-            MP169: { monthly: 75, dapLabel: "Check ECC" },
-            MP199: { monthly: 55, dapLabel: "Check ECC" }
+            MP139: { monthly: 110, dapLabel: "Check ECC" },
+            MP169: { monthly: 100, dapLabel: "Check ECC" },
+            MP199: { monthly: 90, dapLabel: "Check ECC" }
           },
           zero36: {
             MP48: { monthly: 83, dapLabel: "NA" },
-            MP69: { monthly: 75, dapLabel: "Check ECC" },
-            MP89: { monthly: 75, dapLabel: "Check ECC" },
-            MP99: { monthly: 65, dapLabel: "Check ECC" },
-            MP109: { monthly: 65, dapLabel: "Check ECC" },
-            MP139: { monthly: 55, dapLabel: "Check ECC" },
-            MP169: { monthly: 45, dapLabel: "Check ECC" },
-            MP199: { monthly: 30, dapLabel: "Check ECC" }
+            MP69: { monthly: "NA", dapLabel: "Check ECC" },
+            MP89: { monthly: "NA", dapLabel: "Check ECC" },
+            MP99: { monthly: 83, dapLabel: "Check ECC" },
+            MP109: { monthly: 75, dapLabel: "Check ECC" },
+            MP139: { monthly: 75, dapLabel: "Check ECC" },
+            MP169: { monthly: 65, dapLabel: "Check ECC" },
+            MP199: { monthly: 55, dapLabel: "Check ECC" }
           }
         }
       }
