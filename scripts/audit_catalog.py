@@ -17,7 +17,9 @@ import re
 import sys
 from pathlib import Path
 
-ECEM_PLANS = {"MP48", "MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"}
+# MP79 is the ECEM-exclusive entry plan since the Q3 GTM (eff 13 Aug 2026); the
+# compiled device tables list it where MP69 used to be.
+ECEM_PLANS = {"MP48", "MP69", "MP79", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"}
 HOTLINK_PLANS = {"HP45", "HP65", "HP75"}
 
 UPFRONT_MODES = ("upfront", "upfront36")

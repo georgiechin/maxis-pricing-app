@@ -25,8 +25,8 @@ const hotlinkTabs: { key: PricingMode; label: string; short: string }[] = [
   { key: "hotlink24", label: "24 months", short: "24M" },
 ];
 
-const mpOrder = ["MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
-const mpOrderZero = ["MP48", "MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
+const mpOrder = ["MP69", "MP79", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
+const mpOrderZero = ["MP48", "MP69", "MP79", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
 const hpOrder = ["HP45", "HP65", "HP75"];
 
 function getDefaultRegion(storage: CatalogStorage): "ECEM" | "HOTLINK" {
@@ -49,7 +49,7 @@ function getBestPlanForStorage(
 ) {
   const table = (region === "HOTLINK" ? storage.regions.HOTLINK : storage.regions.ECEM)?.[mode];
   if (!table) return region === "HOTLINK" ? "HP75" : "MP69";
-  const preferredOrder = region === "HOTLINK" ? ["HP75", "HP65", "HP45"] : ["MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
+  const preferredOrder = region === "HOTLINK" ? ["HP75", "HP65", "HP45"] : ["MP69", "MP79", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
   for (const plan of preferredOrder) {
     const row = table[plan];
     if (!row) continue;
@@ -308,7 +308,7 @@ export default function Page() {
       if (hp75_12 && Number(hp75_12.devicePrice) === 0) return "FREE HP75 12M";
       return "";
     }
-    const plans = ["MP69","MP89","MP99","MP109","MP139","MP169","MP199"] as const;
+    const plans = ["MP69","MP79","MP89","MP99","MP109","MP139","MP169","MP199"] as const;
     for (const p of plans) {
       const dp = (ecem.upfront?.[p] as {devicePrice?: number|string}|undefined)?.devicePrice;
       if (dp === 0 || dp === "0") return `🎁 FREE ${p}`;
@@ -513,7 +513,7 @@ export default function Page() {
   // ── All free results (any plan) ────────────────────────────────────────────
   const allFreeResults = useMemo(() => {
     if (!freeDeviceMode || !freeAllPlans) return [];
-    const mpPlans = ["MP69","MP89","MP99","MP109","MP139","MP169","MP199"] as const;
+    const mpPlans = ["MP69","MP79","MP89","MP99","MP109","MP139","MP169","MP199"] as const;
     const hpPlans = ["HP75","HP65","HP45"] as const;
     const seen = new Set<string>();
     const results: { brand: string; model: CatalogModel; storage: CatalogStorage; planLabel: string; isHotlink: boolean }[] = [];
@@ -1068,7 +1068,7 @@ export default function Page() {
   const bestDeal = useMemo(() => {
     const ecem = activeStorage.regions.ECEM;
     if (!ecem) return null;
-    const mpOrder2 = ["MP69","MP89","MP99","MP109","MP139","MP169","MP199"] as const;
+    const mpOrder2 = ["MP69","MP79","MP89","MP99","MP109","MP139","MP169","MP199"] as const;
     // 24M upfront free?
     for (const plan of mpOrder2) {
       const dp = (ecem.upfront?.[plan] as {devicePrice?: number|string}|undefined)?.devicePrice;
@@ -1433,7 +1433,7 @@ export default function Page() {
               <div>
                 <label className="mb-1.5 block text-xs text-slate-400">Maxis Postpaid</label>
                 <div className="grid grid-cols-4 gap-1.5">
-                  {["MP69","MP89","MP99","MP109","MP139","MP169","MP199"].map((plan) => (
+                  {["MP69","MP79","MP89","MP99","MP109","MP139","MP169","MP199"].map((plan) => (
                     <button
                       key={plan}
                       onClick={() => setByPlanSelected(plan)}

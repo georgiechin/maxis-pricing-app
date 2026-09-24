@@ -14,8 +14,8 @@ import {
 const STORAGE_KEY = "maxis-admin-auth";
 const CHANGES_KEY = "maxis-admin-changes";
 
-const MP_UPFRONT = ["MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
-const MP_ZERO = ["MP48", "MP69", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
+const MP_UPFRONT = ["MP69", "MP79", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
+const MP_ZERO = ["MP48", "MP69", "MP79", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
 const HP_ORDER = ["HP45", "HP65", "HP75"];
 
 type TabKey = "upfront" | "upfront36" | "zero24" | "zero36" | "hotlink";
