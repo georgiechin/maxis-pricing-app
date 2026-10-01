@@ -53,8 +53,8 @@ export type CatalogBrand = {
 };
 
 // Pricing source — update this whenever a new GTM is applied
-export const CATALOG_SOURCE = "GTM 24 Sep 2026 (MEP ECEM compiled device pricing: every Upfront 24M/36M and Zerolution 24M/36M price checked cell-by-cell against the Maxis PDF) + GTM 21 Sep 2026 (Home Device: NEW Sony 65\" BRAVIA 3 II 4K Google TV K-65XR30M2 SKU#100021900001 RRP RM6,599 eff 24 Sep 2026; NEW Sony 65\" BRAVIA 3 II + PS5 Bundle SKU#100021901001 RRP RM9,098 eff 24 Sep 2026; NEW LG 65\" 4K UHD Smart TV 65UA731 SKU#100022073001 RRP RM3,899 eff 24 Sep 2026; NEW LG 65\" QNED Mini LED 65QNED70 SKU#100022074001 RRP RM4,899 eff 24 Sep 2026; EOL Samsung 75\" Micro RGB + Nintendo Switch OLED SKU#100021107001 eff 21 Sep 2026; EOL Sony PS5 Pro Digital Console SKU#100020545001 eff 21 Sep 2026) + GTM 14 Aug 2026 (Samsung Galaxy Z Flip8 5G 256GB/512GB RRP RM5,399/RM6,199; Samsung Galaxy Z Fold8 5G 256GB/512GB/1TB RRP RM7,299/RM8,099/RM9,699; Samsung Galaxy Z Fold8 Ultra 5G 256GB/512GB/1TB RRP RM8,099/RM8,899/RM10,499 — all eff 14 Aug 2026 on Zerolution 24M/36M and 1L1D; freebies: Buds4 Pro with Flip8, Watch9 with Fold8, Samsung 55\" TV with Fold8 Ultra) + GTM 11 Aug 2026 (ECEM Q3: New MP79 ECEM-exclusive plan eff 13 Aug; MP69 2x data eff 20 Aug; MP99 flagship deals; Honor 500 Smart 4+256GB added; iPhone 15/16/17e/17/Air repriced for MP79/89; Samsung A07/Oppo A6t/Vivo Y11 FREE on MP79; Nubia Neo 5 RM249 on MP79 port-in; Samsung A27/Oppo A6/Vivo Y21/A37/Reno16F/Reno16/Honor 600/Vivo X300 FE upfront repriced; K2 port-in DAP waiver up to RM200) + GTM 27 Jul 2026 (K2 Port-in: +RM100 DAP waiver 28 Jul 2026 – 31 Jan 2027; RM20x12 bill rebate on HVP switch) + GTM 23 Jul 2026 (New: Huawei Pura 90s Pro 5G, Huawei Pura 90s Pro Max 5G; iPad Air 11\"/13\" & iPad Pro 11\"/13\" price updates) + GTM 16 July 2026 (Price Down: Realme 16T, Samsung A27, Vivo Y21) + GTM 2-9 July 2026 + Port-in Rebate 29 Jun 2026 + Home Device GTM 13 Jul 2026 + MEP Device Governance Policy updated 9 Jul 2026 (internal process only, no pricing impact)";
-export const CATALOG_DATE = "2026-09-23";
+export const CATALOG_SOURCE = "GTM 30 Sep 2026 (Port-in Rebate Extension: RM20x6 mths bill rebate for MP79+ port-in extended to 8 Jan 2027; HP75 outbound port-in RM20x6 mths; MEP outbound offer HP75/MP79+ RM20x6 mths port-in, RM10x12 mths HP75 new/P2P; no pricing change to devices) + GTM 24 Sep 2026 (MEP ECEM compiled device pricing: every Upfront 24M/36M and Zerolution 24M/36M price checked cell-by-cell against the Maxis PDF) + GTM 21 Sep 2026 (Home Device: NEW Sony 65\" BRAVIA 3 II 4K Google TV K-65XR30M2 SKU#100021900001 RRP RM6,599 eff 24 Sep 2026; NEW Sony 65\" BRAVIA 3 II + PS5 Bundle SKU#100021901001 RRP RM9,098 eff 24 Sep 2026; NEW LG 65\" 4K UHD Smart TV 65UA731 SKU#100022073001 RRP RM3,899 eff 24 Sep 2026; NEW LG 65\" QNED Mini LED 65QNED70 SKU#100022074001 RRP RM4,899 eff 24 Sep 2026; EOL Samsung 75\" Micro RGB + Nintendo Switch OLED SKU#100021107001 eff 21 Sep 2026; EOL Sony PS5 Pro Digital Console SKU#100020545001 eff 21 Sep 2026) + GTM 14 Aug 2026 (Samsung Galaxy Z Flip8 5G 256GB/512GB RRP RM5,399/RM6,199; Samsung Galaxy Z Fold8 5G 256GB/512GB/1TB RRP RM7,299/RM8,099/RM9,699; Samsung Galaxy Z Fold8 Ultra 5G 256GB/512GB/1TB RRP RM8,099/RM8,899/RM10,499 — all eff 14 Aug 2026 on Zerolution 24M/36M and 1L1D; freebies: Buds4 Pro with Flip8, Watch9 with Fold8, Samsung 55\" TV with Fold8 Ultra) + GTM 11 Aug 2026 (ECEM Q3: New MP79 ECEM-exclusive plan eff 13 Aug; MP69 2x data eff 20 Aug; MP99 flagship deals; Honor 500 Smart 4+256GB added; iPhone 15/16/17e/17/Air repriced for MP79/89; Samsung A07/Oppo A6t/Vivo Y11 FREE on MP79; Nubia Neo 5 RM249 on MP79 port-in; Samsung A27/Oppo A6/Vivo Y21/A37/Reno16F/Reno16/Honor 600/Vivo X300 FE upfront repriced; K2 port-in DAP waiver up to RM200) + GTM 27 Jul 2026 (K2 Port-in: +RM100 DAP waiver 28 Jul 2026 – 31 Jan 2027; RM20x12 bill rebate on HVP switch) + GTM 23 Jul 2026 (New: Huawei Pura 90s Pro 5G, Huawei Pura 90s Pro Max 5G; iPad Air 11\"/13\" & iPad Pro 11\"/13\" price updates) + GTM 16 July 2026 (Price Down: Realme 16T, Samsung A27, Vivo Y21) + GTM 2-9 July 2026 + Port-in Rebate 29 Jun 2026 + Home Device GTM 13 Jul 2026 + MEP Device Governance Policy updated 9 Jul 2026 (internal process only, no pricing impact)";
+export const CATALOG_DATE = "2026-10-01";
 
 // Latest updates — shown at top of app so staff stay informed without reading emails
 // Keep most recent first. Update whenever a new GTM/email changes the catalog.
@@ -66,6 +66,12 @@ export type AppUpdate = {
 };
 
 export const LATEST_UPDATES: AppUpdate[] = [
+  {
+    date: "30 Sep",
+    type: "alert",
+    text: "🎁 Port-in Rebate EXTENDED to 8 Jan 2027: Switch to Maxis Postpaid (MP79+) and enjoy RM20 bill rebate x 6 months",
+    subtext: "Also: HP75 outbound port-in RM20x6 mths · MEP outbound HP75/MP79+ new/P2P RM10x12 mths · K2 port-in DAP waiver still applies · Not stackable with other bill rebate offers · FREE sooka 6 mths for all Maxis Postpaid principal plans",
+  },
   {
     date: "24 Sep",
     type: "new",
@@ -2946,7 +2952,7 @@ MP79: { monthly: 25, dapLabel: "Check ECC" },
  {
  storage: "8+256GB",
  rrp: 1099,
- promo: "Effective 13 Aug 2026: FREE on MP79 and above (DAP RM200). Port-in Special: RM20 off x 6 months.",
+ promo: "Effective 13 Aug 2026: FREE on MP79 and above (DAP RM200). Port-in Special: RM20 bill rebate x 6 months (valid 1 Jul 2026 – 8 Jan 2027, MP79 & above, port-in only, not stackable with other bill rebate offers).",
  regions: {
 ECEM: {
 upfront: {
@@ -3187,7 +3193,7 @@ storages: [
 {
 storage: "16+512GB",
 rrp: 7699,
-      promo: "Launch 12 Jun 2026. NEW — Zerolution 24M available. Port-in Rebate RM20x6mths applicable (14 Apr – 30 Sept 2026, excl. MP79). K2 Port-in: Additional RM100 DAP waiver (28 Jul 2026 – 31 Jan 2027, Maxis Postpaid only). Port-in Specials up to RM240 rebate (RM20 bill rebate x 12 mths on High Value Plan, in-store port-in until 30 Sept 2026).",
+      promo: "Launch 12 Jun 2026. NEW — Zerolution 24M available. Port-in Rebate RM20x6mths applicable (14 Apr – 8 Jan 2027, excl. MP79). K2 Port-in: Additional RM100 DAP waiver (28 Jul 2026 – 31 Jan 2027, Maxis Postpaid only). Port-in Specials up to RM240 rebate (RM20 bill rebate x 12 mths on High Value Plan, in-store port-in until 8 Jan 2027).",
 regions: {
 ECEM: {
 upfront: {
@@ -4888,7 +4894,7 @@ MP199: { monthly: "NA", dapLabel: "NA" }
 brand: "Samsung",
 models: [
 {
-      // CHANGELOG: Samsung Galaxy A27 5G added 2-9 Jul GTM (eff 9 Jul 2026). Realme 16T 5G added (eff 3 Jul 2026). Samsung A07 5G MP69 upfront repriced to devicePrice=99, dap=120 (eff 2 Jul 2026). Samsung A07 5G DTP updated RM675→RM1,005 eff 3 Aug 2026 (dealer-facing only; no customer device price change per PDF).
+      // CHANGELOG: Samsung Galaxy A27 5G added 2-9 Jul GTM (eff 9 Jul 2026). Realme 16T 5G added (eff 3 Jul 2026). Samsung A07 5G MP69 upfront repriced to devicePrice=99, dap=120 (eff 2 Jul 2026). Samsung A07 5G DTP updated RM675→RM1,005 eff 3 Aug 2026 (dealer-facing only; no customer device price change per PDF). Port-in RM20x6mths bill rebate (MP79 & above, plan or device contract) extended to 8 Jan 2027 (eff 30 Sep 2026, source: Maxis GTM Update Special Tactical Port-in Offer 2026 09 30 ECEM MEP). No customer device pricing change.
       model: "Samsung Galaxy A07 5G",
             aliases: ["samsung", "a07", "a075g"],
             // HP75 promo note: Samsung Galaxy A07 LTE (4G, RRP RM899) — SEPARATE device from this A07 5G (RRP RM1,029) — is available FREE on Hotlink Postpaid 75 (HP75+4G Device Offer). 12-month price: RM199 upfront; 24-month: FREE. RM10/mth rebate x contract duration. Campaign 26 Jun – 30 Sep 2026. New sign-ups only. Not stackable with MNP/Roadshow rebates. HP75 region entries (HP65/HP75) for the 4G LTE variant should be tracked in a separate Samsung Galaxy A07 LTE (4G) device entry.
@@ -5956,6 +5962,7 @@ MP79: { monthly: 265, dapLabel: "Check ECC" },
       ]
     },
     {
+      // CHANGELOG: Port-in Bill Rebate extended — RM20 x 6 months for MP79+ port-in (plan or device contract), valid 1 Jul 2026 – 8 Jan 2027 (src: Maxis GTM Update 30 Sep 2026 MEP). HP75 port-in: RM20 x 6 months. HP75 new/P2P: RM10 x 12 months. No device prices or DAP changed.
       // CHANGELOG: Samsung Galaxy Z Fold8 Ultra 5G added eff 14 Aug 2026.
       model: "Galaxy Z Fold8 Ultra 5G",
       aliases: ["samsung", "fold8ultra", "zfold8ultra"],
