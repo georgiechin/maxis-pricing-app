@@ -53,8 +53,8 @@ export type CatalogBrand = {
 };
 
 // Pricing source — update this whenever a new GTM is applied
-export const CATALOG_SOURCE = "GTM 30 Sep 2026 (Port-in Rebate Extension: RM20x6 mths bill rebate for MP79+ port-in extended to 8 Jan 2027; HP75 outbound port-in RM20x6 mths; MEP outbound offer HP75/MP79+ RM20x6 mths port-in, RM10x12 mths HP75 new/P2P; no pricing change to devices) + GTM 24 Sep 2026 (MEP ECEM compiled device pricing: every Upfront 24M/36M and Zerolution 24M/36M price checked cell-by-cell against the Maxis PDF) + GTM 21 Sep 2026 (Home Device: NEW Sony 65\" BRAVIA 3 II 4K Google TV K-65XR30M2 SKU#100021900001 RRP RM6,599 eff 24 Sep 2026; NEW Sony 65\" BRAVIA 3 II + PS5 Bundle SKU#100021901001 RRP RM9,098 eff 24 Sep 2026; NEW LG 65\" 4K UHD Smart TV 65UA731 SKU#100022073001 RRP RM3,899 eff 24 Sep 2026; NEW LG 65\" QNED Mini LED 65QNED70 SKU#100022074001 RRP RM4,899 eff 24 Sep 2026; EOL Samsung 75\" Micro RGB + Nintendo Switch OLED SKU#100021107001 eff 21 Sep 2026; EOL Sony PS5 Pro Digital Console SKU#100020545001 eff 21 Sep 2026) + GTM 14 Aug 2026 (Samsung Galaxy Z Flip8 5G 256GB/512GB RRP RM5,399/RM6,199; Samsung Galaxy Z Fold8 5G 256GB/512GB/1TB RRP RM7,299/RM8,099/RM9,699; Samsung Galaxy Z Fold8 Ultra 5G 256GB/512GB/1TB RRP RM8,099/RM8,899/RM10,499 — all eff 14 Aug 2026 on Zerolution 24M/36M and 1L1D; freebies: Buds4 Pro with Flip8, Watch9 with Fold8, Samsung 55\" TV with Fold8 Ultra) + GTM 11 Aug 2026 (ECEM Q3: New MP79 ECEM-exclusive plan eff 13 Aug; MP69 2x data eff 20 Aug; MP99 flagship deals; Honor 500 Smart 4+256GB added; iPhone 15/16/17e/17/Air repriced for MP79/89; Samsung A07/Oppo A6t/Vivo Y11 FREE on MP79; Nubia Neo 5 RM249 on MP79 port-in; Samsung A27/Oppo A6/Vivo Y21/A37/Reno16F/Reno16/Honor 600/Vivo X300 FE upfront repriced; K2 port-in DAP waiver up to RM200) + GTM 27 Jul 2026 (K2 Port-in: +RM100 DAP waiver 28 Jul 2026 – 31 Jan 2027; RM20x12 bill rebate on HVP switch) + GTM 23 Jul 2026 (New: Huawei Pura 90s Pro 5G, Huawei Pura 90s Pro Max 5G; iPad Air 11\"/13\" & iPad Pro 11\"/13\" price updates) + GTM 16 July 2026 (Price Down: Realme 16T, Samsung A27, Vivo Y21) + GTM 2-9 July 2026 + Port-in Rebate 29 Jun 2026 + Home Device GTM 13 Jul 2026 + MEP Device Governance Policy updated 9 Jul 2026 (internal process only, no pricing impact)";
-export const CATALOG_DATE = "2026-10-01";
+export const CATALOG_SOURCE = "RRP + Hotlink check 7 Oct 2026 (every ECEM RRP matched to the RFS 24 Sep compiled tables - 17 iPhone/iPad/Oppo A6/Galaxy A07 RRPs were RM120-RM1,300 too low; Hotlink HP75 rows matched to the Hotlink device pricing summary updated 23 Sep: Nubia Neo 5 / Galaxy A26 / Honor 600 Lite / Galaxy A07 corrected; Redmi Note 17, Nubia A77 and Honor 500 Smart 4+256GB added to Hotlink) + GTM 30 Sep 2026 (Port-in Rebate Extension: RM20x6 mths bill rebate for MP79+ port-in extended to 8 Jan 2027; HP75 outbound port-in RM20x6 mths; MEP outbound offer HP75/MP79+ RM20x6 mths port-in, RM10x12 mths HP75 new/P2P; no pricing change to devices) + GTM 24 Sep 2026 (MEP ECEM compiled device pricing: every Upfront 24M/36M and Zerolution 24M/36M price checked cell-by-cell against the Maxis PDF) + GTM 21 Sep 2026 (Home Device: NEW Sony 65\" BRAVIA 3 II 4K Google TV K-65XR30M2 SKU#100021900001 RRP RM6,599 eff 24 Sep 2026; NEW Sony 65\" BRAVIA 3 II + PS5 Bundle SKU#100021901001 RRP RM9,098 eff 24 Sep 2026; NEW LG 65\" 4K UHD Smart TV 65UA731 SKU#100022073001 RRP RM3,899 eff 24 Sep 2026; NEW LG 65\" QNED Mini LED 65QNED70 SKU#100022074001 RRP RM4,899 eff 24 Sep 2026; EOL Samsung 75\" Micro RGB + Nintendo Switch OLED SKU#100021107001 eff 21 Sep 2026; EOL Sony PS5 Pro Digital Console SKU#100020545001 eff 21 Sep 2026) + GTM 14 Aug 2026 (Samsung Galaxy Z Flip8 5G 256GB/512GB RRP RM5,399/RM6,199; Samsung Galaxy Z Fold8 5G 256GB/512GB/1TB RRP RM7,299/RM8,099/RM9,699; Samsung Galaxy Z Fold8 Ultra 5G 256GB/512GB/1TB RRP RM8,099/RM8,899/RM10,499 — all eff 14 Aug 2026 on Zerolution 24M/36M and 1L1D; freebies: Buds4 Pro with Flip8, Watch9 with Fold8, Samsung 55\" TV with Fold8 Ultra) + GTM 11 Aug 2026 (ECEM Q3: New MP79 ECEM-exclusive plan eff 13 Aug; MP69 2x data eff 20 Aug; MP99 flagship deals; Honor 500 Smart 4+256GB added; iPhone 15/16/17e/17/Air repriced for MP79/89; Samsung A07/Oppo A6t/Vivo Y11 FREE on MP79; Nubia Neo 5 RM249 on MP79 port-in; Samsung A27/Oppo A6/Vivo Y21/A37/Reno16F/Reno16/Honor 600/Vivo X300 FE upfront repriced; K2 port-in DAP waiver up to RM200) + GTM 27 Jul 2026 (K2 Port-in: +RM100 DAP waiver 28 Jul 2026 – 31 Jan 2027; RM20x12 bill rebate on HVP switch) + GTM 23 Jul 2026 (New: Huawei Pura 90s Pro 5G, Huawei Pura 90s Pro Max 5G; iPad Air 11\"/13\" & iPad Pro 11\"/13\" price updates) + GTM 16 July 2026 (Price Down: Realme 16T, Samsung A27, Vivo Y21) + GTM 2-9 July 2026 + Port-in Rebate 29 Jun 2026 + Home Device GTM 13 Jul 2026 + MEP Device Governance Policy updated 9 Jul 2026 (internal process only, no pricing impact)";
+export const CATALOG_DATE = "2026-10-07";
 
 // Latest updates — shown at top of app so staff stay informed without reading emails
 // Keep most recent first. Update whenever a new GTM/email changes the catalog.
@@ -66,6 +66,12 @@ export type AppUpdate = {
 };
 
 export const LATEST_UPDATES: AppUpdate[] = [
+  {
+    date: "8 Oct",
+    type: "upcoming",
+    text: "From 8 Oct: Oppo A6t and Vivo Y11 are no longer FREE on MP79 (A6t RM299, Y11 RM249 upfront) and their RRP goes up",
+    subtext: "Also 8 Oct: NEW Honor 600s, Honor X9e Pro, Vivo V80 Lite, Vivo Y21 6+256GB · Hotlink HP75: A6t RM349 / Y11 RM299 (24M), Honor 600S added · The app switches to the new prices automatically on 8 Oct.",
+  },
   {
     date: "30 Sep",
     type: "alert",
@@ -294,11 +300,11 @@ model: "Samsung Galaxy A07 5G",
 aliases: ["samsung", "a07", "a075g", "hotlink"],
 storages: [{
 storage: "8+256GB",
-rrp: 1029,
+rrp: 1149,
 regions: {
 HOTLINK: {
 hotlink12: {
-HP75: { devicePrice: 279, dap: 0, totalUpfront: 279, monthly: 75 }
+HP75: { devicePrice: 419, dap: 0, totalUpfront: 419, monthly: 75 }
 },
 hotlink24: {
 HP75: { devicePrice: 0, dap: 200, totalUpfront: 200, monthly: 66.67 }
@@ -312,7 +318,7 @@ model: "Samsung Galaxy A07 LTE",
 aliases: ["samsung", "a07", "a07lte", "hotlink"],
 storages: [{
 storage: "8+256GB",
-rrp: 899,
+rrp: 1049,
 regions: {
 HOTLINK: {
 hotlink12: {
@@ -321,7 +327,7 @@ HP75: { devicePrice: 199, dap: 0, totalUpfront: 199, monthly: 75 }
 },
 hotlink24: {
 HP65: { devicePrice: 0, dap: 180, totalUpfront: 180, monthly: 57.50 },
-HP75: { devicePrice: 0, dap: 180, totalUpfront: 180, monthly: 67.50 }
+HP75: { devicePrice: 0, dap: 150, totalUpfront: 150, monthly: 68.75 }
 }
 }
 }
@@ -361,6 +367,19 @@ HP75: { devicePrice: 129, dap: 180, totalUpfront: 309, monthly: 67.50 }
 }
 }
 }
+}, {
+storage: "4+256GB",
+rrp: 1099,
+regions: {
+HOTLINK: {
+hotlink12: {
+HP75: { devicePrice: 459, dap: 0, totalUpfront: 459, monthly: 75 }
+},
+hotlink24: {
+HP75: { devicePrice: 99, dap: 180, totalUpfront: 279, monthly: 67.50 }
+}
+}
+}
 }]
 },
 {
@@ -393,7 +412,7 @@ hotlink12: {
 HP75: { devicePrice: 599, dap: 0, totalUpfront: 599, monthly: 75 }
 },
 hotlink24: {
-HP75: { devicePrice: 299, dap: 120, totalUpfront: 419, monthly: 72.50 }
+HP75: { devicePrice: 299, dap: 120, totalUpfront: 419, monthly: 70 }
 }
 }
 }
@@ -403,15 +422,15 @@ model: "Honor 600 Lite 5G",
 aliases: ["honor", "honor600lite", "hotlink"],
 storages: [{
 storage: "12+256GB",
-rrp: 1399,
+rrp: 1499,
 promo: "DAP reduced eff 9 Apr 2026.",
 regions: {
 HOTLINK: {
 hotlink12: {
-HP75: { devicePrice: 859, dap: 60, totalUpfront: 919, monthly: 75 }
+HP75: { devicePrice: 859, dap: 0, totalUpfront: 859, monthly: 75 }
 },
 hotlink24: {
-HP75: { devicePrice: 499, dap: 120, totalUpfront: 619, monthly: 72.50 }
+HP75: { devicePrice: 499, dap: 120, totalUpfront: 619, monthly: 70 }
 }
 }
 }
@@ -540,7 +559,43 @@ hotlink12: {
 HP75: { devicePrice: 659, dap: 0, totalUpfront: 659, monthly: 75 }
 },
 hotlink24: {
-HP75: { devicePrice: 299, dap: 120, totalUpfront: 419, monthly: 67.50 }
+HP75: { devicePrice: 299, dap: 120, totalUpfront: 419, monthly: 70 }
+}
+}
+}
+}]
+},
+{
+model: "Nubia A77 5G",
+aliases: ["nubia", "a77", "hotlink"],
+storages: [{
+storage: "6+128GB",
+rrp: 1099,
+regions: {
+HOTLINK: {
+hotlink12: {
+HP75: { devicePrice: 459, dap: 0, totalUpfront: 459, monthly: 75 }
+},
+hotlink24: {
+HP75: { devicePrice: 69, dap: 150, totalUpfront: 219, monthly: 68.75 }
+}
+}
+}
+}]
+},
+{
+model: "Redmi Note 17 5G",
+aliases: ["xiaomi", "redminote17", "hotlink"],
+storages: [{
+storage: "6+256GB",
+rrp: 1199,
+regions: {
+HOTLINK: {
+hotlink12: {
+HP75: { devicePrice: 619, dap: 0, totalUpfront: 619, monthly: 75 }
+},
+hotlink24: {
+HP75: { devicePrice: 259, dap: 120, totalUpfront: 379, monthly: 70.00 }
 }
 }
 }
@@ -740,7 +795,7 @@ aliases: ["iphone", "ip16"],
 storages: [
 {
 storage: "128GB",
-rrp: 3499,
+rrp: 3799,
 regions: {
 ECEM: {
 upfront: {
@@ -839,7 +894,7 @@ aliases: ["iphone", "ip17e"],
 storages: [
 {
 storage: "256GB",
-rrp: 2999,
+rrp: 3299,
             promo: "Free from MP169 (36M). Or RM1,941 on MP109 (36M). Save RM1,058.",
 regions: {
 ECEM: {
@@ -889,7 +944,7 @@ MP199: { monthly: 105, dapLabel: "Check ECC" }
       },
       {
         storage: "512GB",
-        rrp: 3999,
+        rrp: 4299,
         regions: {
           ECEM: {
             upfront36: {
@@ -944,7 +999,7 @@ aliases: ["iphone", "ip17"],
 storages: [
 {
 storage: "256GB",
-rrp: 3999,
+rrp: 4299,
             promo: "Now FREE with MP199 (36M upfront).",
 regions: {
 ECEM: {
@@ -994,7 +1049,7 @@ upfront: {
       },
       {
         storage: "512GB",
-        rrp: 4999,
+        rrp: 5299,
         regions: {
           ECEM: {
             upfront: {
@@ -1050,7 +1105,7 @@ aliases: ["iphone", "ipair"],
 storages: [
 {
 storage: "256GB",
-rrp: 4999,
+rrp: 5299,
 regions: {
 ECEM: {
           upfront: {
@@ -1100,7 +1155,7 @@ upfront36: {
     },
     {
       storage: "512GB",
-      rrp: 5999,
+      rrp: 6299,
       regions: {
         ECEM: {
           upfront: {
@@ -1150,7 +1205,7 @@ MP199: { monthly: 105, dapLabel: "Check ECC" }
 },
 {
 storage: "1TB",
-rrp: 6999,
+rrp: 8299,
 regions: {
 ECEM: {
 upfront: {
@@ -1830,7 +1885,7 @@ model: '11" iPad (11th Gen)',
     storages: [
       {
         storage: "256GB",
-        rrp: 2699,
+        rrp: 3149,
         regions: {
           ECEM: {
             upfront: {
@@ -1876,7 +1931,7 @@ model: '11" iPad Air (6th Gen)',
     storages: [
       {
         storage: "256GB",
-        rrp: 3899,
+        rrp: 4599,
         regions: {
           ECEM: {
             upfront: {
@@ -1922,7 +1977,7 @@ model: '13" iPad Air (3rd Gen)',
     storages: [
       {
         storage: "256GB",
-        rrp: 4799,
+        rrp: 5499,
         regions: {
           ECEM: {
             upfront: {
@@ -1968,7 +2023,7 @@ aliases: ["ipad", "ipadpro11-6th"],
 storages: [
 {
 storage: "256GB",
-rrp: 5399,
+rrp: 6399,
 regions: {
 ECEM: {
 upfront: {
@@ -2008,7 +2063,7 @@ MP199: { monthly: 140, dapLabel: "Check ECC" }
 },
 {
 storage: "512GB",
-rrp: 6299,
+rrp: 7299,
 regions: {
 ECEM: {
 upfront: {
@@ -2054,7 +2109,7 @@ model: '13" iPad Pro (8th Gen)',
     storages: [
       {
         storage: "256GB",
-        rrp: 6699,
+        rrp: 7699,
         regions: {
           ECEM: {
             upfront: {
@@ -2094,7 +2149,7 @@ MP199: { monthly: 172, dapLabel: "Check ECC" }
 },
 {
                 storage: "512GB",
-        rrp: 7599,
+        rrp: 8599,
         regions: {
           ECEM: {
             upfront: {
@@ -3034,10 +3089,10 @@ MP79: { monthly: 35, dapLabel: "Check ECC" },
 },
 HOTLINK: {
 hotlink12: {
-HP75: { devicePrice: 699, dap: 0, totalUpfront: 699, monthly: 75 }
+HP75: { devicePrice: 859, dap: 0, totalUpfront: 859, monthly: 75 }
 },
 hotlink24: {
-HP75: { devicePrice: 399, dap: 60, totalUpfront: 459, monthly: 72.50 }
+HP75: { devicePrice: 499, dap: 120, totalUpfront: 619, monthly: 70 }
 }
 }
 }
@@ -4014,7 +4069,7 @@ model: "Oppo A6 5G",
 aliases: ["oppo", "a6"],
 storages: [{
 storage: "8+512GB",
-rrp: 1599,
+rrp: 1799,
 regions: {
 ECEM: {
 upfront: {
@@ -4900,7 +4955,7 @@ models: [
             // HP75 promo note: Samsung Galaxy A07 LTE (4G, RRP RM899) — SEPARATE device from this A07 5G (RRP RM1,029) — is available FREE on Hotlink Postpaid 75 (HP75+4G Device Offer). 12-month price: RM199 upfront; 24-month: FREE. RM10/mth rebate x contract duration. Campaign 26 Jun – 30 Sep 2026. New sign-ups only. Not stackable with MNP/Roadshow rebates. HP75 region entries (HP65/HP75) for the 4G LTE variant should be tracked in a separate Samsung Galaxy A07 LTE (4G) device entry.
 storages: [{
 storage: "8+256GB",
-rrp: 1029,
+rrp: 1149,
 regions: {
 ECEM: {
 upfront: {
