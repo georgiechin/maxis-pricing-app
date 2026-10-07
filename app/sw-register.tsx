@@ -9,6 +9,12 @@ export default function SwRegister() {
 
   useEffect(() => {
     if (typeof navigator === "undefined" || !("serviceWorker" in navigator)) return;
+    // `next dev` serves chunks under fixed names, so the cache-first worker kept
+    // handing back old code after every edit. Only production builds register it.
+    if (process.env.NODE_ENV !== "production") {
+      navigator.serviceWorker.getRegistrations().then((rs) => rs.forEach((r) => r.unregister()));
+      return;
+    }
     navigator.serviceWorker
       .register("/sw.js")
       .then((reg) => {

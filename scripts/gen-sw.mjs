@@ -49,12 +49,16 @@ self.addEventListener("fetch", (e) => {
           // the session expired.
           const isLogin = r.redirected || new URL(r.url).pathname === "/login";
           if (r.ok && !isLogin) {
+            // Each page is kept under its own path. Storing every page as "/"
+            // made opening /simple or /admin replace the main app's offline copy.
             const cp = r.clone();
-            caches.open(CACHE).then((c) => c.put("/", cp));
+            caches.open(CACHE).then((c) => c.put(new URL(e.request.url).pathname, cp));
           }
           return r;
         })
-        .catch(() => caches.match("/"))
+        .catch(() =>
+          caches.match(new URL(e.request.url).pathname).then((hit) => hit || caches.match("/"))
+        )
     );
     return;
   }
