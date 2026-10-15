@@ -3061,7 +3061,7 @@ model: "Honor 500 Smart 5G",
  {
  storage: "4+256GB",
  rrp: 1099,
- promo: "New variant effective 13 Aug 2026. FREE on MP79/89 with DAP RM200. Free on MP99 and above.",
+ promo: "New variant effective 13 Aug 2026. FREE on MP79/89 with DAP RM200. Free on MP99 and above. Q4'26 MEP Sell-Thru Program (8 Oct – 31 Dec 2026): Tier A device — dealer earns up to RM1,600 (100 units).",
  regions: {
  ECEM: {
  upfront: {
@@ -3146,7 +3146,7 @@ storages: [
 {
 storage: "256GB",
 rrp: 1499,
-      promo: "Price down — RM299 with MP89. Free on MP139. HP75 4G Device Rebate: RM10/month x 24 months rebate (26 Jun – 30 Sep 2026, new sign-up only, not stackable with other rebates).",
+      promo: "Price down — RM299 with MP89. Free on MP139. HP75 4G Device Rebate: RM10/month x 24 months rebate (26 Jun – 30 Sep 2026, new sign-up only, not stackable with other rebates). Q4'26 MEP Sell-Thru Program (8 Oct – 31 Dec 2026): Tier A device — dealer earns up to RM1,600 (100 units).",
 regions: {
 ECEM: {
             upfront: {
@@ -3287,6 +3287,7 @@ model: "Honor 600 Pro 5G",
       {
         storage: "Default",
         rrp: 3299,
+        promo: "Q4'26 MEP Sell-Thru Program (8 Oct – 31 Dec 2026): Tier B device — dealer earns up to RM4,500 (90 units).",
         regions: {
           ECEM: {
             upfront: {
@@ -3343,7 +3344,7 @@ storages: [
 {
 storage: "16+512GB",
 rrp: 7699,
-      promo: "Launch 12 Jun 2026. NEW — Zerolution 24M available. Port-in Rebate RM20x6mths applicable (14 Apr – 8 Jan 2027, excl. MP79). K2 Port-in: Additional RM100 DAP waiver (28 Jul 2026 – 31 Jan 2027, Maxis Postpaid only). Port-in Specials up to RM240 rebate (RM20 bill rebate x 12 mths on High Value Plan, in-store port-in until 8 Jan 2027).",
+      promo: "Launch 12 Jun 2026. NEW — Zerolution 24M available. Port-in Rebate RM20x6mths applicable (14 Apr – 8 Jan 2027, excl. MP79). K2 Port-in: Additional RM100 DAP waiver (28 Jul 2026 – 31 Jan 2027, Maxis Postpaid only). Port-in Specials up to RM240 rebate (RM20 bill rebate x 12 mths on High Value Plan, in-store port-in until 8 Jan 2027). Q4'26 MEP Sell-Thru Program (8 Oct – 31 Dec 2026): Tier C device — dealer earns up to RM2,000 (20 units).",
 regions: {
 ECEM: {
 upfront: {
@@ -3476,6 +3477,7 @@ storages: [
 {
 storage: "Default",
 rrp: 5199,
+promo: "Q4'26 MEP Sell-Thru Program (8 Oct – 31 Dec 2026): Tier C device — dealer earns up to RM2,000 (20 units).",
 regions: {
 ECEM: {
 upfront: {
@@ -3522,7 +3524,7 @@ MP199: { monthly: 75, dapLabel: "Check ECC" }
       {
         storage: "512GB",
         rrp: 1999,
-        promo: "Repriced eff 11 Jun 2026.",
+        promo: "Repriced eff 11 Jun 2026. Q4'26 MEP Sell-Thru Program (8 Oct – 31 Dec 2026): Tier B device — dealer earns up to RM4,500 (90 units).",
         regions: {
           ECEM: {
             upfront: {
@@ -3579,7 +3581,7 @@ storages: [
 {
   storage: "8+512GB",
   rrp: 2399,
-  promo: "NEW eff 8 Oct 2026. Royal Purple / Black. Gifts worth RM927: 1-year extended warranty, 730-day front & back crack warranty, 730-day liquid damage protection.",
+  promo: "NEW eff 8 Oct 2026. Royal Purple / Black. Gifts worth RM927: 1-year extended warranty, 730-day front & back crack warranty, 730-day liquid damage protection. Q4'26 MEP Sell-Thru Program (8 Oct – 31 Dec 2026): Tier B device — dealer earns up to RM4,500 (90 units).",
   regions: {
     ECEM: {
       upfront: {
@@ -3636,6 +3638,7 @@ model: "Honor 600 5G",
       {
         storage: "Default",
         rrp: 2599,
+        promo: "Q4'26 MEP Sell-Thru Program (8 Oct – 31 Dec 2026): Tier B device — dealer earns up to RM4,500 (90 units).",
         regions: {
           ECEM: {
             upfront: {
@@ -3692,7 +3695,7 @@ storages: [
 {
   storage: "4+256GB",
   rrp: 1299,
-  promo: "NEW eff 8 Oct 2026. Dessert Gold / Velvet Black. Comes with Extended Warranty worth RM99 (Honor activates it on collection).",
+  promo: "NEW eff 8 Oct 2026. Dessert Gold / Velvet Black. Comes with Extended Warranty worth RM99 (Honor activates it on collection). Q4'26 MEP Sell-Thru Program (8 Oct – 31 Dec 2026): Tier A device — dealer earns up to RM1,600 (100 units).",
   regions: {
     ECEM: {
       upfront: {
