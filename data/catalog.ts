@@ -53,8 +53,8 @@ export type CatalogBrand = {
 };
 
 // Pricing source — update this whenever a new GTM is applied
-export const CATALOG_SOURCE = "GTM RFS 16 Oct 2026 (Samsung Galaxy A57 5G RRP RM2,899 added/repriced; Google Pixel 10a 5G RRP RM3,099 new Zerolution 36M pricing) + GTM RFS 8 Oct 2026 (updated deck 9 Oct: slide typo fixed, A6t MP79/89 RM299; MEP ECEM compiled device pricing re-checked cell-by-cell: Oppo A6t 5G RRP RM1,299 and Vivo Y11 5G RRP RM1,199 repriced - no longer FREE on MP79; iPhone 17 512GB Upfront 36M MP199 RM1,599; NEW Honor 600s 5G, Honor X9e Pro 5G, Vivo V80 Lite 5G, Vivo Y21 5G 6+256GB; Upfront 36M added for iPhone 17 Pro / Pro Max) + Hotlink HP75 Device Updates eff 8 Oct 2026 (Oppo A6t / Vivo Y11 repriced, Honor 600S 5G added) + RRP + Hotlink check 7 Oct 2026 (every ECEM RRP matched to the RFS 24 Sep compiled tables - 17 iPhone/iPad/Oppo A6/Galaxy A07 RRPs were RM120-RM1,300 too low; Hotlink HP75 rows matched to the Hotlink device pricing summary updated 23 Sep: Nubia Neo 5 / Galaxy A26 / Honor 600 Lite / Galaxy A07 corrected; Redmi Note 17, Nubia A77 and Honor 500 Smart 4+256GB added to Hotlink) + GTM 30 Sep 2026 (Port-in Rebate Extension: RM20x6 mths bill rebate for MP79+ port-in extended to 8 Jan 2027; HP75 outbound port-in RM20x6 mths; MEP outbound offer HP75/MP79+ RM20x6 mths port-in, RM10x12 mths HP75 new/P2P; no pricing change to devices) + GTM 24 Sep 2026 (MEP ECEM compiled device pricing: every Upfront 24M/36M and Zerolution 24M/36M price checked cell-by-cell against the Maxis PDF) + GTM 21 Sep 2026 (Home Device: NEW Sony 65\" BRAVIA 3 II 4K Google TV K-65XR30M2 SKU#100021900001 RRP RM6,599 eff 24 Sep 2026; NEW Sony 65\" BRAVIA 3 II + PS5 Bundle SKU#100021901001 RRP RM9,098 eff 24 Sep 2026; NEW LG 65\" 4K UHD Smart TV 65UA731 SKU#100022073001 RRP RM3,899 eff 24 Sep 2026; NEW LG 65\" QNED Mini LED 65QNED70 SKU#100022074001 RRP RM4,899 eff 24 Sep 2026; EOL Samsung 75\" Micro RGB + Nintendo Switch OLED SKU#100021107001 eff 21 Sep 2026; EOL Sony PS5 Pro Digital Console SKU#100020545001 eff 21 Sep 2026) + GTM 14 Aug 2026 (Samsung Galaxy Z Flip8 5G 256GB/512GB RRP RM5,399/RM6,199; Samsung Galaxy Z Fold8 5G 256GB/512GB/1TB RRP RM7,299/RM8,099/RM9,699; Samsung Galaxy Z Fold8 Ultra 5G 256GB/512GB/1TB RRP RM8,099/RM8,899/RM10,499 — all eff 14 Aug 2026 on Zerolution 24M/36M and 1L1D; freebies: Buds4 Pro with Flip8, Watch9 with Fold8, Samsung 55\" TV with Fold8 Ultra) + GTM 11 Aug 2026 (ECEM Q3: New MP79 ECEM-exclusive plan eff 13 Aug; MP69 2x data eff 20 Aug; MP99 flagship deals; Honor 500 Smart 4+256GB added; iPhone 15/16/17e/17/Air repriced for MP79/89; Samsung A07/Oppo A6t/Vivo Y11 FREE on MP79; Nubia Neo 5 RM249 on MP79 port-in; Samsung A27/Oppo A6/Vivo Y21/A37/Reno16F/Reno16/Honor 600/Vivo X300 FE upfront repriced; K2 port-in DAP waiver up to RM200) + GTM 27 Jul 2026 (K2 Port-in: +RM100 DAP waiver 28 Jul 2026 – 31 Jan 2027; RM20x12 bill rebate on HVP switch) + GTM 23 Jul 2026 (New: Huawei Pura 90s Pro 5G, Huawei Pura 90s Pro Max 5G; iPad Air 11\"/13\" & iPad Pro 11\"/13\" price updates) + GTM 16 July 2026 (Price Down: Realme 16T, Samsung A27, Vivo Y21) + GTM 2-9 July 2026 + Port-in Rebate 29 Jun 2026 + Home Device GTM 13 Jul 2026 + MEP Device Governance Policy updated 9 Jul 2026 (internal process only, no pricing impact)";
-export const CATALOG_DATE = "2026-10-15";
+export const CATALOG_SOURCE = "Pixel 10a fix 20 Oct 2026 (Agent 3 had written the RFS 16 Oct Pixel 10a row one plan column off; re-applied cell by cell from the compiled tables, Upfront 36M added) + GTM RFS 16 Oct 2026 (Samsung Galaxy A57 5G RRP RM2,899 added/repriced; Google Pixel 10a 5G RRP RM3,099 new Zerolution 36M pricing) + GTM RFS 8 Oct 2026 (updated deck 9 Oct: slide typo fixed, A6t MP79/89 RM299; MEP ECEM compiled device pricing re-checked cell-by-cell: Oppo A6t 5G RRP RM1,299 and Vivo Y11 5G RRP RM1,199 repriced - no longer FREE on MP79; iPhone 17 512GB Upfront 36M MP199 RM1,599; NEW Honor 600s 5G, Honor X9e Pro 5G, Vivo V80 Lite 5G, Vivo Y21 5G 6+256GB; Upfront 36M added for iPhone 17 Pro / Pro Max) + Hotlink HP75 Device Updates eff 8 Oct 2026 (Oppo A6t / Vivo Y11 repriced, Honor 600S 5G added) + RRP + Hotlink check 7 Oct 2026 (every ECEM RRP matched to the RFS 24 Sep compiled tables - 17 iPhone/iPad/Oppo A6/Galaxy A07 RRPs were RM120-RM1,300 too low; Hotlink HP75 rows matched to the Hotlink device pricing summary updated 23 Sep: Nubia Neo 5 / Galaxy A26 / Honor 600 Lite / Galaxy A07 corrected; Redmi Note 17, Nubia A77 and Honor 500 Smart 4+256GB added to Hotlink) + GTM 30 Sep 2026 (Port-in Rebate Extension: RM20x6 mths bill rebate for MP79+ port-in extended to 8 Jan 2027; HP75 outbound port-in RM20x6 mths; MEP outbound offer HP75/MP79+ RM20x6 mths port-in, RM10x12 mths HP75 new/P2P; no pricing change to devices) + GTM 24 Sep 2026 (MEP ECEM compiled device pricing: every Upfront 24M/36M and Zerolution 24M/36M price checked cell-by-cell against the Maxis PDF) + GTM 21 Sep 2026 (Home Device: NEW Sony 65\" BRAVIA 3 II 4K Google TV K-65XR30M2 SKU#100021900001 RRP RM6,599 eff 24 Sep 2026; NEW Sony 65\" BRAVIA 3 II + PS5 Bundle SKU#100021901001 RRP RM9,098 eff 24 Sep 2026; NEW LG 65\" 4K UHD Smart TV 65UA731 SKU#100022073001 RRP RM3,899 eff 24 Sep 2026; NEW LG 65\" QNED Mini LED 65QNED70 SKU#100022074001 RRP RM4,899 eff 24 Sep 2026; EOL Samsung 75\" Micro RGB + Nintendo Switch OLED SKU#100021107001 eff 21 Sep 2026; EOL Sony PS5 Pro Digital Console SKU#100020545001 eff 21 Sep 2026) + GTM 14 Aug 2026 (Samsung Galaxy Z Flip8 5G 256GB/512GB RRP RM5,399/RM6,199; Samsung Galaxy Z Fold8 5G 256GB/512GB/1TB RRP RM7,299/RM8,099/RM9,699; Samsung Galaxy Z Fold8 Ultra 5G 256GB/512GB/1TB RRP RM8,099/RM8,899/RM10,499 — all eff 14 Aug 2026 on Zerolution 24M/36M and 1L1D; freebies: Buds4 Pro with Flip8, Watch9 with Fold8, Samsung 55\" TV with Fold8 Ultra) + GTM 11 Aug 2026 (ECEM Q3: New MP79 ECEM-exclusive plan eff 13 Aug; MP69 2x data eff 20 Aug; MP99 flagship deals; Honor 500 Smart 4+256GB added; iPhone 15/16/17e/17/Air repriced for MP79/89; Samsung A07/Oppo A6t/Vivo Y11 FREE on MP79; Nubia Neo 5 RM249 on MP79 port-in; Samsung A27/Oppo A6/Vivo Y21/A37/Reno16F/Reno16/Honor 600/Vivo X300 FE upfront repriced; K2 port-in DAP waiver up to RM200) + GTM 27 Jul 2026 (K2 Port-in: +RM100 DAP waiver 28 Jul 2026 – 31 Jan 2027; RM20x12 bill rebate on HVP switch) + GTM 23 Jul 2026 (New: Huawei Pura 90s Pro 5G, Huawei Pura 90s Pro Max 5G; iPad Air 11\"/13\" & iPad Pro 11\"/13\" price updates) + GTM 16 July 2026 (Price Down: Realme 16T, Samsung A27, Vivo Y21) + GTM 2-9 July 2026 + Port-in Rebate 29 Jun 2026 + Home Device GTM 13 Jul 2026 + MEP Device Governance Policy updated 9 Jul 2026 (internal process only, no pricing impact)";
+export const CATALOG_DATE = "2026-10-20";
 
 // Latest updates — shown at top of app so staff stay informed without reading emails
 // Keep most recent first. Update whenever a new GTM/email changes the catalog.
@@ -66,6 +66,12 @@ export type AppUpdate = {
 };
 
 export const LATEST_UPDATES: AppUpdate[] = [
+  {
+    date: "20 Oct",
+    type: "alert",
+    text: "⚠️ Google Pixel 10a prices corrected: since 16 Oct the app showed them one plan off (e.g. \"FREE on MP199\")",
+    subtext: "Correct upfront 24M: MP99/109 RM1,599 · MP139 RM1,099 · MP169 RM699 · MP199 RM199 (not free) · not on MP79/89 · Zerolution 24M MP99/109 RM95/mth · Upfront 36M now listed (MP99 RM1,199 + RM840 DAP). Re-check any Pixel 10a quote sent since 16 Oct.",
+  },
   {
     date: "16 Oct",
     type: "new",
@@ -2386,20 +2392,30 @@ model: "Google Pixel 10a 5G",
                   ECEM: {
                     upfront: {
                       MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
-                      MP79: { devicePrice: 1599, dap: 480, totalUpfront: 2079 },
+                      MP79: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
                       MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
                       MP99: { devicePrice: 1599, dap: 480, totalUpfront: 2079 },
-                      MP109: { devicePrice: 1099, dap: 960, totalUpfront: 2059 },
-                      MP139: { devicePrice: 699, dap: 1360, totalUpfront: 2059 },
-                      MP169: { devicePrice: 199, dap: 1840, totalUpfront: 2039 },
-                      MP199: { devicePrice: 0, dap: 2040, totalUpfront: 2040 }
+                      MP109: { devicePrice: 1599, dap: 480, totalUpfront: 2079 },
+                      MP139: { devicePrice: 1099, dap: 960, totalUpfront: 2059 },
+                      MP169: { devicePrice: 699, dap: 1360, totalUpfront: 2059 },
+                      MP199: { devicePrice: 199, dap: 1840, totalUpfront: 2039 }
                     },
+upfront36: {
+            MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+            MP79: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+            MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+            MP99: { devicePrice: 1199, dap: 840, totalUpfront: 2039 },
+            MP109: { devicePrice: 1199, dap: 840, totalUpfront: 2039 },
+            MP139: { devicePrice: 499, dap: 1540, totalUpfront: 2039 },
+            MP169: { devicePrice: 0, dap: 2040, totalUpfront: 2040 },
+            MP199: { devicePrice: 0, dap: 2040, totalUpfront: 2040 }
+          },
                     zero24: {
                       MP48: { monthly: 129, dapLabel: "NA" },
                       MP69: { monthly: "NA", dapLabel: "Check ECC" },
-                      MP79: { monthly: 87, dapLabel: "Check ECC" },
+                      MP79: { monthly: 115, dapLabel: "Check ECC" },
                       MP89: { monthly: 115, dapLabel: "Check ECC" },
-                      MP99: { monthly: 115, dapLabel: "Check ECC" },
+                      MP99: { monthly: 95, dapLabel: "Check ECC" },
                       MP109: { monthly: 95, dapLabel: "Check ECC" },
                       MP139: { monthly: 80, dapLabel: "Check ECC" },
                       MP169: { monthly: 65, dapLabel: "Check ECC" },
@@ -2411,10 +2427,10 @@ model: "Google Pixel 10a 5G",
                       MP79: { monthly: 80, dapLabel: "Check ECC" },
                       MP89: { monthly: 80, dapLabel: "Check ECC" },
                       MP99: { monthly: 60, dapLabel: "Check ECC" },
-                      MP109: { monthly: 50, dapLabel: "Check ECC" },
-                      MP139: { monthly: 40, dapLabel: "Check ECC" },
-                      MP169: { monthly: 25, dapLabel: "Check ECC" },
-                      MP199: { monthly: 20, dapLabel: "Check ECC" }
+                      MP109: { monthly: 60, dapLabel: "Check ECC" },
+                      MP139: { monthly: 50, dapLabel: "Check ECC" },
+                      MP169: { monthly: 40, dapLabel: "Check ECC" },
+                      MP199: { monthly: 25, dapLabel: "Check ECC" }
                     }
 }
 }
