@@ -53,7 +53,7 @@ export type CatalogBrand = {
 };
 
 // Pricing source — update this whenever a new GTM is applied
-export const CATALOG_SOURCE = "Pixel 10a fix 20 Oct 2026 (Agent 3 had written the RFS 16 Oct Pixel 10a row one plan column off; re-applied cell by cell from the compiled tables, Upfront 36M added) + GTM RFS 16 Oct 2026 (Samsung Galaxy A57 5G RRP RM2,899 added/repriced; Google Pixel 10a 5G RRP RM3,099 new Zerolution 36M pricing) + GTM RFS 8 Oct 2026 (updated deck 9 Oct: slide typo fixed, A6t MP79/89 RM299; MEP ECEM compiled device pricing re-checked cell-by-cell: Oppo A6t 5G RRP RM1,299 and Vivo Y11 5G RRP RM1,199 repriced - no longer FREE on MP79; iPhone 17 512GB Upfront 36M MP199 RM1,599; NEW Honor 600s 5G, Honor X9e Pro 5G, Vivo V80 Lite 5G, Vivo Y21 5G 6+256GB; Upfront 36M added for iPhone 17 Pro / Pro Max) + Hotlink HP75 Device Updates eff 8 Oct 2026 (Oppo A6t / Vivo Y11 repriced, Honor 600S 5G added) + RRP + Hotlink check 7 Oct 2026 (every ECEM RRP matched to the RFS 24 Sep compiled tables - 17 iPhone/iPad/Oppo A6/Galaxy A07 RRPs were RM120-RM1,300 too low; Hotlink HP75 rows matched to the Hotlink device pricing summary updated 23 Sep: Nubia Neo 5 / Galaxy A26 / Honor 600 Lite / Galaxy A07 corrected; Redmi Note 17, Nubia A77 and Honor 500 Smart 4+256GB added to Hotlink) + GTM 30 Sep 2026 (Port-in Rebate Extension: RM20x6 mths bill rebate for MP79+ port-in extended to 8 Jan 2027; HP75 outbound port-in RM20x6 mths; MEP outbound offer HP75/MP79+ RM20x6 mths port-in, RM10x12 mths HP75 new/P2P; no pricing change to devices) + GTM 24 Sep 2026 (MEP ECEM compiled device pricing: every Upfront 24M/36M and Zerolution 24M/36M price checked cell-by-cell against the Maxis PDF) + GTM 21 Sep 2026 (Home Device: NEW Sony 65\" BRAVIA 3 II 4K Google TV K-65XR30M2 SKU#100021900001 RRP RM6,599 eff 24 Sep 2026; NEW Sony 65\" BRAVIA 3 II + PS5 Bundle SKU#100021901001 RRP RM9,098 eff 24 Sep 2026; NEW LG 65\" 4K UHD Smart TV 65UA731 SKU#100022073001 RRP RM3,899 eff 24 Sep 2026; NEW LG 65\" QNED Mini LED 65QNED70 SKU#100022074001 RRP RM4,899 eff 24 Sep 2026; EOL Samsung 75\" Micro RGB + Nintendo Switch OLED SKU#100021107001 eff 21 Sep 2026; EOL Sony PS5 Pro Digital Console SKU#100020545001 eff 21 Sep 2026) + GTM 14 Aug 2026 (Samsung Galaxy Z Flip8 5G 256GB/512GB RRP RM5,399/RM6,199; Samsung Galaxy Z Fold8 5G 256GB/512GB/1TB RRP RM7,299/RM8,099/RM9,699; Samsung Galaxy Z Fold8 Ultra 5G 256GB/512GB/1TB RRP RM8,099/RM8,899/RM10,499 — all eff 14 Aug 2026 on Zerolution 24M/36M and 1L1D; freebies: Buds4 Pro with Flip8, Watch9 with Fold8, Samsung 55\" TV with Fold8 Ultra) + GTM 11 Aug 2026 (ECEM Q3: New MP79 ECEM-exclusive plan eff 13 Aug; MP69 2x data eff 20 Aug; MP99 flagship deals; Honor 500 Smart 4+256GB added; iPhone 15/16/17e/17/Air repriced for MP79/89; Samsung A07/Oppo A6t/Vivo Y11 FREE on MP79; Nubia Neo 5 RM249 on MP79 port-in; Samsung A27/Oppo A6/Vivo Y21/A37/Reno16F/Reno16/Honor 600/Vivo X300 FE upfront repriced; K2 port-in DAP waiver up to RM200) + GTM 27 Jul 2026 (K2 Port-in: +RM100 DAP waiver 28 Jul 2026 – 31 Jan 2027; RM20x12 bill rebate on HVP switch) + GTM 23 Jul 2026 (New: Huawei Pura 90s Pro 5G, Huawei Pura 90s Pro Max 5G; iPad Air 11\"/13\" & iPad Pro 11\"/13\" price updates) + GTM 16 July 2026 (Price Down: Realme 16T, Samsung A27, Vivo Y21) + GTM 2-9 July 2026 + Port-in Rebate 29 Jun 2026 + Home Device GTM 13 Jul 2026 + MEP Device Governance Policy updated 9 Jul 2026 (internal process only, no pricing impact)";
+export const CATALOG_SOURCE = "GTM 16 Oct 2026 'Introducing iPhone Duo' (updated deck: iPhone Duo 256GB-2TB added, pre-order 16 Oct, launch 23 Oct) + Pixel 10a fix 20 Oct 2026 (Agent 3 had written the RFS 16 Oct Pixel 10a row one plan column off; re-applied cell by cell from the compiled tables, Upfront 36M added) + GTM RFS 16 Oct 2026 (Samsung Galaxy A57 5G RRP RM2,899 added/repriced; Google Pixel 10a 5G RRP RM3,099 new Zerolution 36M pricing) + GTM RFS 8 Oct 2026 (updated deck 9 Oct: slide typo fixed, A6t MP79/89 RM299; MEP ECEM compiled device pricing re-checked cell-by-cell: Oppo A6t 5G RRP RM1,299 and Vivo Y11 5G RRP RM1,199 repriced - no longer FREE on MP79; iPhone 17 512GB Upfront 36M MP199 RM1,599; NEW Honor 600s 5G, Honor X9e Pro 5G, Vivo V80 Lite 5G, Vivo Y21 5G 6+256GB; Upfront 36M added for iPhone 17 Pro / Pro Max) + Hotlink HP75 Device Updates eff 8 Oct 2026 (Oppo A6t / Vivo Y11 repriced, Honor 600S 5G added) + RRP + Hotlink check 7 Oct 2026 (every ECEM RRP matched to the RFS 24 Sep compiled tables - 17 iPhone/iPad/Oppo A6/Galaxy A07 RRPs were RM120-RM1,300 too low; Hotlink HP75 rows matched to the Hotlink device pricing summary updated 23 Sep: Nubia Neo 5 / Galaxy A26 / Honor 600 Lite / Galaxy A07 corrected; Redmi Note 17, Nubia A77 and Honor 500 Smart 4+256GB added to Hotlink) + GTM 30 Sep 2026 (Port-in Rebate Extension: RM20x6 mths bill rebate for MP79+ port-in extended to 8 Jan 2027; HP75 outbound port-in RM20x6 mths; MEP outbound offer HP75/MP79+ RM20x6 mths port-in, RM10x12 mths HP75 new/P2P; no pricing change to devices) + GTM 24 Sep 2026 (MEP ECEM compiled device pricing: every Upfront 24M/36M and Zerolution 24M/36M price checked cell-by-cell against the Maxis PDF) + GTM 21 Sep 2026 (Home Device: NEW Sony 65\" BRAVIA 3 II 4K Google TV K-65XR30M2 SKU#100021900001 RRP RM6,599 eff 24 Sep 2026; NEW Sony 65\" BRAVIA 3 II + PS5 Bundle SKU#100021901001 RRP RM9,098 eff 24 Sep 2026; NEW LG 65\" 4K UHD Smart TV 65UA731 SKU#100022073001 RRP RM3,899 eff 24 Sep 2026; NEW LG 65\" QNED Mini LED 65QNED70 SKU#100022074001 RRP RM4,899 eff 24 Sep 2026; EOL Samsung 75\" Micro RGB + Nintendo Switch OLED SKU#100021107001 eff 21 Sep 2026; EOL Sony PS5 Pro Digital Console SKU#100020545001 eff 21 Sep 2026) + GTM 14 Aug 2026 (Samsung Galaxy Z Flip8 5G 256GB/512GB RRP RM5,399/RM6,199; Samsung Galaxy Z Fold8 5G 256GB/512GB/1TB RRP RM7,299/RM8,099/RM9,699; Samsung Galaxy Z Fold8 Ultra 5G 256GB/512GB/1TB RRP RM8,099/RM8,899/RM10,499 — all eff 14 Aug 2026 on Zerolution 24M/36M and 1L1D; freebies: Buds4 Pro with Flip8, Watch9 with Fold8, Samsung 55\" TV with Fold8 Ultra) + GTM 11 Aug 2026 (ECEM Q3: New MP79 ECEM-exclusive plan eff 13 Aug; MP69 2x data eff 20 Aug; MP99 flagship deals; Honor 500 Smart 4+256GB added; iPhone 15/16/17e/17/Air repriced for MP79/89; Samsung A07/Oppo A6t/Vivo Y11 FREE on MP79; Nubia Neo 5 RM249 on MP79 port-in; Samsung A27/Oppo A6/Vivo Y21/A37/Reno16F/Reno16/Honor 600/Vivo X300 FE upfront repriced; K2 port-in DAP waiver up to RM200) + GTM 27 Jul 2026 (K2 Port-in: +RM100 DAP waiver 28 Jul 2026 – 31 Jan 2027; RM20x12 bill rebate on HVP switch) + GTM 23 Jul 2026 (New: Huawei Pura 90s Pro 5G, Huawei Pura 90s Pro Max 5G; iPad Air 11\"/13\" & iPad Pro 11\"/13\" price updates) + GTM 16 July 2026 (Price Down: Realme 16T, Samsung A27, Vivo Y21) + GTM 2-9 July 2026 + Port-in Rebate 29 Jun 2026 + Home Device GTM 13 Jul 2026 + MEP Device Governance Policy updated 9 Jul 2026 (internal process only, no pricing impact)";
 export const CATALOG_DATE = "2026-10-20";
 
 // Latest updates — shown at top of app so staff stay informed without reading emails
@@ -66,6 +66,12 @@ export type AppUpdate = {
 };
 
 export const LATEST_UPDATES: AppUpdate[] = [
+  {
+    date: "20 Oct",
+    type: "new",
+    text: "📱 NEW in the app: iPhone Duo (Apple foldable), pre-order now, launch 23 Oct · RRP from RM9,499",
+    subtext: "256GB / 512GB / 1TB / 2TB · MP99 upfront RM8,159 + RM120 DAP · MP99 Zerolution 36M RM239/mth · not on MP79/89 · pre-order gift RM300 PWP e-voucher · 48M Zerolution (e.g. RM165/mth on MP139) is in the Maxis deck, not in the app",
+  },
   {
     date: "20 Oct",
     type: "alert",
@@ -1974,6 +1980,176 @@ storages: [
         MP139: { monthly: 289, dapLabel: "Check ECC" },
         MP169: { monthly: 286, dapLabel: "Check ECC" },
         MP199: { monthly: 283, dapLabel: "Check ECC" }
+      }
+    }
+  }
+}
+]
+},
+{
+model: "iPhone Duo",
+aliases: ["iphone", "duo", "fold", "foldable"],
+storages: [
+{
+  storage: "256GB",
+  rrp: 9499,
+  promo: "NEW: pre-order from 16 Oct 2026 (8pm), launch 23 Oct 2026. Pre-order customers get a RM300 PWP e-voucher (valid 17 Oct - 16 Nov). Also available on 48M Zerolution (e.g. RM165/mth on MP139) - see deck.",
+  regions: {
+    ECEM: {
+      upfront: {
+        MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+        MP79: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+        MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+        MP99: { devicePrice: 8159, dap: 120, totalUpfront: 8279 },
+        MP109: { devicePrice: 8111, dap: 120, totalUpfront: 8231 },
+        MP139: { devicePrice: 7967, dap: 240, totalUpfront: 8207 },
+        MP169: { devicePrice: 7823, dap: 360, totalUpfront: 8183 },
+        MP199: { devicePrice: 7679, dap: 480, totalUpfront: 8159 }
+      },
+      zero24: {
+        MP48: { monthly: 395, dapLabel: "NA" },
+        MP69: { monthly: "NA", dapLabel: "Check ECC" },
+        MP79: { monthly: 377, dapLabel: "Check ECC" },
+        MP89: { monthly: 377, dapLabel: "Check ECC" },
+        MP99: { monthly: 359, dapLabel: "Check ECC" },
+        MP109: { monthly: 359, dapLabel: "Check ECC" },
+        MP139: { monthly: 345, dapLabel: "Check ECC" },
+        MP169: { monthly: 342, dapLabel: "Check ECC" },
+        MP199: { monthly: 339, dapLabel: "Check ECC" }
+      },
+      zero36: {
+        MP48: { monthly: 263, dapLabel: "NA" },
+        MP69: { monthly: "NA", dapLabel: "Check ECC" },
+        MP79: { monthly: "NA", dapLabel: "Check ECC" },
+        MP89: { monthly: "NA", dapLabel: "Check ECC" },
+        MP99: { monthly: 239, dapLabel: "Check ECC" },
+        MP109: { monthly: 239, dapLabel: "Check ECC" },
+        MP139: { monthly: 225, dapLabel: "Check ECC" },
+        MP169: { monthly: 222, dapLabel: "Check ECC" },
+        MP199: { monthly: 219, dapLabel: "Check ECC" }
+      }
+    }
+  }
+},
+{
+  storage: "512GB",
+  rrp: 10499,
+  promo: "NEW: pre-order from 16 Oct 2026 (8pm), launch 23 Oct 2026. Pre-order customers get a RM300 PWP e-voucher (valid 17 Oct - 16 Nov). Also available on 48M Zerolution (e.g. RM165/mth on MP139) - see deck.",
+  regions: {
+    ECEM: {
+      upfront: {
+        MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+        MP79: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+        MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+        MP99: { devicePrice: 9069, dap: 120, totalUpfront: 9189 },
+        MP109: { devicePrice: 9021, dap: 120, totalUpfront: 9141 },
+        MP139: { devicePrice: 8877, dap: 240, totalUpfront: 9117 },
+        MP169: { devicePrice: 8733, dap: 360, totalUpfront: 9093 },
+        MP199: { devicePrice: 8589, dap: 480, totalUpfront: 9069 }
+      },
+      zero24: {
+        MP48: { monthly: 437, dapLabel: "NA" },
+        MP69: { monthly: "NA", dapLabel: "Check ECC" },
+        MP79: { monthly: 417, dapLabel: "Check ECC" },
+        MP89: { monthly: 417, dapLabel: "Check ECC" },
+        MP99: { monthly: 397, dapLabel: "Check ECC" },
+        MP109: { monthly: 397, dapLabel: "Check ECC" },
+        MP139: { monthly: 383, dapLabel: "Check ECC" },
+        MP169: { monthly: 380, dapLabel: "Check ECC" },
+        MP199: { monthly: 377, dapLabel: "Check ECC" }
+      },
+      zero36: {
+        MP48: { monthly: 291, dapLabel: "NA" },
+        MP69: { monthly: "NA", dapLabel: "Check ECC" },
+        MP79: { monthly: "NA", dapLabel: "Check ECC" },
+        MP89: { monthly: "NA", dapLabel: "Check ECC" },
+        MP99: { monthly: 265, dapLabel: "Check ECC" },
+        MP109: { monthly: 265, dapLabel: "Check ECC" },
+        MP139: { monthly: 251, dapLabel: "Check ECC" },
+        MP169: { monthly: 248, dapLabel: "Check ECC" },
+        MP199: { monthly: 245, dapLabel: "Check ECC" }
+      }
+    }
+  }
+},
+{
+  storage: "1TB",
+  rrp: 12499,
+  promo: "NEW: pre-order from 16 Oct 2026 (8pm), launch 23 Oct 2026. Pre-order customers get a RM300 PWP e-voucher (valid 17 Oct - 16 Nov). Also available on 48M Zerolution (e.g. RM165/mth on MP139) - see deck.",
+  regions: {
+    ECEM: {
+      upfront: {
+        MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+        MP79: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+        MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+        MP99: { devicePrice: 10887, dap: 120, totalUpfront: 11007 },
+        MP109: { devicePrice: 10839, dap: 120, totalUpfront: 10959 },
+        MP139: { devicePrice: 10695, dap: 240, totalUpfront: 10935 },
+        MP169: { devicePrice: 10551, dap: 360, totalUpfront: 10911 },
+        MP199: { devicePrice: 10407, dap: 480, totalUpfront: 10887 }
+      },
+      zero24: {
+        MP48: { monthly: 520, dapLabel: "NA" },
+        MP69: { monthly: "NA", dapLabel: "Check ECC" },
+        MP79: { monthly: 497, dapLabel: "Check ECC" },
+        MP89: { monthly: 497, dapLabel: "Check ECC" },
+        MP99: { monthly: 473, dapLabel: "Check ECC" },
+        MP109: { monthly: 473, dapLabel: "Check ECC" },
+        MP139: { monthly: 459, dapLabel: "Check ECC" },
+        MP169: { monthly: 456, dapLabel: "Check ECC" },
+        MP199: { monthly: 453, dapLabel: "Check ECC" }
+      },
+      zero36: {
+        MP48: { monthly: 347, dapLabel: "NA" },
+        MP69: { monthly: "NA", dapLabel: "Check ECC" },
+        MP79: { monthly: "NA", dapLabel: "Check ECC" },
+        MP89: { monthly: "NA", dapLabel: "Check ECC" },
+        MP99: { monthly: 315, dapLabel: "Check ECC" },
+        MP109: { monthly: 315, dapLabel: "Check ECC" },
+        MP139: { monthly: 301, dapLabel: "Check ECC" },
+        MP169: { monthly: 298, dapLabel: "Check ECC" },
+        MP199: { monthly: 295, dapLabel: "Check ECC" }
+      }
+    }
+  }
+},
+{
+  storage: "2TB",
+  rrp: 15499,
+  promo: "NEW: pre-order from 16 Oct 2026 (8pm), launch 23 Oct 2026. Pre-order customers get a RM300 PWP e-voucher (valid 17 Oct - 16 Nov). Also available on 48M Zerolution (e.g. RM165/mth on MP139) - see deck.",
+  regions: {
+    ECEM: {
+      upfront: {
+        MP69: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+        MP79: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+        MP89: { devicePrice: "NA", dap: "NA", totalUpfront: "NA" },
+        MP99: { devicePrice: 13614, dap: 120, totalUpfront: 13734 },
+        MP109: { devicePrice: 13566, dap: 120, totalUpfront: 13686 },
+        MP139: { devicePrice: 13422, dap: 240, totalUpfront: 13662 },
+        MP169: { devicePrice: 13278, dap: 360, totalUpfront: 13638 },
+        MP199: { devicePrice: 13134, dap: 480, totalUpfront: 13614 }
+      },
+      zero24: {
+        MP48: { monthly: 645, dapLabel: "NA" },
+        MP69: { monthly: "NA", dapLabel: "Check ECC" },
+        MP79: { monthly: 616, dapLabel: "Check ECC" },
+        MP89: { monthly: 616, dapLabel: "Check ECC" },
+        MP99: { monthly: 587, dapLabel: "Check ECC" },
+        MP109: { monthly: 587, dapLabel: "Check ECC" },
+        MP139: { monthly: 573, dapLabel: "Check ECC" },
+        MP169: { monthly: 570, dapLabel: "Check ECC" },
+        MP199: { monthly: 567, dapLabel: "Check ECC" }
+      },
+      zero36: {
+        MP48: { monthly: 430, dapLabel: "NA" },
+        MP69: { monthly: "NA", dapLabel: "Check ECC" },
+        MP79: { monthly: "NA", dapLabel: "Check ECC" },
+        MP89: { monthly: "NA", dapLabel: "Check ECC" },
+        MP99: { monthly: 391, dapLabel: "Check ECC" },
+        MP109: { monthly: 391, dapLabel: "Check ECC" },
+        MP139: { monthly: 377, dapLabel: "Check ECC" },
+        MP169: { monthly: 374, dapLabel: "Check ECC" },
+        MP199: { monthly: 371, dapLabel: "Check ECC" }
       }
     }
   }
