@@ -28,6 +28,27 @@ HOTLINK_MODES = ("hotlink12", "hotlink24")
 # A devicePrice more than this multiple of RRP is "absurd".
 ABSURD_RRP_MULTIPLE = 1.5
 
+# Plans in ascending monthly fee. A higher plan never makes the phone dearer, so
+# a price that RISES along this ladder is a mis-keyed column. That is the shape
+# of Agent 3's worst fault: on 16 Oct it read the Pixel 10a row in natural plan
+# order while the deck prints MP79, MP99, MP89, MP109, and every price after
+# MP99 moved one plan (staff saw "FREE on MP199" for four days). This rule flags
+# MP89 = 115 > MP79 = 87 in that commit, so it would have stopped the push.
+# MP69 is left out: the decks stopped printing it in Aug 2026, its figures are
+# old leftovers (see app/simple/phones.ts) and would trip the rule on purpose.
+ECEM_LADDER = ["MP48", "MP79", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"]
+HOTLINK_LADDER = ["HP45", "HP65", "HP75"]
+
+# Words that only appear in dealer-side material. A promo note is shown on the
+# staff screen next to the customer; dealer payouts must never be in one. On 15
+# Oct Agent 3 copied the Q4'26 MEP Sell-Thru Program ("dealer earns up to
+# RM4,500 (90 units)") into seven Honor promo notes, and the main screen put
+# promo notes into customer WhatsApp quotes and printouts.
+INTERNAL_PROMO = re.compile(
+    r"dealer earns|sell[- ]?thru|sell[- ]?through|\bDTP\b|incentive|commission|payout",
+    re.IGNORECASE,
+)
+
 
 def find_catalog_file():
     if len(sys.argv) > 1:
@@ -188,7 +209,8 @@ def audit():
     ts_text = catalog_path.read_text(encoding="utf-8")
     catalog = extract_catalog_json(ts_text)
 
-    audit_structure(catalog, load_known_dupes(catalog_path))
+    known = load_known_dupes(catalog_path)
+    audit_structure(catalog, known)
 
     seen_devices = {}  # (model_lower, storage_lower) -> context
 
@@ -203,6 +225,19 @@ def audit():
                 device_count += 1
                 storage = st.get("storage", "?")
                 rrp = st.get("rrp")
+
+                # Rule 10: dealer-side material in a promo note
+                promo = st.get("promo")
+                if isinstance(promo, str):
+                    hit = INTERNAL_PROMO.search(promo)
+                    if hit:
+                        add(
+                            "CRITICAL",
+                            "Internal text in promo",
+                            f"{brand} / {model} [{storage}]: promo contains "
+                            f"dealer-side wording ({hit.group(0)!r}) — dealer "
+                            f"incentives and DTP never go in a promo note",
+                        )
 
                 regions = st.get("regions", {})
                 region_set = set(regions.keys())
@@ -356,6 +391,31 @@ def audit():
                                                 f"= {expected} but totalUpfront is "
                                                 f"{total!r}",
                                             )
+
+                    # Rule 9: plan ladder — a higher plan must not cost more
+                    ladder = HOTLINK_LADDER if region == "HOTLINK" else ECEM_LADDER
+                    for mode, rows in modes.items():
+                        if not isinstance(rows, dict):
+                            continue
+                        field = "monthly" if mode in ("zero24", "zero36") else "devicePrice"
+                        seq = [
+                            (plan, rows[plan].get(field))
+                            for plan in ladder
+                            if isinstance(rows.get(plan), dict) and is_num(rows[plan].get(field))
+                        ]
+                        for (lo_plan, lo), (hi_plan, hi) in zip(seq, seq[1:]):
+                            if hi > lo:
+                                key = (f"ladder:{brand} / {model} [{storage}] "
+                                       f"{region}.{mode}.{hi_plan}")
+                                add(
+                                    "WARNING" if key in known else "CRITICAL",
+                                    "Plan ladder",
+                                    f"{brand} / {model} [{storage}] {region}.{mode}: "
+                                    f"{field} on {hi_plan} ({hi}) is higher than on "
+                                    f"{lo_plan} ({lo}) — check the deck's column order. "
+                                    f"If the deck really prices it this way, add "
+                                    f"{key!r} to scripts/{KNOWN_DUPES_FILE}",
+                                )
 
                     # Rule 7: zero36 monthly should be <= zero24 monthly per plan
                     for plan, z36 in zero36_map.items():

@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# generated at build time by scripts/gen-sw.mjs (prebuild) — never commit
+/public/sw.js
+
+# python tool caches (scripts/*.py)
+__pycache__/

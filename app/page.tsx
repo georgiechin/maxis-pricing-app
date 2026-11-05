@@ -12,6 +12,7 @@ import {
   type PricingMode,
 } from "../data/catalog";
 import { WIFI_PLANS, WIFI_ROUTERS, WIFI_CHANGES, HOMEWIFI_SOURCE } from "../data/homewifi";
+import { signOut } from "../lib/sign-out";
 
 const pricingTabs: { key: PricingMode; label: string; short: string }[] = [
   { key: "upfront", label: "Upfront 24M", short: "Up 24M" },
@@ -25,8 +26,14 @@ const hotlinkTabs: { key: PricingMode; label: string; short: string }[] = [
   { key: "hotlink24", label: "24 months", short: "24M" },
 ];
 
-const mpOrder = ["MP69", "MP79", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
-const mpOrderZero = ["MP48", "MP69", "MP79", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
+// MP69 is not offered here. The GTM decks stopped printing MP69 device prices in
+// Aug 2026 (MP79 took its column), so the ~115 MP69 figures still in catalog.ts are
+// leftovers nobody can check — some show deals that ended (Vivo Y11 "FREE on MP69"
+// is the old MP79 offer). /simple already hides them; this screen now does too.
+// The figures stay in the catalog until a current deck confirms or removes them.
+const HIDDEN_PLANS = new Set(["MP69"]);
+const mpOrder = ["MP79", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
+const mpOrderZero = ["MP48", "MP79", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
 const hpOrder = ["HP45", "HP65", "HP75"];
 
 function getDefaultRegion(storage: CatalogStorage): "ECEM" | "HOTLINK" {
@@ -48,8 +55,8 @@ function getBestPlanForStorage(
   region: "ECEM" | "HOTLINK" = "ECEM"
 ) {
   const table = (region === "HOTLINK" ? storage.regions.HOTLINK : storage.regions.ECEM)?.[mode];
-  if (!table) return region === "HOTLINK" ? "HP75" : "MP69";
-  const preferredOrder = region === "HOTLINK" ? ["HP75", "HP65", "HP45"] : ["MP69", "MP79", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
+  if (!table) return region === "HOTLINK" ? "HP75" : "MP79";
+  const preferredOrder = region === "HOTLINK" ? ["HP75", "HP65", "HP45"] : mpOrder;
   for (const plan of preferredOrder) {
     const row = table[plan];
     if (!row) continue;
@@ -61,7 +68,7 @@ function getBestPlanForStorage(
       if (monthly !== undefined && monthly !== "NA") return plan;
     }
   }
-  return region === "HOTLINK" ? "HP75" : "MP69";
+  return region === "HOTLINK" ? "HP75" : "MP79";
 }
 
 function getDefaultSelectionForStorage(
@@ -308,7 +315,7 @@ export default function Page() {
       if (hp75_12 && Number(hp75_12.devicePrice) === 0) return "FREE HP75 12M";
       return "";
     }
-    const plans = ["MP69","MP79","MP89","MP99","MP109","MP139","MP169","MP199"] as const;
+    const plans = mpOrder;
     for (const p of plans) {
       const dp = (ecem.upfront?.[p] as {devicePrice?: number|string}|undefined)?.devicePrice;
       if (dp === 0 || dp === "0") return `🎁 FREE ${p}`;
@@ -434,6 +441,7 @@ export default function Page() {
           let stretchPrice = Infinity;
 
           for (const [plan, row] of Object.entries(table)) {
+            if (HIDDEN_PLANS.has(plan)) continue;
             let price: number;
             if (budgetTab === "upfront") {
               const total = (row as { totalUpfront?: number | string }).totalUpfront;
@@ -513,7 +521,7 @@ export default function Page() {
   // ── All free results (any plan) ────────────────────────────────────────────
   const allFreeResults = useMemo(() => {
     if (!freeDeviceMode || !freeAllPlans) return [];
-    const mpPlans = ["MP69","MP79","MP89","MP99","MP109","MP139","MP169","MP199"] as const;
+    const mpPlans = mpOrder;
     const hpPlans = ["HP75","HP65","HP45"] as const;
     const seen = new Set<string>();
     const results: { brand: string; model: CatalogModel; storage: CatalogStorage; planLabel: string; isHotlink: boolean }[] = [];
@@ -908,7 +916,9 @@ export default function Page() {
     if (!regionPricing || !selectedRow) return "";
 
     const deviceName = selectedModel.model;
-    const promo = activeStorage.promo || "";
+    // No promo line in anything sent to a customer: the catalog's promo notes
+    // are staff notes. Many have expired ("9 Jul - 31 Aug"), some are internal
+    // ("per PDF p.32"), and one GTM run wrote dealer incentive amounts into them.
     const modeLabel =
       selectedTab === "upfront" ? "Upfront 24M"
       : selectedTab === "upfront36" ? "Upfront 36M"
@@ -932,7 +942,6 @@ export default function Page() {
           `💳 DAP: ${moneyPlain(row.dap)} (returned as rebate monthly)`,
           `🧾 Total today: ${moneyPlain(row.totalUpfront)}`,
           `💰 Monthly: ${moneyPlain(row.monthly)}/month (${months}-month contract)`,
-          promo ? `🎁 ${promo}` : ``,
           ``,
           `⚠️ Subject to stock & verification`,
           `📅 Prices valid as of ${CATALOG_DATE}`,
@@ -952,7 +961,6 @@ export default function Page() {
         strongest,
         `📱 Plan: ${selectedPlan} | ${modeLabel}`,
         `💰 ${moneyPlain(row.monthly)}/month · ${months}-month contract`,
-        promo ? `🎁 ${promo}` : ``,
         ``,
         `⚡ Fast approval for eligible customers`,
         `📅 Prices valid as of ${CATALOG_DATE}`,
@@ -982,7 +990,6 @@ export default function Page() {
           `💳 DAP: ${dapText}`,
           `🧾 Total upfront: ${moneyPlain(row.totalUpfront)}`,
           isFree ? `✅ FREE device promo!` : ``,
-          promo ? `🎁 ${promo}` : ``,
           ``,
           `⚠️ Subject to stock & verification`,
           `📅 Prices valid as of ${CATALOG_DATE}`,
@@ -1002,7 +1009,6 @@ export default function Page() {
         strongest,
         `💳 DAP: ${dapText}`,
         `📱 Plan: ${selectedPlan} | ${modeLabel}`,
-        promo ? `🎁 ${promo}` : ``,
         ``,
         `⚡ Fast approval for eligible customers`,
         `📅 Prices valid as of ${CATALOG_DATE}`,
@@ -1034,7 +1040,6 @@ export default function Page() {
         `💰 Device installment: RM${monthly}/mo`,
         `📊 Total/month: RM${fee} plan + RM${monthly} = RM${effectiveTotal}`,
         isFreeDevice ? `✅ FREE device — RM0 installment!` : ``,
-        promo ? `🎁 ${promo}` : ``,
         ``,
         `📋 ${eccNote}`,
         `⚠️ Subject to verification`,
@@ -1055,7 +1060,6 @@ export default function Page() {
       strongest,
       `📱 Plan: ${selectedPlan} | ${modeLabel}`,
       `📊 RM${fee} plan + RM${monthly} device = RM${effectiveTotal}/mo`,
-      promo ? `🎁 ${promo}` : ``,
       ``,
       `⚡ Fast approval for eligible customers`,
       `📅 Prices valid as of ${CATALOG_DATE}`,
@@ -1063,12 +1067,12 @@ export default function Page() {
       `👉 Grab it — limited promo`,
       `👉 Reply YES and I handle everything`,
     ].filter((l, i, arr) => !(l === "" && arr[i - 1] === "")).join("\n").trim();
-  }, [regionPricing, selectedRow, selectedModel, activeStorage, selectedPlan, selectedTab, copyMode]);
+  }, [regionPricing, selectedRow, selectedModel, selectedPlan, selectedTab, copyMode]);
 
   const bestDeal = useMemo(() => {
     const ecem = activeStorage.regions.ECEM;
     if (!ecem) return null;
-    const mpOrder2 = ["MP69","MP79","MP89","MP99","MP109","MP139","MP169","MP199"] as const;
+    const mpOrder2 = mpOrder;
     // 24M upfront free?
     for (const plan of mpOrder2) {
       const dp = (ecem.upfront?.[plan] as {devicePrice?: number|string}|undefined)?.devicePrice;
@@ -1213,6 +1217,13 @@ export default function Page() {
                 ↺ Reset
               </button>
               <a href="/admin" className="text-slate-600 hover:text-slate-400 transition text-sm" title="Admin">⚙</a>
+              <button
+                onClick={() => { if (window.confirm("Sign out of the pricing app on this device?")) void signOut(); }}
+                className="whitespace-nowrap text-slate-600 hover:text-slate-400 transition text-xs"
+                title="Sign out"
+              >
+                Sign out
+              </button>
             </div>
           </div>
 
@@ -1264,8 +1275,12 @@ export default function Page() {
 
         {/* ── WHAT'S NEW BANNER ───────────────────────────────────────────── */}
         {bannerVisible && (() => {
-          const recentDate = LATEST_UPDATES[0]?.date;
-          const items = LATEST_UPDATES.filter(u => u.date === recentDate);
+          // The two newest dates, not just the newest: a same-week alert (a
+          // delivery cut-off, a price fix) must not vanish from the banner the
+          // moment any later note is added.
+          const bannerDates = [...new Set(LATEST_UPDATES.map(u => u.date))].slice(0, 2);
+          const recentDate = bannerDates[0];
+          const items = LATEST_UPDATES.filter(u => bannerDates.includes(u.date));
           if (!items.length) return null;
           return (
             <div className="lg:col-span-3 border-b border-[#00D46A]/20 bg-[#00D46A]/6 px-4 py-3">
@@ -1284,6 +1299,9 @@ export default function Page() {
                     {items.map((item, i) => (
                       <div key={i} className="flex flex-col gap-0.5">
                         <p className="text-xs font-medium text-white/90 leading-snug">
+                          {item.date !== recentDate && (
+                            <span className="mr-1 text-[10px] font-normal text-slate-500">{item.date} ·</span>
+                          )}
                           {item.text}
                         </p>
                         {item.subtext && (
@@ -1325,7 +1343,7 @@ export default function Page() {
               <div>
                 <label className="mb-1.5 block text-xs text-slate-400">Maxis Postpaid</label>
                 <div className="grid grid-cols-4 gap-1.5">
-                  {["MP89", "MP99", "MP109", "MP139", "MP169", "MP199"].map((plan) => (
+                  {mpOrder.map((plan) => (
                     <button
                       key={plan}
                       onClick={() => setFreeDevicePlan(plan)}
@@ -1433,7 +1451,7 @@ export default function Page() {
               <div>
                 <label className="mb-1.5 block text-xs text-slate-400">Maxis Postpaid</label>
                 <div className="grid grid-cols-4 gap-1.5">
-                  {["MP69","MP79","MP89","MP99","MP109","MP139","MP169","MP199"].map((plan) => (
+                  {mpOrder.map((plan) => (
                     <button
                       key={plan}
                       onClick={() => setByPlanSelected(plan)}
@@ -2256,7 +2274,10 @@ export default function Page() {
             {activeStorage.promo && (
               <div className="mt-3 flex items-start gap-2 rounded-xl border border-amber-400/20 bg-amber-400/8 px-3 py-2">
                 <span className="mt-0.5 text-sm">🔥</span>
-                <p className="text-xs font-medium text-amber-300">{activeStorage.promo}</p>
+                <p className="text-xs font-medium text-amber-300">
+                  <span className="text-amber-200/70">Staff note, check it&apos;s still running: </span>
+                  {activeStorage.promo}
+                </p>
               </div>
             )}
           </div>
@@ -3021,13 +3042,6 @@ export default function Page() {
                 </div>
               </div>
 
-              {/* Promo */}
-              {activeStorage.promo && (
-                <div style={{ border: "1px solid #fbbf24", borderRadius: "8px", padding: "8px 12px", backgroundColor: "#fffbeb", marginBottom: "12px", fontSize: "13px", color: "#92400e" }}>
-                  🔥 {activeStorage.promo}
-                </div>
-              )}
-
               {/* Footer */}
               <div style={{ marginTop: "20px", paddingTop: "14px", borderTop: "1px solid #e5e7eb", display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
                 <div>
@@ -3035,7 +3049,9 @@ export default function Page() {
                   <div style={{ fontSize: "11px", color: "#888" }}>Aiman Mall &amp; Emart Batu Kawa</div>
                 </div>
                 <div style={{ fontSize: "10px", color: "#aaa", textAlign: "right" }}>
-                  Prices valid as of {CATALOG_SOURCE}
+                  {/* Was the whole CATALOG_SOURCE: thousands of characters of
+                      internal GTM history printed on the customer's copy. */}
+                  Prices valid as of {CATALOG_DATE}
                   <br />⚠️ Subject to stock &amp; verification
                 </div>
               </div>
@@ -3044,7 +3060,9 @@ export default function Page() {
         })()}
       </div>
 
-      {/* Mobile sticky bar */}
+      {/* Mobile sticky bar. Not on the start screen: there it offered "Copy
+          Quote" for the default phone (Galaxy A07, HP75) that nobody picked. */}
+      {!homeScreen && (
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-[#0e1114]/95 px-4 py-3 backdrop-blur-md lg:hidden">
         <div className="flex items-center gap-3">
           <div className="min-w-0 flex-1">
@@ -3066,6 +3084,7 @@ export default function Page() {
           </button>
         </div>
       </div>
+      )}
 
       {/* ── Compare Panel ───────────────────────────────────────────────── */}
       {showCompare && compareA && compareB && (
@@ -3225,13 +3244,6 @@ export default function Page() {
                 </div>
               );
             })()}
-
-            {/* Promo */}
-            {activeStorage.promo && (
-              <div className="mt-4 rounded-xl border border-amber-400/25 bg-amber-400/8 px-4 py-3 text-center text-sm font-medium text-amber-300">
-                🎁 {activeStorage.promo}
-              </div>
-            )}
 
             {/* Disclaimer */}
             <div className="mt-6 text-center text-[11px] text-slate-600">

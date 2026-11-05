@@ -9,9 +9,9 @@ import {
   type CatalogStorage,
   type HotlinkRow,
 } from "../../data/catalog";
+import { signOut } from "../../lib/sign-out";
 
 // ── constants ──────────────────────────────────────────────────────────────
-const STORAGE_KEY = "maxis-admin-auth";
 const CHANGES_KEY = "maxis-admin-changes";
 
 const MP_UPFRONT = ["MP69", "MP79", "MP89", "MP99", "MP109", "MP139", "MP169", "MP199"];
@@ -781,13 +781,9 @@ export default function AdminPage() {
     handleChanges({});
   }
 
+  // Clears the server session (and the offline copies), not just local state.
   function logout() {
-    try {
-      localStorage.removeItem(STORAGE_KEY);
-    } catch {
-      //
-    }
-    window.location.reload();
+    void signOut();
   }
 
   const filtered = useMemo(() => {
@@ -844,7 +840,9 @@ export default function AdminPage() {
               border: "1px solid rgba(0,212,106,0.25)",
             }}
           >
-            GTM: {CATALOG_SOURCE}
+            {/* The full source is an append-only GTM changelog (thousands of
+                characters): show the date, keep the history on hover. */}
+            <span title={CATALOG_SOURCE}>GTM: {CATALOG_DATE}</span>
           </div>
           <button
             onClick={logout}
