@@ -13,7 +13,10 @@ Audit: `python scripts/audit_catalog.py` (must be 0 critical before any push).
 ## SCOPE — what belongs in THIS app
 
 IN (consumer counter tool):
-- Maxis Postpaid plans: MP48, MP69, MP89, MP99, MP109, MP139, MP169, MP199
+- Maxis Postpaid plans: MP48, MP79, MP89, MP99, MP109, MP139, MP169, MP199
+  (MP79 is the ECEM entry plan since 13 Aug 2026. MP69 is no longer printed in
+  the device tables: its old figures stay in catalog.ts but the app hides them.
+  Never write a new MP69 value.)
 - Hotlink Postpaid plans: HP45, HP65, HP75
 - 5G Home WiFi (WiFi 69/99/139/159 + routers) → `data/homewifi.ts`
 
@@ -21,14 +24,21 @@ OUT (do NOT add — different products/customers):
 - Enterprise / Business Postpaid (MBP*, MFP business), AirFibre, SME deals
 - Home Fibre + Home Devices (TVs, PS5, iPad on Zerolution)
 - Hotlink Prepaid (passes, top-ups)
-If an email is one of these, note it in the summary and skip it.
+- Dealer-side material: DTP, sell-thru / sell-through programs, dealer
+  incentives, targets, payouts, delivery and order cut-off schedules
+If an email is one of these, note it in the summary and skip it: no edit to
+catalog.ts at all (not CATALOG_SOURCE, not CATALOG_DATE).
 
 ---
 
 ## PDF COLUMN MAPPING (critical)
 
-Compiled tables column order:
-`MP48 | MFP399 (new FP) | MP69 | MP89 | MP99 | MP109 | MP139 | MP169 | MP199`
+**Map every column by its HEADER, never by its position.** The compiled
+tables do not print plans in fee order, and the order changes between decks:
+- June 2026: `MP48 | MFP399 (new FP) | MP69 | MP89 | MP99 | MP109 | MP139 | MP169 | MP199`
+- Oct 2026: MP69 gone, MP79 first, and `MP79 | MP99 | MP89 | MP109 | …`
+  (MP99 BEFORE MP89). Reading that in plan order shifted every Pixel 10a price
+  one plan on 16 Oct; staff saw "FREE on MP199" for four days.
 - catalog `MP48` key == PDF **MP48** column (NOT MFP399).
 - **MFP399 is NOT tracked** in the catalog — ignore that column.
 - DTP = Dealer Transfer Price = dealer's COST (not customer price). Never put DTP
@@ -54,6 +64,17 @@ Compiled tables column order:
 5. **NA consistency.** If devicePrice is "NA", dap and totalUpfront must be "NA" too.
 6. **zero36 monthly < zero24 monthly** for the same plan (longer term = lower).
    If reversed, you swapped them.
+7. **Plan ladder.** A higher plan never makes the phone dearer: device price
+   and Zerolution monthly fall (or stay) from MP79 up to MP199, and from HP45
+   to HP75. The audit now fails on any rise. A rise almost always means a
+   column was read by position (see the mapping above).
+8. **Dealer material is not a promo.** On 15 Oct a "MEP Sell-Thru Program" PDF
+   ("dealer earns up to RM4,500 (90 units)") was written into seven Honor promo
+   notes, and promo notes were going into customer quotes. Dealer payouts, DTP
+   and targets never go anywhere in catalog.ts. The audit now fails on them.
+9. **Don't drop flags you didn't mean to touch.** A 19 Jun Enterprise-PDF run
+   removed `eol: true` from the Maxis Realme C100 entry (restored 5 Nov). Diff
+   your edit before pushing: every removed line must be one you intended.
 
 ---
 
@@ -73,16 +94,19 @@ Compiled tables column order:
    - Use a Python script with a `replace_unique()` helper (assert exactly 1 match
      before replacing) — see scripts/update_jun4.py for the pattern.
 6. **GATE: `python scripts/audit_catalog.py` → must be `0 critical`.**
-   If not, STOP. Do not push. Fix or flag.
+   If not, STOP. Do not push. Fix or flag. (Since 5 Nov 2026 it also fails on a
+   plan-ladder rise and on dealer wording in a promo note.)
 7. `npx tsc --noEmit` → clean (a pre-existing layout.tsx note is fine).
 8. Metadata in `data/catalog.ts`:
-   - Bump `CATALOG_DATE` to the GTM effective date (YYYY-MM-DD). This busts the
-     PWA cache so staff phones pull the update. ALWAYS bump on any catalog change.
+   - Bump `CATALOG_DATE` to the GTM effective date (YYYY-MM-DD) when prices
+     change: quotes print it as "Prices valid as of". (Cache busting no longer
+     depends on it: the service worker version includes the deployed commit.)
    - If it's a new pricing GTM, update `CATALOG_SOURCE` (e.g. "GTM 11 June 2026").
      If only a flag/EOL changed (no prices), leave CATALOG_SOURCE as-is.
    - Add a `LATEST_UPDATES` entry at the top (type "new"/"change"/"alert").
 9. `npm run build` → confirms gen-sw regenerates `public/sw.js` with the new
-   `CACHE = maxis-<date>` key, and the app compiles.
+   `CACHE = maxis-<date>-<commit>` key, and the app compiles. `public/sw.js` is
+   git-ignored: never commit it.
 10. Commit (audit/TS/build results in the message), push to branch AND main.
 11. Summarize to the user: what changed, what was out-of-scope, audit result.
 
@@ -105,5 +129,15 @@ Compiled tables column order:
 Full-auto means clear, verified changes. If a value is genuinely unconfirmed —
 not in the current GTM PDF, or source ambiguous — do NOT guess and push. Apply
 what's certain, and FLAG the uncertain item for the user.
-Currently open/unconfirmed: Vivo V70 5G and Vivo X200 FE 5G (MP69==MP48 signature
-but not in the 4 June PDF — needs source confirmation before fixing).
+
+**A HOLD from any pre-check means no push.** All 28 Agent 3 commits from 10 Jun
+to 4 Nov 2026 say "Mike pre-check: HOLD" and every one was pushed to main.
+Either the pre-check always says HOLD (then it checks nothing) or the HOLD is
+ignored; both are broken. HOLD is a stop: leave the change on a branch and flag
+it.
+
+Currently open/unconfirmed (checked 5 Nov 2026):
+- Vivo X200 FE 5G: Zerolution MP48 == MP69 (133 / 88). MP69 is hidden now, but
+  the MP48 figure itself still needs a deck.
+- Galaxy Z Fold8 256GB / 512GB: Upfront 36M on MP109 (RM6,199 / RM6,799) is
+  higher than Upfront 24M on MP109 (RM6,099 / RM6,699). Unusual; confirm.

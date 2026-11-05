@@ -91,8 +91,15 @@ export function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     // Everything except: the login screen and its API, Next's own asset routes,
-    // and any path with a file extension (favicon.ico, sw.js, manifest.webmanifest,
-    // icons) — those carry no pricing and the PWA breaks without them.
-    "/((?!login|api/(?:login|logout)|_next/|.*\\.).*)",
+    // Vercel's analytics script, and the few public files the PWA needs.
+    //
+    // This used to skip ANY path containing a dot, on the idea that dotted paths
+    // are static files. They are not all static: Vercel also serves each page's
+    // prerendered React data at dotted paths (/index.segments/__PAGE__.segment.rsc,
+    // /simple.segments/…), so those were answered with no password. That data
+    // names the /_next/static chunk that holds the whole catalog, which made the
+    // full price list downloadable without logging in. Only the files below are
+    // public now; every other path, dotted or not, needs a session.
+    "/((?!login|api/(?:login|logout)|_next/|_vercel/|favicon\\.ico$|sw\\.js$|manifest\\.webmanifest$|icon\\.svg$).*)",
   ],
 };
