@@ -53,8 +53,8 @@ export type CatalogBrand = {
 };
 
 // Pricing source — update this whenever a new GTM is applied
-export const CATALOG_SOURCE = "GTM 18 Nov 2026 Enhanced Credit Assessment: 90-day staggering rule REMOVED; device contract count limit REMOVED; ECC automated DAP check in mSell Ultra & Dealernet; port-in extra DAP waiver RM500 (Zerolution) / RM200 (K2) promo 18 Nov 2026 – 8 Jan 2027 (requires 3 mths OLO bill min RM60/mth excl tax, no overdue, capped 2 per NRIC); Fibre Converge Home Device RM500 special DAP waiver promo 18 Nov 2026 – 8 Jan 2027 (500Mbps/1Gbps Prime customers with >6 mths tenure, 36M Zerolution selected home device only); no device prices changed. + Nov 2026 Holiday Delivery Schedule (3 Nov 2026): 6 Nov Sultan of Perak's Birthday — Peninsular outstation cut-off 4 Nov 2:30pm, resume 9 Nov (Mon); 8-9 Nov Deepavali Nationwide — KV cut-off 6 Nov 2:30pm resume 10 Nov (Tue), Peninsular outstation 5 Nov 2:30pm resume 10 Nov (Tue), Kelantan/Terengganu 4 Nov 2:30pm resume 10 Nov, Langkawi/Sarawak/Sabah 3 Nov 2:30pm resume 10 Nov; EM Hubs (Sarawak/Sabah) cut-off 4 Nov 2:30pm resume 10 Nov. No pricing changes.) + GTM 29 Oct 2026 (Home Fibre Converge Deals extended to 31 Dec 2026: 300Mbps RM99/mth perpetual rebate RM40/mth + FREE 3M; 500Mbps RM139/mth perpetual rebate RM20/mth + Samsung Tab S10 Lite RM1/mth or Samsung 55\" TV RM10/mth on 36M Zerolution; 1Gbps RM159/mth perpetual rebate RM90/mth + iPad 11\" 11th Gen RM1/mth or Samsung 65\" TV RM10/mth on 36M Zerolution; RM0 DAP enhanced eff 15 Nov 2026; promo period extended from 31 Oct to 31 Dec 2026) + GTM 16 Oct 2026 'Introducing iPhone Duo' (updated deck: iPhone Duo 256GB-2TB added, pre-order 16 Oct, launch 23 Oct) + Pixel 10a fix 20 Oct 2026 (Agent 3 had written the RFS 16 Oct Pixel 10a row one plan column off; re-applied cell by cell from the compiled tables, Upfront 36M added) + GTM RFS 16 Oct 2026 (Samsung Galaxy A57 5G RRP RM2,899 added/repriced; Google Pixel 10a 5G RRP RM3,099 new Zerolution 36M pricing) + GTM RFS 8 Oct 2026 (updated deck 9 Oct: slide typo fixed, A6t MP79/89 RM299; MEP ECEM compiled device pricing re-checked cell-by-cell: Oppo A6t 5G RRP RM1,299 and Vivo Y11 5G RRP RM1,199 repriced - no longer FREE on MP79; iPhone 17 512GB Upfront 36M MP199 RM1,599; NEW Honor 600s 5G, Honor X9e Pro 5G, Vivo V80 Lite 5G, Vivo Y21 5G 6+256GB; Upfront 36M added for iPhone 17 Pro / Pro Max) + Hotlink HP75 Device Updates eff 8 Oct 2026 (Oppo A6t / Vivo Y11 repriced, Honor 600S 5G added) + RRP + Hotlink check 7 Oct 2026 (every ECEM RRP matched to the RFS 24 Sep compiled tables - 17 iPhone/iPad/Oppo A6/Galaxy A07 RRPs were RM120-RM1,300 too low; Hotlink HP75 rows matched to the Hotlink device pricing summary updated 23 Sep: Nubia Neo 5 / Galaxy A26 / Honor 600 Lite / Galaxy A07 corrected; Redmi Note 17, Nubia A77 and Honor 500 Smart 4+256GB added to Hotlink) + GTM 30 Sep 2026 (Port-in Rebate Extension: RM20x6 mths bill rebate for MP79+ port-in extended to 8 Jan 2027; HP75 outbound port-in RM20x6 mths; MEP outbound offer HP75/MP79+ RM20x6 mths port-in, RM10x12 mths HP75 new/P2P; no pricing change to devices) + GTM 24 Sep 2026 (MEP ECEM compiled device pricing: every Upfront 24M/36M and Zerolution 24M/36M price checked cell-by-cell against the Maxis PDF) + GTM 21 Sep 2026 (Home Device: NEW Sony 65\" BRAVIA 3 II 4K Google TV K-65XR30M2 SKU#100021900001 RRP RM6,599 eff 24 Sep 2026; NEW Sony 65\" BRAVIA 3 II + PS5 Bundle SKU#100021901001 RRP RM9,098 eff 24 Sep 2026; NEW LG 65\" 4K UHD Smart TV 65UA731 SKU#100022073001 RRP RM3,899 eff 24 Sep 2026; NEW LG 65\" QNED Mini LED 65QNED70 SKU#100022074001 RRP RM4,899 eff 24 Sep 2026; EOL Samsung 75\" Micro RGB + Nintendo Switch OLED SKU#100021107001 eff 21 Sep 2026; EOL Sony PS5 Pro Digital Console SKU#100020545001 eff 21 Sep 2026) + GTM 14 Aug 2026 (Samsung Galaxy Z Flip8 5G 256GB/512GB RRP RM5,399/RM6,199; Samsung Galaxy Z Fold8 5G 256GB/512GB/1TB RRP RM7,299/RM8,099/RM9,699; Samsung Galaxy Z Fold8 Ultra 5G 256GB/512GB/1TB RRP RM8,099/RM8,899/RM10,499 — all eff 14 Aug 2026 on Zerolution 24M/36M and 1L1D; freebies: Buds4 Pro with Flip8, Watch9 with Fold8, Samsung 55\" TV with Fold8 Ultra) + GTM 11 Aug 2026 (ECEM Q3: New MP79 ECEM-exclusive plan eff 13 Aug; MP69 2x data eff 20 Aug; MP99 flagship deals; Honor 500 Smart 4+256GB added; iPhone 15/16/17e/17/Air repriced for MP79/89; Samsung A07/Oppo A6t/Vivo Y11 FREE on MP79; Nubia Neo 5 RM249 on MP79 port-in; Samsung A27/Oppo A6/Vivo Y21/A37/Reno16F/Reno16/Honor 600/Vivo X300 FE upfront repriced; K2 port-in DAP waiver up to RM200) + GTM 27 Jul 2026 (K2 Port-in: +RM100 DAP waiver 28 Jul 2026 – 31 Jan 2027; RM20x12 bill rebate on HVP switch) + GTM 23 Jul 2026 (New: Huawei Pura 90s Pro 5G, Huawei Pura 90s Pro Max 5G; iPad Air 11\"/13\" & iPad Pro 11\"/13\" price updates) + GTM 16 July 2026 (Price Down: Realme 16T, Samsung A27, Vivo Y21) + GTM 2-9 July 2026 + Port-in Rebate 29 Jun 2026 + Home Device GTM 13 Jul 2026 + MEP Device Governance Policy updated 9 Jul 2026 (internal process only, no pricing impact)";
-export const CATALOG_DATE = "2026-11-16";
+export const CATALOG_SOURCE = "Hotlink Postpaid 75 Device Updates eff 19 Nov 2026 (pricing summary updated 11 Nov; applied 20 Nov by hand after Agent 3 failed to compile) + GTM 18 Nov 2026 Enhanced Credit Assessment: 90-day staggering rule REMOVED; device contract count limit REMOVED; ECC automated DAP check in mSell Ultra & Dealernet; port-in extra DAP waiver RM500 (Zerolution) / RM200 (K2) promo 18 Nov 2026 – 8 Jan 2027 (requires 3 mths OLO bill min RM60/mth excl tax, no overdue, capped 2 per NRIC); Fibre Converge Home Device RM500 special DAP waiver promo 18 Nov 2026 – 8 Jan 2027 (500Mbps/1Gbps Prime customers with >6 mths tenure, 36M Zerolution selected home device only); no device prices changed. + Nov 2026 Holiday Delivery Schedule (3 Nov 2026): 6 Nov Sultan of Perak's Birthday — Peninsular outstation cut-off 4 Nov 2:30pm, resume 9 Nov (Mon); 8-9 Nov Deepavali Nationwide — KV cut-off 6 Nov 2:30pm resume 10 Nov (Tue), Peninsular outstation 5 Nov 2:30pm resume 10 Nov (Tue), Kelantan/Terengganu 4 Nov 2:30pm resume 10 Nov, Langkawi/Sarawak/Sabah 3 Nov 2:30pm resume 10 Nov; EM Hubs (Sarawak/Sabah) cut-off 4 Nov 2:30pm resume 10 Nov. No pricing changes.) + GTM 29 Oct 2026 (Home Fibre Converge Deals extended to 31 Dec 2026: 300Mbps RM99/mth perpetual rebate RM40/mth + FREE 3M; 500Mbps RM139/mth perpetual rebate RM20/mth + Samsung Tab S10 Lite RM1/mth or Samsung 55\" TV RM10/mth on 36M Zerolution; 1Gbps RM159/mth perpetual rebate RM90/mth + iPad 11\" 11th Gen RM1/mth or Samsung 65\" TV RM10/mth on 36M Zerolution; RM0 DAP enhanced eff 15 Nov 2026; promo period extended from 31 Oct to 31 Dec 2026) + GTM 16 Oct 2026 'Introducing iPhone Duo' (updated deck: iPhone Duo 256GB-2TB added, pre-order 16 Oct, launch 23 Oct) + Pixel 10a fix 20 Oct 2026 (Agent 3 had written the RFS 16 Oct Pixel 10a row one plan column off; re-applied cell by cell from the compiled tables, Upfront 36M added) + GTM RFS 16 Oct 2026 (Samsung Galaxy A57 5G RRP RM2,899 added/repriced; Google Pixel 10a 5G RRP RM3,099 new Zerolution 36M pricing) + GTM RFS 8 Oct 2026 (updated deck 9 Oct: slide typo fixed, A6t MP79/89 RM299; MEP ECEM compiled device pricing re-checked cell-by-cell: Oppo A6t 5G RRP RM1,299 and Vivo Y11 5G RRP RM1,199 repriced - no longer FREE on MP79; iPhone 17 512GB Upfront 36M MP199 RM1,599; NEW Honor 600s 5G, Honor X9e Pro 5G, Vivo V80 Lite 5G, Vivo Y21 5G 6+256GB; Upfront 36M added for iPhone 17 Pro / Pro Max) + Hotlink HP75 Device Updates eff 8 Oct 2026 (Oppo A6t / Vivo Y11 repriced, Honor 600S 5G added) + RRP + Hotlink check 7 Oct 2026 (every ECEM RRP matched to the RFS 24 Sep compiled tables - 17 iPhone/iPad/Oppo A6/Galaxy A07 RRPs were RM120-RM1,300 too low; Hotlink HP75 rows matched to the Hotlink device pricing summary updated 23 Sep: Nubia Neo 5 / Galaxy A26 / Honor 600 Lite / Galaxy A07 corrected; Redmi Note 17, Nubia A77 and Honor 500 Smart 4+256GB added to Hotlink) + GTM 30 Sep 2026 (Port-in Rebate Extension: RM20x6 mths bill rebate for MP79+ port-in extended to 8 Jan 2027; HP75 outbound port-in RM20x6 mths; MEP outbound offer HP75/MP79+ RM20x6 mths port-in, RM10x12 mths HP75 new/P2P; no pricing change to devices) + GTM 24 Sep 2026 (MEP ECEM compiled device pricing: every Upfront 24M/36M and Zerolution 24M/36M price checked cell-by-cell against the Maxis PDF) + GTM 21 Sep 2026 (Home Device: NEW Sony 65\" BRAVIA 3 II 4K Google TV K-65XR30M2 SKU#100021900001 RRP RM6,599 eff 24 Sep 2026; NEW Sony 65\" BRAVIA 3 II + PS5 Bundle SKU#100021901001 RRP RM9,098 eff 24 Sep 2026; NEW LG 65\" 4K UHD Smart TV 65UA731 SKU#100022073001 RRP RM3,899 eff 24 Sep 2026; NEW LG 65\" QNED Mini LED 65QNED70 SKU#100022074001 RRP RM4,899 eff 24 Sep 2026; EOL Samsung 75\" Micro RGB + Nintendo Switch OLED SKU#100021107001 eff 21 Sep 2026; EOL Sony PS5 Pro Digital Console SKU#100020545001 eff 21 Sep 2026) + GTM 14 Aug 2026 (Samsung Galaxy Z Flip8 5G 256GB/512GB RRP RM5,399/RM6,199; Samsung Galaxy Z Fold8 5G 256GB/512GB/1TB RRP RM7,299/RM8,099/RM9,699; Samsung Galaxy Z Fold8 Ultra 5G 256GB/512GB/1TB RRP RM8,099/RM8,899/RM10,499 — all eff 14 Aug 2026 on Zerolution 24M/36M and 1L1D; freebies: Buds4 Pro with Flip8, Watch9 with Fold8, Samsung 55\" TV with Fold8 Ultra) + GTM 11 Aug 2026 (ECEM Q3: New MP79 ECEM-exclusive plan eff 13 Aug; MP69 2x data eff 20 Aug; MP99 flagship deals; Honor 500 Smart 4+256GB added; iPhone 15/16/17e/17/Air repriced for MP79/89; Samsung A07/Oppo A6t/Vivo Y11 FREE on MP79; Nubia Neo 5 RM249 on MP79 port-in; Samsung A27/Oppo A6/Vivo Y21/A37/Reno16F/Reno16/Honor 600/Vivo X300 FE upfront repriced; K2 port-in DAP waiver up to RM200) + GTM 27 Jul 2026 (K2 Port-in: +RM100 DAP waiver 28 Jul 2026 – 31 Jan 2027; RM20x12 bill rebate on HVP switch) + GTM 23 Jul 2026 (New: Huawei Pura 90s Pro 5G, Huawei Pura 90s Pro Max 5G; iPad Air 11\"/13\" & iPad Pro 11\"/13\" price updates) + GTM 16 July 2026 (Price Down: Realme 16T, Samsung A27, Vivo Y21) + GTM 2-9 July 2026 + Port-in Rebate 29 Jun 2026 + Home Device GTM 13 Jul 2026 + MEP Device Governance Policy updated 9 Jul 2026 (internal process only, no pricing impact)";
+export const CATALOG_DATE = "2026-11-20";
 
 // Latest updates — shown at top of app so staff stay informed without reading emails
 // Keep most recent first. Update whenever a new GTM/email changes the catalog.
@@ -66,6 +66,12 @@ export type AppUpdate = {
 };
 
 export const LATEST_UPDATES: AppUpdate[] = [
+  {
+    date: "20 Nov",
+    type: "change",
+    text: "Hotlink Postpaid 75 prices updated (eff 19 Nov): NEW Oppo A6x 5G and Lenovo Tab Poplar 4G; Redmi Note 17 5G, Honor 600S 5G, Honor 500 Smart 5G (4+256GB) and Realme C100 5G repriced.",
+    subtext: "24 months on HP75: Oppo A6x RM199 + RM150 advance; Lenovo Tab Poplar RM59 + RM240; Redmi Note 17 RM279 + RM280; Honor 600S RM279 + RM100; Honor 500 Smart 4+256GB RM80 + RM120; Realme C100 RM299 + RM180 (RRP now RM1,299). Source: Hotlink Postpaid 75 Device Pricing Summary, updated 11 Nov 2026.",
+  },
   {
     date: "18 Nov",
     type: "alert",
@@ -418,7 +424,7 @@ hotlink12: {
 HP75: { devicePrice: 459, dap: 0, totalUpfront: 459, monthly: 75 }
 },
 hotlink24: {
-HP75: { devicePrice: 99, dap: 180, totalUpfront: 279, monthly: 67.50 }
+HP75: { devicePrice: 80, dap: 120, totalUpfront: 200, monthly: 70 }
 }
 }
 }
@@ -576,14 +582,14 @@ aliases: ["realme", "c100", "hotlink"],
 eol: true,
 storages: [{
 storage: "4+256GB",
-rrp: 1099,
+rrp: 1299,
 regions: {
 HOTLINK: {
 hotlink12: {
-HP75: { devicePrice: 399, dap: 0, totalUpfront: 399, monthly: 75 }
+HP75: { devicePrice: 619, dap: 0, totalUpfront: 619, monthly: 75 }
 },
 hotlink24: {
-HP75: { devicePrice: 0, dap: 200, totalUpfront: 200, monthly: 66.67 }
+HP75: { devicePrice: 299, dap: 180, totalUpfront: 479, monthly: 67.5 }
 }
 }
 }
@@ -634,10 +640,10 @@ rrp: 1199,
 regions: {
 HOTLINK: {
 hotlink12: {
-HP75: { devicePrice: 619, dap: 0, totalUpfront: 619, monthly: 75 }
+HP75: { devicePrice: 639, dap: 0, totalUpfront: 639, monthly: 75 }
 },
 hotlink24: {
-HP75: { devicePrice: 259, dap: 120, totalUpfront: 379, monthly: 70.00 }
+HP75: { devicePrice: 279, dap: 280, totalUpfront: 559, monthly: 63.33 }
 }
 }
 }
@@ -656,7 +662,43 @@ hotlink12: {
 HP75: { devicePrice: 619, dap: 0, totalUpfront: 619, monthly: 75 }
 },
 hotlink24: {
-HP75: { devicePrice: 259, dap: 180, totalUpfront: 439, monthly: 67.50 }
+HP75: { devicePrice: 279, dap: 100, totalUpfront: 379, monthly: 70.83 }
+}
+}
+}
+}]
+},
+{
+model: "Lenovo Tab Poplar 4G",
+aliases: ["lenovo", "tab", "poplar", "tablet", "hotlink"],
+storages: [{
+storage: "4+128GB",
+rrp: 849,
+regions: {
+HOTLINK: {
+hotlink12: {
+HP75: { devicePrice: 409, dap: 0, totalUpfront: 409, monthly: 75 }
+},
+hotlink24: {
+HP75: { devicePrice: 59, dap: 240, totalUpfront: 299, monthly: 65 }
+}
+}
+}
+}]
+},
+{
+model: "Oppo A6x 5G",
+aliases: ["oppo", "a6x", "hotlink"],
+storages: [{
+storage: "4+128GB",
+rrp: 1099,
+regions: {
+HOTLINK: {
+hotlink12: {
+HP75: { devicePrice: 599, dap: 0, totalUpfront: 599, monthly: 75 }
+},
+hotlink24: {
+HP75: { devicePrice: 199, dap: 150, totalUpfront: 349, monthly: 68.75 }
 }
 }
 }
